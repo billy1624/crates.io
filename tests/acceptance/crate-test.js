@@ -91,7 +91,7 @@ module('Acceptance | crate page', function (hooks) {
   });
 
   test('other crate loading error shows an error message', async function (assert) {
-    this.server.get('/api/v1/crates/:crate_name', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
 
     await visit('/crates/nanomsg');
     assert.strictEqual(currentURL(), '/crates/nanomsg');
@@ -120,7 +120,7 @@ module('Acceptance | crate page', function (hooks) {
     this.server.create('version', { crate, num: '0.6.0' });
     this.server.create('version', { crate, num: '0.6.1' });
 
-    this.server.get('/api/v1/crates/:crate_name/versions', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_name/versions', {}, 500);
 
     await visit('/');
     await click('[data-test-just-updated] [data-test-crate-link="0"]');

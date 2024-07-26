@@ -3,7 +3,7 @@ import { Response } from 'miragejs';
 import { getSession } from '../utils/session';
 
 export function register(server) {
-  server.get('/api/v1/me', function (schema) {
+  server.get('https://crates.io/api/v1/me', function (schema) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -22,7 +22,7 @@ export function register(server) {
     return json;
   });
 
-  server.get('/api/v1/me/tokens', function (schema, request) {
+  server.get('https://crates.io/api/v1/me/tokens', function (schema, request) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -39,7 +39,7 @@ export function register(server) {
       .sort((a, b) => Number(b.id) - Number(a.id));
   });
 
-  server.put('/api/v1/me/tokens', function (schema) {
+  server.put('https://crates.io/api/v1/me/tokens', function (schema) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -67,7 +67,7 @@ export function register(server) {
     return json;
   });
 
-  server.get('/api/v1/me/tokens/:tokenId', function (schema, request) {
+  server.get('https://crates.io/api/v1/me/tokens/:tokenId', function (schema, request) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -83,7 +83,7 @@ export function register(server) {
     return this.serialize(token);
   });
 
-  server.delete('/api/v1/me/tokens/:tokenId', function (schema, request) {
+  server.delete('https://crates.io/api/v1/me/tokens/:tokenId', function (schema, request) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -96,7 +96,7 @@ export function register(server) {
     return {};
   });
 
-  server.get('/api/v1/me/updates', function (schema, request) {
+  server.get('https://crates.io/api/v1/me/updates', function (schema, request) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -122,7 +122,7 @@ export function register(server) {
     return { ...this.serialize(versions), meta: { more } };
   });
 
-  server.put('/api/v1/confirm/:token', (schema, request) => {
+  server.put('https://crates.io/api/v1/confirm/:token', (schema, request) => {
     let { token } = request.params;
 
     let user = schema.users.findBy({ emailVerificationToken: token });
@@ -135,7 +135,7 @@ export function register(server) {
     return { ok: true };
   });
 
-  server.get('/api/v1/me/crate_owner_invitations', function (schema) {
+  server.get('https://crates.io/api/v1/me/crate_owner_invitations', function (schema) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -144,7 +144,7 @@ export function register(server) {
     return schema.crateOwnerInvitations.where({ inviteeId: user.id });
   });
 
-  server.put('/api/v1/me/crate_owner_invitations/:crate_id', (schema, request) => {
+  server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -167,7 +167,7 @@ export function register(server) {
     return { crate_owner_invitation: { crate_id: crateId, accepted } };
   });
 
-  server.put('/api/v1/me/crate_owner_invitations/accept/:token', (schema, request) => {
+  server.put('https://crates.io/api/v1/me/crate_owner_invitations/accept/:token', (schema, request) => {
     let { token } = request.params;
 
     let invite = schema.crateOwnerInvitations.findBy({ token });

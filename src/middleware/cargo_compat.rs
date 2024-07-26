@@ -40,7 +40,7 @@ pub async fn middleware(
     req: Request,
     next: Next,
 ) -> Response {
-    let is_api_request = req.uri().path().starts_with("/api/");
+    let is_api_request = req.uri().path().starts_with("https://crates.io/api/");
     let is_cargo_endpoint = matched_path
         .map(|m| is_cargo_endpoint(req.method(), m.as_str()))
         .unwrap_or(false);
@@ -74,13 +74,13 @@ pub async fn middleware(
 
 fn is_cargo_endpoint(method: &Method, path: &str) -> bool {
     const CARGO_ENDPOINTS: &[(Method, &str)] = &[
-        (Method::PUT, "/api/v1/crates/new"),
-        (Method::DELETE, "/api/v1/crates/:crate_id/:version/yank"),
-        (Method::PUT, "/api/v1/crates/:crate_id/:version/unyank"),
-        (Method::GET, "/api/v1/crates/:crate_id/owners"),
-        (Method::PUT, "/api/v1/crates/:crate_id/owners"),
-        (Method::DELETE, "/api/v1/crates/:crate_id/owners"),
-        (Method::GET, "/api/v1/crates"),
+        (Method::PUT, "https://crates.io/api/v1/crates/new"),
+        (Method::DELETE, "https://crates.io/api/v1/crates/:crate_id/:version/yank"),
+        (Method::PUT, "https://crates.io/api/v1/crates/:crate_id/:version/unyank"),
+        (Method::GET, "https://crates.io/api/v1/crates/:crate_id/owners"),
+        (Method::PUT, "https://crates.io/api/v1/crates/:crate_id/owners"),
+        (Method::DELETE, "https://crates.io/api/v1/crates/:crate_id/owners"),
+        (Method::GET, "https://crates.io/api/v1/crates"),
     ];
 
     CARGO_ENDPOINTS
@@ -147,14 +147,14 @@ mod tests {
             get(|| async { (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error") });
 
         Router::new()
-            .route("/api/ok", okay.clone())
-            .route("/api/teapot", teapot.clone())
+            .route("https://crates.io/api/ok", okay.clone())
+            .route("https://crates.io/api/teapot", teapot.clone())
             .route("/teapot", teapot)
-            .route("/api/500", internal.clone())
+            .route("https://crates.io/api/500", internal.clone())
             .route("/500", internal)
-            .route("/api/v1/crates/new", put(|| async { StatusCode::CREATED }))
+            .route("https://crates.io/api/v1/crates/new", put(|| async { StatusCode::CREATED }))
             .route(
-                "/api/v1/crates/:crate_id/owners",
+                "https://crates.io/api/v1/crates/:crate_id/owners",
                 get(|| async { StatusCode::INTERNAL_SERVER_ERROR }),
             )
             .layer(from_fn_with_state(StatusCodeConfig::AdjustAll, middleware))
@@ -180,10 +180,10 @@ mod tests {
     }
 
     /// Check that successful text responses are **not** converted to JSON even
-    /// for `/api/` requests.
+    /// for `https://crates.io/api/` requests.
     #[tokio::test]
     async fn test_success_responses() {
-        let (parts, bytes) = request("/api/ok").await.unwrap();
+        let (parts, bytes) = request("https://crates.io/api/ok").await.unwrap();
         assert_eq!(parts.status, StatusCode::OK);
         assert_debug_snapshot!(parts.headers, @r###"
         {
@@ -195,10 +195,10 @@ mod tests {
     }
 
     /// Check that 4xx text responses **are** converted to JSON, but only
-    /// for `/api/` requests.
+    /// for `https://crates.io/api/` requests.
     #[tokio::test]
     async fn test_client_errors() {
-        let (parts, bytes) = request("/api/teapot").await.unwrap();
+        let (parts, bytes) = request("https://crates.io/api/teapot").await.unwrap();
         assert_eq!(parts.status, StatusCode::IM_A_TEAPOT);
         assert_debug_snapshot!(parts.headers, @r###"
         {
@@ -220,10 +220,10 @@ mod tests {
     }
 
     /// Check that 5xx text responses **are** converted to JSON, but only
-    /// for `/api/` requests.
+    /// for `https://crates.io/api/` requests.
     #[tokio::test]
     async fn test_server_errors() {
-        let (parts, bytes) = request("/api/500").await.unwrap();
+        let (parts, bytes) = request("https://crates.io/api/500").await.unwrap();
         assert_eq!(parts.status, StatusCode::INTERNAL_SERVER_ERROR);
         assert_debug_snapshot!(parts.headers, @r###"
         {
@@ -246,10 +246,10 @@ mod tests {
 
     #[tokio::test]
     async fn test_cargo_endpoint_status() {
-        let (parts, _bytes) = put_request("/api/v1/crates/new").await.unwrap();
+        let (parts, _bytes) = put_request("https://crates.io/api/v1/crates/new").await.unwrap();
         assert_eq!(parts.status, StatusCode::OK);
 
-        let (parts, _bytes) = request("/api/v1/crates/foo/owners").await.unwrap();
+        let (parts, _bytes) = request("https://crates.io/api/v1/crates/foo/owners").await.unwrap();
         assert_eq!(parts.status, StatusCode::OK);
     }
 }

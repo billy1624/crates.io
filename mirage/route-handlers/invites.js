@@ -4,7 +4,7 @@ import { getSession } from '../utils/session';
 import { notFound } from './-utils';
 
 export function register(server) {
-  server.get('/api/private/crate_owner_invitations', function (schema, request) {
+  server.get('https://crates.io/api/private/crate_owner_invitations', function (schema, request) {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });

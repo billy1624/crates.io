@@ -32,7 +32,7 @@ module('Acceptance | Crate following', function (hooks) {
     prepare(this);
 
     let followingDeferred = defer();
-    this.server.get('/api/v1/crates/:crate_id/following', followingDeferred.promise);
+    this.server.get('https://crates.io/api/v1/crates/:crate_id/following', followingDeferred.promise);
 
     visit('/crates/nanomsg');
     await waitFor('[data-test-follow-button] [data-test-spinner]');
@@ -45,7 +45,7 @@ module('Acceptance | Crate following', function (hooks) {
     assert.dom('[data-test-follow-button] [data-test-spinner]').doesNotExist();
 
     let followDeferred = defer();
-    this.server.put('/api/v1/crates/:crate_id/follow', followDeferred.promise);
+    this.server.put('https://crates.io/api/v1/crates/:crate_id/follow', followDeferred.promise);
 
     click('[data-test-follow-button]');
     await waitFor('[data-test-follow-button] [data-test-spinner]');
@@ -58,7 +58,7 @@ module('Acceptance | Crate following', function (hooks) {
     assert.dom('[data-test-follow-button] [data-test-spinner]').doesNotExist();
 
     let unfollowDeferred = defer();
-    this.server.delete('/api/v1/crates/:crate_id/follow', unfollowDeferred.promise);
+    this.server.delete('https://crates.io/api/v1/crates/:crate_id/follow', unfollowDeferred.promise);
 
     click('[data-test-follow-button]');
     await waitFor('[data-test-follow-button] [data-test-spinner]');
@@ -74,7 +74,7 @@ module('Acceptance | Crate following', function (hooks) {
   test('error handling when loading following state fails', async function (assert) {
     prepare(this);
 
-    this.server.get('/api/v1/crates/:crate_id/following', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_id/following', {}, 500);
 
     await visit('/crates/nanomsg');
     assert.dom('[data-test-follow-button]').hasText('Follow').isDisabled();
@@ -88,7 +88,7 @@ module('Acceptance | Crate following', function (hooks) {
   test('error handling when follow fails', async function (assert) {
     prepare(this);
 
-    this.server.put('/api/v1/crates/:crate_id/follow', {}, 500);
+    this.server.put('https://crates.io/api/v1/crates/:crate_id/follow', {}, 500);
 
     await visit('/crates/nanomsg');
     await click('[data-test-follow-button]');
@@ -100,7 +100,7 @@ module('Acceptance | Crate following', function (hooks) {
   test('error handling when unfollow fails', async function (assert) {
     prepare(this, { following: true });
 
-    this.server.del('/api/v1/crates/:crate_id/follow', {}, 500);
+    this.server.del('https://crates.io/api/v1/crates/:crate_id/follow', {}, 500);
 
     await visit('/crates/nanomsg');
     await click('[data-test-follow-button]');

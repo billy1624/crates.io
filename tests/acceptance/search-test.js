@@ -111,7 +111,7 @@ module('Acceptance | search', function (hooks) {
     let crate = this.server.create('crate', { name: 'rust' });
     this.server.create('version', { crate, num: '1.0.0' });
 
-    this.server.get('/api/v1/crates', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates', {}, 500);
 
     await visit('/');
     await fillIn('[data-test-search-input]', 'rust');
@@ -121,7 +121,7 @@ module('Acceptance | search', function (hooks) {
     assert.dom('[data-test-try-again-button]').isEnabled();
 
     let deferred = defer();
-    this.server.get('/api/v1/crates', async function (schema, request) {
+    this.server.get('https://crates.io/api/v1/crates', async function (schema, request) {
       await deferred.promise;
       return listCrates.call(this, schema, request);
     });
@@ -148,7 +148,7 @@ module('Acceptance | search', function (hooks) {
     assert.dom('[data-test-error-message]').doesNotExist();
     assert.dom('[data-test-try-again-button]').doesNotExist();
 
-    this.server.get('/api/v1/crates', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates', {}, 500);
 
     await fillIn('[data-test-search-input]', 'ru');
     await triggerEvent('[data-test-search-form]', 'submit');
@@ -157,7 +157,7 @@ module('Acceptance | search', function (hooks) {
     assert.dom('[data-test-try-again-button]').isEnabled();
 
     let deferred = defer();
-    this.server.get('/api/v1/crates', async function (schema, request) {
+    this.server.get('https://crates.io/api/v1/crates', async function (schema, request) {
       await deferred.promise;
       return listCrates.call(this, schema, request);
     });
@@ -174,8 +174,8 @@ module('Acceptance | search', function (hooks) {
   });
 
   test('passes query parameters to the backend', async function (assert) {
-    this.server.get('/api/v1/crates', function (schema, request) {
-      assert.step('/api/v1/crates');
+    this.server.get('https://crates.io/api/v1/crates', function (schema, request) {
+      assert.step('https://crates.io/api/v1/crates');
 
       assert.deepEqual(request.queryParams, {
         all_keywords: 'fire ball',
@@ -189,12 +189,12 @@ module('Acceptance | search', function (hooks) {
     });
 
     await visit('/search?q=rust&page=3&per_page=15&sort=new&all_keywords=fire ball');
-    assert.verifySteps(['/api/v1/crates']);
+    assert.verifySteps(['https://crates.io/api/v1/crates']);
   });
 
   test('supports `keyword:bla` filters', async function (assert) {
-    this.server.get('/api/v1/crates', function (schema, request) {
-      assert.step('/api/v1/crates');
+    this.server.get('https://crates.io/api/v1/crates', function (schema, request) {
+      assert.step('https://crates.io/api/v1/crates');
 
       assert.deepEqual(request.queryParams, {
         all_keywords: 'fire ball',
@@ -208,12 +208,12 @@ module('Acceptance | search', function (hooks) {
     });
 
     await visit('/search?q=rust keyword:fire keyword:ball&page=3&per_page=15&sort=new');
-    assert.verifySteps(['/api/v1/crates']);
+    assert.verifySteps(['https://crates.io/api/v1/crates']);
   });
 
   test('`all_keywords` query parameter takes precedence over `keyword` filters', async function (assert) {
-    this.server.get('/api/v1/crates', function (schema, request) {
-      assert.step('/api/v1/crates');
+    this.server.get('https://crates.io/api/v1/crates', function (schema, request) {
+      assert.step('https://crates.io/api/v1/crates');
 
       assert.deepEqual(request.queryParams, {
         all_keywords: 'fire ball',
@@ -227,7 +227,7 @@ module('Acceptance | search', function (hooks) {
     });
 
     await visit('/search?q=rust keywords:foo&page=3&per_page=15&sort=new&all_keywords=fire ball');
-    assert.verifySteps(['/api/v1/crates']);
+    assert.verifySteps(['https://crates.io/api/v1/crates']);
   });
 
   test('visiting without query parameters works', async function (assert) {

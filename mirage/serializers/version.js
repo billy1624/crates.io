@@ -22,8 +22,8 @@ export default BaseSerializer.extend({
 
   links(version) {
     return {
-      dependencies: `/api/v1/crates/${version.crate.name}/${version.num}/dependencies`,
-      version_downloads: `/api/v1/crates/${version.crate.name}/${version.num}/downloads`,
+      dependencies: `https://crates.io/api/v1/crates/${version.crate.name}/${version.num}/dependencies`,
+      version_downloads: `https://crates.io/api/v1/crates/${version.crate.name}/${version.num}/downloads`,
     };
   },
 
@@ -46,8 +46,8 @@ export default BaseSerializer.extend({
   _adjust(hash, includes) {
     let crate = this.schema.crates.find(hash.crate_id);
 
-    hash.dl_path = `/api/v1/crates/${crate.name}/${hash.num}/download`;
-    hash.readme_path = `/api/v1/crates/${crate.name}/${hash.num}/readme`;
+    hash.dl_path = `https://crates.io/api/v1/crates/${crate.name}/${hash.num}/download`;
+    hash.readme_path = `https://crates.io/api/v1/crates/${crate.name}/${hash.num}/readme`;
     hash.crate = crate.name;
 
     if (hash.published_by_id) {

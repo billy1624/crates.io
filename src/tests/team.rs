@@ -17,7 +17,7 @@ impl crate::util::MockAnonymousUser {
         &self,
         krate_name: &str,
     ) -> crate::util::Response<OwnerTeamsResponse> {
-        let url = format!("/api/v1/crates/{krate_name}/owner_team");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/owner_team");
         self.get(&url).await
     }
 }

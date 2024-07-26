@@ -24,7 +24,7 @@ async fn test_crate_with_links_field() {
     });
     assert_eq!(response.status(), StatusCode::OK);
 
-    let response = anon.get::<()>("/api/v1/crates/foo/1.0.0").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/foo/1.0.0").await;
     assert_json_snapshot!(response.json(), {
         ".version.id" => insta::any_id_redaction(),
         ".version.created_at" => "[datetime]",

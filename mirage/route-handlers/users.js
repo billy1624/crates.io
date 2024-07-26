@@ -4,13 +4,13 @@ import { getSession } from '../utils/session';
 import { notFound } from './-utils';
 
 export function register(server) {
-  server.get('/api/v1/users/:user_id', (schema, request) => {
+  server.get('https://crates.io/api/v1/users/:user_id', (schema, request) => {
     let login = request.params.user_id;
     let user = schema.users.findBy({ login });
     return user ?? notFound();
   });
 
-  server.put('/api/v1/users/:user_id', (schema, request) => {
+  server.put('https://crates.io/api/v1/users/:user_id', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       // unfortunately, it's hard to tell from the Rust code if this is the correct response
@@ -39,7 +39,7 @@ export function register(server) {
     return { ok: true };
   });
 
-  server.put('/api/v1/users/:user_id/resend', (schema, request) => {
+  server.put('https://crates.io/api/v1/users/:user_id/resend', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       // unfortunately, it's hard to tell from the Rust code if this is the correct response

@@ -7,7 +7,7 @@ use insta::assert_json_snapshot;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn show_token_non_existing() {
-    let url = "/api/v1/me/tokens/10086";
+    let url = "https://crates.io/api/v1/me/tokens/10086";
     let (_, _, user, _) = TestApp::init().with_token();
     user.get(url).await.assert_not_found();
 }
@@ -16,7 +16,7 @@ async fn show_token_non_existing() {
 async fn show() {
     let (_, _, user, token) = TestApp::init().with_token();
     let token = token.as_model();
-    let url = format!("/api/v1/me/tokens/{}", token.id);
+    let url = format!("https://crates.io/api/v1/me/tokens/{}", token.id);
     let response = user.get::<()>(&url).await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
@@ -44,7 +44,7 @@ async fn show_token_with_scopes() {
         ))
     });
 
-    let url = format!("/api/v1/me/tokens/{}", token.model.id);
+    let url = format!("https://crates.io/api/v1/me/tokens/{}", token.model.id);
     let response = user.get::<()>(&url).await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
@@ -55,7 +55,7 @@ async fn show_token_with_scopes() {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn show_with_anonymous_user() {
-    let url = "/api/v1/me/tokens/1";
+    let url = "https://crates.io/api/v1/me/tokens/1";
     let (_, anon) = TestApp::init().empty();
     anon.get(url).await.assert_forbidden();
 }
@@ -67,7 +67,7 @@ async fn show_other_user_token() {
     let user2 = user2.as_model();
     let token = app.db(|conn| assert_ok!(ApiToken::insert(conn, user2.id, "bar")));
 
-    let url = format!("/api/v1/me/tokens/{}", token.model.id);
+    let url = format!("https://crates.io/api/v1/me/tokens/{}", token.model.id);
     let response = user1.get::<()>(&url).await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
 }

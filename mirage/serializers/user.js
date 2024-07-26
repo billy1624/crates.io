@@ -4,7 +4,7 @@ export default BaseSerializer.extend({
   getHashForResource() {
     let [hash, addToIncludes] = BaseSerializer.prototype.getHashForResource.apply(this, arguments);
 
-    let removePrivateData = this.request.url !== '/api/v1/me';
+    let removePrivateData = this.request.url !== 'https://crates.io/api/v1/me';
 
     if (Array.isArray(hash)) {
       for (let resource of hash) {

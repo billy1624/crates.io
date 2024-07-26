@@ -9,12 +9,12 @@ use http::{header, Request, StatusCode};
 async fn user_agent_is_required() {
     let (_app, anon) = TestApp::init().empty();
 
-    let req = Request::get("/api/v1/crates").body("").unwrap();
+    let req = Request::get("https://crates.io/api/v1/crates").body("").unwrap();
     let resp = anon.run::<()>(req).await;
     assert_eq!(resp.status(), StatusCode::FORBIDDEN);
     assert_json_snapshot!(resp.json());
 
-    let req = Request::get("/api/v1/crates")
+    let req = Request::get("https://crates.io/api/v1/crates")
         .header(header::USER_AGENT, "")
         .body("")
         .unwrap();
@@ -31,7 +31,7 @@ async fn user_agent_is_not_required_for_download() {
         CrateBuilder::new("dl_no_ua", user.as_model().id).expect_build(conn);
     });
 
-    let uri = "/api/v1/crates/dl_no_ua/0.99.0/download";
+    let uri = "https://crates.io/api/v1/crates/dl_no_ua/0.99.0/download";
     let req = Request::get(uri).body("").unwrap();
     let resp = anon.run::<()>(req).await;
     assert_eq!(resp.status(), StatusCode::FOUND);
@@ -49,7 +49,7 @@ async fn blocked_traffic_doesnt_panic_if_checked_header_is_not_present() {
         CrateBuilder::new("dl_no_ua", user.as_model().id).expect_build(conn);
     });
 
-    let uri = "/api/v1/crates/dl_no_ua/0.99.0/download";
+    let uri = "https://crates.io/api/v1/crates/dl_no_ua/0.99.0/download";
     let req = Request::get(uri).body("").unwrap();
     let resp = anon.run::<()>(req).await;
     assert_eq!(resp.status(), StatusCode::FOUND);
@@ -67,7 +67,7 @@ async fn block_traffic_via_arbitrary_header_and_value() {
         CrateBuilder::new("dl_no_ua", user.as_model().id).expect_build(conn);
     });
 
-    let req = Request::get("/api/v1/crates/dl_no_ua/0.99.0/download")
+    let req = Request::get("https://crates.io/api/v1/crates/dl_no_ua/0.99.0/download")
         // A request with a header value we want to block isn't allowed
         .header(header::USER_AGENT, "1")
         .header("x-request-id", "abcd")
@@ -78,7 +78,7 @@ async fn block_traffic_via_arbitrary_header_and_value() {
     assert_eq!(resp.status(), StatusCode::FORBIDDEN);
     assert_json_snapshot!(resp.json());
 
-    let req = Request::get("/api/v1/crates/dl_no_ua/0.99.0/download")
+    let req = Request::get("https://crates.io/api/v1/crates/dl_no_ua/0.99.0/download")
         // A request with a header value we don't want to block is allowed, even though there might
         // be a substring match
         .header(
@@ -100,7 +100,7 @@ async fn block_traffic_via_ip() {
         })
         .empty();
 
-    let resp = anon.get::<()>("/api/v1/crates").await;
+    let resp = anon.get::<()>("https://crates.io/api/v1/crates").await;
     assert_eq!(resp.status(), StatusCode::FORBIDDEN);
     assert_json_snapshot!(resp.json());
 }

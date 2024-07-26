@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
   setupMirage(hooks);
 
   test('empty case', async function (assert) {
-    let response = await fetch('/api/v1/crates');
+    let response = await fetch('https://crates.io/api/v1/crates');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       crates: [],
@@ -35,7 +35,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
       updated_at: '2020-12-25T12:34:56Z',
     });
 
-    let response = await fetch('/api/v1/crates');
+    let response = await fetch('https://crates.io/api/v1/crates');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       crates: [
@@ -50,11 +50,11 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
           homepage: null,
           keywords: [],
           links: {
-            owner_team: '/api/v1/crates/rand/owner_team',
-            owner_user: '/api/v1/crates/rand/owner_user',
-            reverse_dependencies: '/api/v1/crates/rand/reverse_dependencies',
-            version_downloads: '/api/v1/crates/rand/downloads',
-            versions: '/api/v1/crates/rand/versions',
+            owner_team: 'https://crates.io/api/v1/crates/rand/owner_team',
+            owner_user: 'https://crates.io/api/v1/crates/rand/owner_user',
+            reverse_dependencies: 'https://crates.io/api/v1/crates/rand/reverse_dependencies',
+            version_downloads: 'https://crates.io/api/v1/crates/rand/downloads',
+            versions: 'https://crates.io/api/v1/crates/rand/versions',
           },
           max_version: '2.0.0-beta.1',
           max_stable_version: '1.0.0',
@@ -75,7 +75,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     let crates = this.server.createList('crate', 25);
     this.server.createList('version', crates.length, { crate: i => crates[i] });
 
-    let response = await fetch('/api/v1/crates');
+    let response = await fetch('https://crates.io/api/v1/crates');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -89,7 +89,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     });
     this.server.createList('version', crates.length, { crate: i => crates[i] });
 
-    let response = await fetch('/api/v1/crates?page=2&per_page=5');
+    let response = await fetch('https://crates.io/api/v1/crates?page=2&per_page=5');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -109,7 +109,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     let baz = this.server.create('crate', { name: 'BAZ' });
     this.server.create('version', { crate: baz });
 
-    let response = await fetch('/api/v1/crates?letter=b');
+    let response = await fetch('https://crates.io/api/v1/crates?letter=b');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -129,7 +129,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     let crate3 = this.server.create('crate', { name: '87654' });
     this.server.create('version', { crate: crate3 });
 
-    let response = await fetch('/api/v1/crates?q=123');
+    let response = await fetch('https://crates.io/api/v1/crates?q=123');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -154,7 +154,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     this.server.create('crate-ownership', { crate: baz, user: user2 });
     this.server.create('version', { crate: baz });
 
-    let response = await fetch(`/api/v1/crates?user_id=${user1.id}`);
+    let response = await fetch(`https://crates.io/api/v1/crates?user_id=${user1.id}`);
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -176,7 +176,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     this.server.create('crate-ownership', { crate: baz, team: team2 });
     this.server.create('version', { crate: baz });
 
-    let response = await fetch(`/api/v1/crates?team_id=${team1.id}`);
+    let response = await fetch(`https://crates.io/api/v1/crates?team_id=${team1.id}`);
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -194,7 +194,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     let user = this.server.create('user', { followedCrates: [bar] });
     this.authenticateAs(user);
 
-    let response = await fetch(`/api/v1/crates?following=1`);
+    let response = await fetch(`https://crates.io/api/v1/crates?following=1`);
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -213,7 +213,7 @@ module('Mirage | GET /api/v1/crates', function (hooks) {
     let other = this.server.create('crate', { name: 'other' });
     this.server.create('version', { crate: other });
 
-    let response = await fetch(`/api/v1/crates?ids[]=foo&ids[]=bar&ids[]=baz&ids[]=baz&ids[]=unknown`);
+    let response = await fetch(`https://crates.io/api/v1/crates?ids[]=foo&ids[]=bar&ids[]=baz&ids[]=baz&ids[]=unknown`);
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

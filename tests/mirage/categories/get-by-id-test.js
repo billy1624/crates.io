@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/categories/:id', function (hooks) {
   setupMirage(hooks);
 
   test('returns 404 for unknown categories', async function (assert) {
-    let response = await fetch('/api/v1/categories/foo');
+    let response = await fetch('https://crates.io/api/v1/categories/foo');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -21,7 +21,7 @@ module('Mirage | GET /api/v1/categories/:id', function (hooks) {
       description: 'Crates that are able to function without the Rust standard library.',
     });
 
-    let response = await fetch('/api/v1/categories/no-std');
+    let response = await fetch('https://crates.io/api/v1/categories/no-std');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       category: {
@@ -41,7 +41,7 @@ module('Mirage | GET /api/v1/categories/:id', function (hooks) {
     this.server.create('category', { category: 'not-cli' });
     this.server.createList('crate', 3, { categoryIds: ['not-cli'] });
 
-    let response = await fetch('/api/v1/categories/cli');
+    let response = await fetch('https://crates.io/api/v1/categories/cli');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       category: {

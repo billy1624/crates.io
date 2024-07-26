@@ -15,7 +15,7 @@ module('Mirage | DELETE /api/v1/me/tokens/:tokenId', function (hooks) {
 
     let token = this.server.create('api-token', { user });
 
-    let response = await fetch(`/api/v1/me/tokens/${token.id}`, { method: 'DELETE' });
+    let response = await fetch(`https://crates.io/api/v1/me/tokens/${token.id}`, { method: 'DELETE' });
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {});
 
@@ -27,7 +27,7 @@ module('Mirage | DELETE /api/v1/me/tokens/:tokenId', function (hooks) {
     let user = this.server.create('user');
     let token = this.server.create('api-token', { user });
 
-    let response = await fetch(`/api/v1/me/tokens/${token.id}`, { method: 'DELETE' });
+    let response = await fetch(`https://crates.io/api/v1/me/tokens/${token.id}`, { method: 'DELETE' });
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'must be logged in to perform that action' }],

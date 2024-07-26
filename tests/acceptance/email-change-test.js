@@ -113,7 +113,7 @@ module('Acceptance | Email Change', function (hooks) {
 
     this.authenticateAs(user);
 
-    this.server.put('/api/v1/users/:user_id', {}, 500);
+    this.server.put('https://crates.io/api/v1/users/:user_id', {}, 500);
 
     await visit('/settings/profile');
     await click('[data-test-email-input] [data-test-edit-button]');
@@ -156,7 +156,7 @@ module('Acceptance | Email Change', function (hooks) {
 
       this.authenticateAs(user);
 
-      this.server.put('/api/v1/users/:user_id/resend', {}, 500);
+      this.server.put('https://crates.io/api/v1/users/:user_id/resend', {}, 500);
 
       await visit('/settings/profile');
       assert.strictEqual(currentURL(), '/settings/profile');

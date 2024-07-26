@@ -99,7 +99,7 @@ test.describe('Acceptance | api-tokens', { tag: '@acceptance' }, () => {
 
   test('failed API tokens revocation shows an error', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.delete('/api/v1/me/tokens/:id', {}, 500);
+      server.delete('https://crates.io/api/v1/me/tokens/:id', {}, 500);
     });
 
     await mirage.page.goto('/settings/tokens');

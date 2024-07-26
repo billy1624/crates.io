@@ -72,25 +72,25 @@ mod tests {
 
     #[test]
     fn path_normalization() {
-        let mut req = Request::get("/api/v1/.").body(Body::empty()).unwrap();
+        let mut req = Request::get("https://crates.io/api/v1/.").body(Body::empty()).unwrap();
         normalize_path_inner(&mut req);
-        assert_eq!(req.uri().path(), "/api/v1");
+        assert_eq!(req.uri().path(), "https://crates.io/api/v1");
         assert_eq!(
             assert_some!(req.extensions().get::<OriginalPath>()).0,
-            "/api/v1/."
+            "https://crates.io/api/v1/."
         );
 
-        let mut req = Request::get("/api/./v1").body(Body::empty()).unwrap();
+        let mut req = Request::get("https://crates.io/api/./v1").body(Body::empty()).unwrap();
         normalize_path_inner(&mut req);
-        assert_eq!(req.uri().path(), "/api/v1");
+        assert_eq!(req.uri().path(), "https://crates.io/api/v1");
         assert_eq!(
             assert_some!(req.extensions().get::<OriginalPath>()).0,
-            "/api/./v1"
+            "https://crates.io/api/./v1"
         );
 
         let mut req = Request::get("//api/v1/../v2").body(Body::empty()).unwrap();
         normalize_path_inner(&mut req);
-        assert_eq!(req.uri().path(), "/api/v2");
+        assert_eq!(req.uri().path(), "https://crates.io/api/v2");
         assert_eq!(
             assert_some!(req.extensions().get::<OriginalPath>()).0,
             "//api/v1/../v2"

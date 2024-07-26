@@ -49,7 +49,7 @@ impl MockCookieUser {
             }
         });
 
-        let url = format!("/api/v1/me/crate_owner_invitations/{krate_id}");
+        let url = format!("https://crates.io/api/v1/me/crate_owner_invitations/{krate_id}");
         self.put(&url, body.to_string()).await
     }
 
@@ -88,7 +88,7 @@ impl MockCookieUser {
             crate_owner_invitation: InvitationResponse,
         }
 
-        let url = format!("/api/v1/me/crate_owner_invitations/{krate_id}");
+        let url = format!("https://crates.io/api/v1/me/crate_owner_invitations/{krate_id}");
         let crate_owner_invite: CrateOwnerInvitation =
             self.put(&url, body.to_string()).await.good();
         assert!(!crate_owner_invite.crate_owner_invitation.accepted);
@@ -97,7 +97,7 @@ impl MockCookieUser {
 
     /// As the currently logged in user, list my pending invitations.
     async fn list_invitations(&self) -> InvitationListResponse {
-        self.get("/api/v1/me/crate_owner_invitations").await.good()
+        self.get("https://crates.io/api/v1/me/crate_owner_invitations").await.good()
     }
 }
 
@@ -119,7 +119,7 @@ impl MockAnonymousUser {
         &self,
         token: &str,
     ) -> Response<T> {
-        let url = format!("/api/v1/me/crate_owner_invitations/accept/{token}");
+        let url = format!("https://crates.io/api/v1/me/crate_owner_invitations/accept/{token}");
         self.put(&url, &[] as &[u8]).await
     }
 }
@@ -336,14 +336,14 @@ async fn check_ownership_one_crate() {
     });
 
     let json: TeamResponse = anon
-        .get("/api/v1/crates/best_crate/owner_team")
+        .get("https://crates.io/api/v1/crates/best_crate/owner_team")
         .await
         .good();
     assert_eq!(json.teams[0].kind, "team");
     assert_eq!(json.teams[0].name, team.name);
 
     let json: UserResponse = anon
-        .get("/api/v1/crates/best_crate/owner_user")
+        .get("https://crates.io/api/v1/crates/best_crate/owner_user")
         .await
         .good();
     assert_eq!(json.users[0].kind, "user");
@@ -361,7 +361,7 @@ async fn deleted_ownership_isnt_in_owner_user() {
     });
 
     let json: UserResponse = anon
-        .get("/api/v1/crates/foo_my_packages/owner_user")
+        .get("https://crates.io/api/v1/crates/foo_my_packages/owner_user")
         .await
         .good();
     assert_eq!(json.users.len(), 0);
@@ -372,15 +372,15 @@ async fn test_unknown_crate() {
     let (app, _, user) = TestApp::full().with_user();
     app.db_new_user("bar");
 
-    let response = user.get::<()>("/api/v1/crates/unknown/owners").await;
+    let response = user.get::<()>("https://crates.io/api/v1/crates/unknown/owners").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `unknown` does not exist"}]}"###);
 
-    let response = user.get::<()>("/api/v1/crates/unknown/owner_team").await;
+    let response = user.get::<()>("https://crates.io/api/v1/crates/unknown/owner_team").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `unknown` does not exist"}]}"###);
 
-    let response = user.get::<()>("/api/v1/crates/unknown/owner_user").await;
+    let response = user.get::<()>("https://crates.io/api/v1/crates/unknown/owner_user").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `unknown` does not exist"}]}"###);
 }
@@ -398,7 +398,7 @@ async fn api_token_cannot_list_invitations_v1() {
     let (_, _, _, token) = TestApp::init().with_token();
 
     token
-        .get("/api/v1/me/crate_owner_invitations")
+        .get("https://crates.io/api/v1/me/crate_owner_invitations")
         .await
         .assert_forbidden();
 }
@@ -416,7 +416,7 @@ async fn invitations_list_v1() {
         .await
         .good();
 
-    let response = user.get::<()>("/api/v1/me/crate_owner_invitations").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/crate_owner_invitations").await;
     assert_eq!(response.status(), StatusCode::OK);
 
     let invitations = user.list_invitations().await;

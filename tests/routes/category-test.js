@@ -18,7 +18,7 @@ module('Route | category', function (hooks) {
   });
 
   test('server error causes the error page to be shown', async function (assert) {
-    this.server.get('/api/v1/categories/:categoryId', {}, 500);
+    this.server.get('https://crates.io/api/v1/categories/:categoryId', {}, 500);
 
     await visit('/categories/foo');
     assert.strictEqual(currentURL(), '/categories/foo');

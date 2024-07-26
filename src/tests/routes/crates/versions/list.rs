@@ -27,7 +27,7 @@ async fn versions() {
             .unwrap();
     });
 
-    let response = anon.get::<()>("/api/v1/crates/foo_versions/versions").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/foo_versions/versions").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".versions[].created_at" => "[datetime]",
@@ -39,7 +39,7 @@ async fn versions() {
 async fn test_unknown_crate() {
     let (_, anon) = TestApp::init().empty();
 
-    let response = anon.get::<()>("/api/v1/crates/unknown/versions").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/unknown/versions").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `unknown` does not exist"}]}"###);
 }
@@ -87,7 +87,7 @@ async fn test_sorting() {
     });
 
     // Sort by semver
-    let url = "/api/v1/crates/foo_versions/versions?sort=semver";
+    let url = "https://crates.io/api/v1/crates/foo_versions/versions?sort=semver";
     let json: AllVersions = anon.get(url).await.good();
     let expects = [
         "2.0.0-alpha",
@@ -111,7 +111,7 @@ async fn test_sorting() {
     assert_eq!(calls as usize, expects.len() + 1);
 
     // Sort by date
-    let url = "/api/v1/crates/foo_versions/versions?sort=date";
+    let url = "https://crates.io/api/v1/crates/foo_versions/versions?sort=date";
     let json: AllVersions = anon.get(url).await.good();
     let expects = versions.iter().cloned().rev().collect::<Vec<_>>();
     for (num, expect) in nums(&json.versions).iter().zip(&expects) {
@@ -145,7 +145,7 @@ async fn test_seek_based_pagination_semver_sorting() {
             .unwrap();
     });
 
-    let url = "/api/v1/crates/foo_versions/versions";
+    let url = "https://crates.io/api/v1/crates/foo_versions/versions";
     let expects = ["1.0.0", "0.5.1", "0.5.0"];
 
     // per_page larger than the number of versions
@@ -206,7 +206,7 @@ async fn invalid_seek_parameter() {
         CrateBuilder::new("foo_versions", user.id).expect_build(conn);
     });
 
-    let url = "/api/v1/crates/foo_versions/versions";
+    let url = "https://crates.io/api/v1/crates/foo_versions/versions";
     // Sort by semver
     let response = anon
         .get_with_query::<()>(url, "per_page=1&sort=semver&seek=broken")

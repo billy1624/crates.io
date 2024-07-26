@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/keywords', function (hooks) {
   setupMirage(hooks);
 
   test('empty case', async function (assert) {
-    let response = await fetch('/api/v1/keywords');
+    let response = await fetch('https://crates.io/api/v1/keywords');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       keywords: [],
@@ -24,7 +24,7 @@ module('Mirage | GET /api/v1/keywords', function (hooks) {
     this.server.create('keyword', { keyword: 'api' });
     this.server.createList('keyword', 2);
 
-    let response = await fetch('/api/v1/keywords');
+    let response = await fetch('https://crates.io/api/v1/keywords');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       keywords: [
@@ -53,7 +53,7 @@ module('Mirage | GET /api/v1/keywords', function (hooks) {
   test('never returns more than 10 results', async function (assert) {
     this.server.createList('keyword', 25);
 
-    let response = await fetch('/api/v1/keywords');
+    let response = await fetch('https://crates.io/api/v1/keywords');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -66,7 +66,7 @@ module('Mirage | GET /api/v1/keywords', function (hooks) {
       keyword: i => `k${String(i + 1).padStart(2, '0')}`,
     });
 
-    let response = await fetch('/api/v1/keywords?page=2&per_page=5');
+    let response = await fetch('https://crates.io/api/v1/keywords?page=2&per_page=5');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

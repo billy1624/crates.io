@@ -107,7 +107,7 @@ module('Acceptance | /me/pending-invites', function (hooks) {
   test('error message is shown if decline request fails', async function (assert) {
     prepare(this);
 
-    this.server.put('/api/v1/me/crate_owner_invitations/:crate_id', () => new Response(500));
+    this.server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', () => new Response(500));
 
     await visit('/me/pending-invites');
     assert.strictEqual(currentURL(), '/me/pending-invites');
@@ -146,7 +146,7 @@ module('Acceptance | /me/pending-invites', function (hooks) {
   test('error message is shown if accept request fails', async function (assert) {
     prepare(this);
 
-    this.server.put('/api/v1/me/crate_owner_invitations/:crate_id', () => new Response(500));
+    this.server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', () => new Response(500));
 
     await visit('/me/pending-invites');
     assert.strictEqual(currentURL(), '/me/pending-invites');
@@ -163,7 +163,7 @@ module('Acceptance | /me/pending-invites', function (hooks) {
     let errorMessage =
       'The invitation to become an owner of the demo_crate crate expired. Please reach out to an owner of the crate to request a new invitation.';
     let payload = { errors: [{ detail: errorMessage }] };
-    this.server.put('/api/v1/me/crate_owner_invitations/:crate_id', payload, 410);
+    this.server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', payload, 410);
 
     await visit('/me/pending-invites');
     assert.strictEqual(currentURL(), '/me/pending-invites');

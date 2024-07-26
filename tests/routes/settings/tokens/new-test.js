@@ -217,7 +217,7 @@ module('/settings/tokens/new', function (hooks) {
     prepare(this);
 
     let deferred = defer();
-    this.server.put('/api/v1/me/tokens', deferred.promise);
+    this.server.put('https://crates.io/api/v1/me/tokens', deferred.promise);
 
     await visit('/settings/tokens/new');
     assert.strictEqual(currentURL(), '/settings/tokens/new');

@@ -14,7 +14,7 @@ struct EmailNotificationsUpdate {
 impl crate::util::MockCookieUser {
     async fn update_email_notifications(&self, updates: Vec<EmailNotificationsUpdate>) {
         let response = self
-            .put::<()>("/api/v1/me/email_notifications", json!(updates).to_string())
+            .put::<()>("https://crates.io/api/v1/me/email_notifications", json!(updates).to_string())
             .await;
         assert_eq!(response.status(), StatusCode::OK);
         assert_eq!(response.json(), json!({ "ok": true }));

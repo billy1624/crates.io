@@ -8,6 +8,6 @@ export default class CrateOwnerInviteAdapter extends ApplicationAdapter {
   }
 
   urlForQuery() {
-    return '/api/private/crate_owner_invitations';
+    return 'https://crates.io/api/private/crate_owner_invitations';
   }
 }

@@ -32,7 +32,7 @@ async fn test_cargo_invite_owners() {
         owners: Some(vec![new_user.as_model().gh_login.clone()]),
     });
     let json: OwnerResp = owner
-        .put("/api/v1/crates/guacamole/owners", body.unwrap())
+        .put("https://crates.io/api/v1/crates/guacamole/owners", body.unwrap())
         .await
         .good();
 
@@ -58,7 +58,7 @@ async fn owner_change_via_cookie() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", cookie.as_model().id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = cookie.put::<()>(&url, body).await;
@@ -79,7 +79,7 @@ async fn owner_change_via_token() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", token.as_model().user_id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = token.put::<()>(&url, body).await;
@@ -101,7 +101,7 @@ async fn owner_change_via_change_owner_token() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", token.as_model().user_id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = token.put::<()>(&url, body).await;
@@ -124,7 +124,7 @@ async fn owner_change_via_change_owner_token_with_matching_crate_scope() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", token.as_model().user_id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = token.put::<()>(&url, body).await;
@@ -147,7 +147,7 @@ async fn owner_change_via_change_owner_token_with_wrong_crate_scope() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", token.as_model().user_id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = token.put::<()>(&url, body).await;
@@ -166,7 +166,7 @@ async fn owner_change_via_publish_token() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", token.as_model().user_id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = token.put::<()>(&url, body).await;
@@ -184,7 +184,7 @@ async fn owner_change_without_auth() {
     let krate =
         app.db(|conn| CrateBuilder::new("foo_crate", cookie.as_model().id).expect_build(conn));
 
-    let url = format!("/api/v1/crates/{}/owners", krate.name);
+    let url = format!("https://crates.io/api/v1/crates/{}/owners", krate.name);
     let body = json!({ "owners": [user2.gh_login] });
     let body = serde_json::to_vec(&body).unwrap();
     let response = anon.put::<()>(&url, body).await;
@@ -200,7 +200,7 @@ async fn test_owner_change_with_legacy_field() {
 
     let input = r#"{"users": ["user2"]}"#;
     let response = user1
-        .put::<()>("/api/v1/crates/foo/owners", input.as_bytes())
+        .put::<()>("https://crates.io/api/v1/crates/foo/owners", input.as_bytes())
         .await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_snapshot!(response.text(), @r###"{"msg":"user user2 has been invited to be an owner of crate foo","ok":true}"###);
@@ -215,7 +215,7 @@ async fn test_owner_change_with_invalid_json() {
     // incomplete input
     let input = r#"{"owners": ["foo", }"#;
     let response = user
-        .put::<()>("/api/v1/crates/foo/owners", input.as_bytes())
+        .put::<()>("https://crates.io/api/v1/crates/foo/owners", input.as_bytes())
         .await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"Failed to parse the request body as JSON: owners[1]: expected value at line 1 column 20"}]}"###);
@@ -223,7 +223,7 @@ async fn test_owner_change_with_invalid_json() {
     // `owners` is not an array
     let input = r#"{"owners": "foo"}"#;
     let response = user
-        .put::<()>("/api/v1/crates/foo/owners", input.as_bytes())
+        .put::<()>("https://crates.io/api/v1/crates/foo/owners", input.as_bytes())
         .await;
     assert_eq!(response.status(), StatusCode::UNPROCESSABLE_ENTITY);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"Failed to deserialize the JSON body into the target type: owners: invalid type: string \"foo\", expected a sequence at line 1 column 16"}]}"###);
@@ -231,7 +231,7 @@ async fn test_owner_change_with_invalid_json() {
     // missing `owners` and/or `users` fields
     let input = r#"{}"#;
     let response = user
-        .put::<()>("/api/v1/crates/foo/owners", input.as_bytes())
+        .put::<()>("https://crates.io/api/v1/crates/foo/owners", input.as_bytes())
         .await;
     assert_eq!(response.status(), StatusCode::UNPROCESSABLE_ENTITY);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"Failed to deserialize the JSON body into the target type: missing field `owners` at line 1 column 2"}]}"###);
@@ -325,7 +325,7 @@ async fn test_unknown_crate() {
     let body = json!({ "owners": ["bar"] });
     let body = serde_json::to_vec(&body).unwrap();
 
-    let response = user.put::<()>("/api/v1/crates/unknown/owners", body).await;
+    let response = user.put::<()>("https://crates.io/api/v1/crates/unknown/owners", body).await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `unknown` does not exist"}]}"###);
 }
@@ -337,7 +337,7 @@ async fn test_unknown_user() {
     app.db(|conn| CrateBuilder::new("foo", cookie.as_model().id).expect_build(conn));
 
     let body = serde_json::to_vec(&json!({ "owners": ["unknown"] })).unwrap();
-    let response = cookie.put::<()>("/api/v1/crates/foo/owners", body).await;
+    let response = cookie.put::<()>("https://crates.io/api/v1/crates/foo/owners", body).await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"could not find user with login `unknown`"}]}"###);
 }
@@ -349,7 +349,7 @@ async fn test_unknown_team() {
     app.db(|conn| CrateBuilder::new("foo", cookie.as_model().id).expect_build(conn));
 
     let body = serde_json::to_vec(&json!({ "owners": ["github:unknown:unknown"] })).unwrap();
-    let response = cookie.put::<()>("/api/v1/crates/foo/owners", body).await;
+    let response = cookie.put::<()>("https://crates.io/api/v1/crates/foo/owners", body).await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"could not find the github team unknown/unknown. Make sure that you have the right permissions in GitHub. See https://doc.rust-lang.org/cargo/reference/publishing.html#github-permissions"}]}"###);
 }

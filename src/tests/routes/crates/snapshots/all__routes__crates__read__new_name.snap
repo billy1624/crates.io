@@ -16,12 +16,12 @@ expression: response.json()
     "id": "new",
     "keywords": null,
     "links": {
-      "owner_team": "/api/v1/crates/new/owner_team",
-      "owner_user": "/api/v1/crates/new/owner_user",
-      "owners": "/api/v1/crates/new/owners",
-      "reverse_dependencies": "/api/v1/crates/new/reverse_dependencies",
-      "version_downloads": "/api/v1/crates/new/downloads",
-      "versions": "/api/v1/crates/new/versions"
+      "owner_team": "https://crates.io/api/v1/crates/new/owner_team",
+      "owner_user": "https://crates.io/api/v1/crates/new/owner_user",
+      "owners": "https://crates.io/api/v1/crates/new/owners",
+      "reverse_dependencies": "https://crates.io/api/v1/crates/new/reverse_dependencies",
+      "version_downloads": "https://crates.io/api/v1/crates/new/downloads",
+      "versions": "https://crates.io/api/v1/crates/new/versions"
     },
     "max_stable_version": null,
     "max_version": "0.0.0",

@@ -81,7 +81,7 @@ async fn request_metrics(
     kind: &str,
     token: Option<&str>,
 ) -> Response<()> {
-    let mut req = anon.get_request(&format!("/api/private/metrics/{kind}"));
+    let mut req = anon.get_request(&format!("https://crates.io/api/private/metrics/{kind}"));
     if let Some(token) = token {
         req.header("Authorization", &format!("Bearer {token}"));
     }

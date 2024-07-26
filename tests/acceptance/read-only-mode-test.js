@@ -14,14 +14,14 @@ module('Acceptance | Read-only Mode', function (hooks) {
   });
 
   test('notification is shown for read-only mode', async function (assert) {
-    this.server.get('/api/v1/site_metadata', { read_only: true });
+    this.server.get('https://crates.io/api/v1/site_metadata', { read_only: true });
 
     await visit('/');
     assert.dom('[data-test-notification-message="info"]').includesText('read-only mode');
   });
 
   test('server errors are handled gracefully', async function (assert) {
-    this.server.get('/api/v1/site_metadata', {}, 500);
+    this.server.get('https://crates.io/api/v1/site_metadata', {}, 500);
 
     await visit('/');
     assert.dom('[data-test-notification-message="info"]').doesNotExist();
@@ -29,7 +29,7 @@ module('Acceptance | Read-only Mode', function (hooks) {
   });
 
   test('client errors are reported on sentry', async function (assert) {
-    this.server.get('/api/v1/site_metadata', {}, 404);
+    this.server.get('https://crates.io/api/v1/site_metadata', {}, 404);
 
     await visit('/');
     assert.dom('[data-test-notification-message="info"]').doesNotExist();

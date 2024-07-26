@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/categories', function (hooks) {
   setupMirage(hooks);
 
   test('empty case', async function (assert) {
-    let response = await fetch('/api/v1/categories');
+    let response = await fetch('https://crates.io/api/v1/categories');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       categories: [],
@@ -27,7 +27,7 @@ module('Mirage | GET /api/v1/categories', function (hooks) {
     });
     this.server.createList('category', 2);
 
-    let response = await fetch('/api/v1/categories');
+    let response = await fetch('https://crates.io/api/v1/categories');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       categories: [
@@ -65,7 +65,7 @@ module('Mirage | GET /api/v1/categories', function (hooks) {
   test('never returns more than 10 results', async function (assert) {
     this.server.createList('category', 25);
 
-    let response = await fetch('/api/v1/categories');
+    let response = await fetch('https://crates.io/api/v1/categories');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -78,7 +78,7 @@ module('Mirage | GET /api/v1/categories', function (hooks) {
       category: i => `cat-${String(i + 1).padStart(2, '0')}`,
     });
 
-    let response = await fetch('/api/v1/categories?page=2&per_page=5');
+    let response = await fetch('https://crates.io/api/v1/categories?page=2&per_page=5');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/me/updates', function (hooks) {
   setupMirage(hooks);
 
   test('returns 403 for unauthenticated user', async function (assert) {
-    let response = await fetch('/api/v1/me/updates');
+    let response = await fetch('https://crates.io/api/v1/me/updates');
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'must be logged in to perform that action' }],
@@ -27,7 +27,7 @@ module('Mirage | GET /api/v1/me/updates', function (hooks) {
     let user = this.server.create('user', { followedCrates: [foo] });
     this.authenticateAs(user);
 
-    let response = await fetch('/api/v1/me/updates');
+    let response = await fetch('https://crates.io/api/v1/me/updates');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       versions: [
@@ -36,16 +36,16 @@ module('Mirage | GET /api/v1/me/updates', function (hooks) {
           crate: 'foo',
           crate_size: 0,
           created_at: '2010-06-16T21:30:45Z',
-          dl_path: '/api/v1/crates/foo/1.2.3/download',
+          dl_path: 'https://crates.io/api/v1/crates/foo/1.2.3/download',
           downloads: 0,
           license: 'MIT/Apache-2.0',
           links: {
-            dependencies: '/api/v1/crates/foo/1.2.3/dependencies',
-            version_downloads: '/api/v1/crates/foo/1.2.3/downloads',
+            dependencies: 'https://crates.io/api/v1/crates/foo/1.2.3/dependencies',
+            version_downloads: 'https://crates.io/api/v1/crates/foo/1.2.3/downloads',
           },
           num: '1.2.3',
           published_by: null,
-          readme_path: '/api/v1/crates/foo/1.2.3/readme',
+          readme_path: 'https://crates.io/api/v1/crates/foo/1.2.3/readme',
           rust_version: null,
           updated_at: '2017-02-24T12:34:56Z',
           yanked: false,
@@ -61,7 +61,7 @@ module('Mirage | GET /api/v1/me/updates', function (hooks) {
     let user = this.server.create('user');
     this.authenticateAs(user);
 
-    let response = await fetch('/api/v1/me/updates');
+    let response = await fetch('https://crates.io/api/v1/me/updates');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       versions: [],
@@ -76,7 +76,7 @@ module('Mirage | GET /api/v1/me/updates', function (hooks) {
     let user = this.server.create('user', { followedCrates: [crate] });
     this.authenticateAs(user);
 
-    let response = await fetch('/api/v1/me/updates?page=2');
+    let response = await fetch('https://crates.io/api/v1/me/updates?page=2');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

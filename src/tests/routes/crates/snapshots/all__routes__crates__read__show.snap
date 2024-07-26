@@ -18,11 +18,11 @@ expression: response.json()
       "kw1"
     ],
     "links": {
-      "owner_team": "/api/v1/crates/foo_show/owner_team",
-      "owner_user": "/api/v1/crates/foo_show/owner_user",
-      "owners": "/api/v1/crates/foo_show/owners",
-      "reverse_dependencies": "/api/v1/crates/foo_show/reverse_dependencies",
-      "version_downloads": "/api/v1/crates/foo_show/downloads",
+      "owner_team": "https://crates.io/api/v1/crates/foo_show/owner_team",
+      "owner_user": "https://crates.io/api/v1/crates/foo_show/owner_user",
+      "owners": "https://crates.io/api/v1/crates/foo_show/owners",
+      "reverse_dependencies": "https://crates.io/api/v1/crates/foo_show/reverse_dependencies",
+      "version_downloads": "https://crates.io/api/v1/crates/foo_show/downloads",
       "versions": null
     },
     "max_stable_version": "1.0.0",
@@ -54,7 +54,7 @@ expression: response.json()
       "crate": "foo_show",
       "crate_size": 0,
       "created_at": "[datetime]",
-      "dl_path": "/api/v1/crates/foo_show/1.0.0/download",
+      "dl_path": "https://crates.io/api/v1/crates/foo_show/1.0.0/download",
       "downloads": 0,
       "features": {},
       "has_lib": null,
@@ -62,13 +62,13 @@ expression: response.json()
       "lib_links": null,
       "license": null,
       "links": {
-        "authors": "/api/v1/crates/foo_show/1.0.0/authors",
-        "dependencies": "/api/v1/crates/foo_show/1.0.0/dependencies",
-        "version_downloads": "/api/v1/crates/foo_show/1.0.0/downloads"
+        "authors": "https://crates.io/api/v1/crates/foo_show/1.0.0/authors",
+        "dependencies": "https://crates.io/api/v1/crates/foo_show/1.0.0/dependencies",
+        "version_downloads": "https://crates.io/api/v1/crates/foo_show/1.0.0/downloads"
       },
       "num": "1.0.0",
       "published_by": null,
-      "readme_path": "/api/v1/crates/foo_show/1.0.0/readme",
+      "readme_path": "https://crates.io/api/v1/crates/foo_show/1.0.0/readme",
       "rust_version": null,
       "updated_at": "[datetime]",
       "yanked": false
@@ -80,7 +80,7 @@ expression: response.json()
       "crate": "foo_show",
       "crate_size": 0,
       "created_at": "[datetime]",
-      "dl_path": "/api/v1/crates/foo_show/0.5.1/download",
+      "dl_path": "https://crates.io/api/v1/crates/foo_show/0.5.1/download",
       "downloads": 0,
       "features": {},
       "has_lib": null,
@@ -88,9 +88,9 @@ expression: response.json()
       "lib_links": null,
       "license": null,
       "links": {
-        "authors": "/api/v1/crates/foo_show/0.5.1/authors",
-        "dependencies": "/api/v1/crates/foo_show/0.5.1/dependencies",
-        "version_downloads": "/api/v1/crates/foo_show/0.5.1/downloads"
+        "authors": "https://crates.io/api/v1/crates/foo_show/0.5.1/authors",
+        "dependencies": "https://crates.io/api/v1/crates/foo_show/0.5.1/dependencies",
+        "version_downloads": "https://crates.io/api/v1/crates/foo_show/0.5.1/downloads"
       },
       "num": "0.5.1",
       "published_by": {
@@ -100,7 +100,7 @@ expression: response.json()
         "name": null,
         "url": "https://github.com/foo"
       },
-      "readme_path": "/api/v1/crates/foo_show/0.5.1/readme",
+      "readme_path": "https://crates.io/api/v1/crates/foo_show/0.5.1/readme",
       "rust_version": null,
       "updated_at": "[datetime]",
       "yanked": false
@@ -112,7 +112,7 @@ expression: response.json()
       "crate": "foo_show",
       "crate_size": 0,
       "created_at": "[datetime]",
-      "dl_path": "/api/v1/crates/foo_show/0.5.0/download",
+      "dl_path": "https://crates.io/api/v1/crates/foo_show/0.5.0/download",
       "downloads": 0,
       "features": {},
       "has_lib": null,
@@ -120,9 +120,9 @@ expression: response.json()
       "lib_links": null,
       "license": null,
       "links": {
-        "authors": "/api/v1/crates/foo_show/0.5.0/authors",
-        "dependencies": "/api/v1/crates/foo_show/0.5.0/dependencies",
-        "version_downloads": "/api/v1/crates/foo_show/0.5.0/downloads"
+        "authors": "https://crates.io/api/v1/crates/foo_show/0.5.0/authors",
+        "dependencies": "https://crates.io/api/v1/crates/foo_show/0.5.0/dependencies",
+        "version_downloads": "https://crates.io/api/v1/crates/foo_show/0.5.0/downloads"
       },
       "num": "0.5.0",
       "published_by": {
@@ -132,7 +132,7 @@ expression: response.json()
         "name": null,
         "url": "https://github.com/foo"
       },
-      "readme_path": "/api/v1/crates/foo_show/0.5.0/readme",
+      "readme_path": "https://crates.io/api/v1/crates/foo_show/0.5.0/readme",
       "rust_version": null,
       "updated_at": "[datetime]",
       "yanked": false

@@ -119,7 +119,7 @@ export default class Version extends Model {
 
   loadReadmeTask = keepLatestTask(async () => {
     if (this.readme_path) {
-      let response = await fetch(this.readme_path);
+      let response = await fetch('https://crates.io' + this.readme_path);
       if (!response.ok) {
         throw new Error(`README request for ${this.crateName} v${this.num} failed`);
       }
@@ -166,7 +166,7 @@ export default class Version extends Model {
   }
 
   yankTask = keepLatestTask(async () => {
-    let response = await fetch(`/api/v1/crates/${this.crate.id}/${this.num}/yank`, { method: 'DELETE' });
+    let response = await fetch(`https://crates.io/api/v1/crates/${this.crate.id}/${this.num}/yank`, { method: 'DELETE' });
     if (!response.ok) {
       throw new Error(`Yank request for ${this.crateName} v${this.num} failed`);
     }
@@ -176,7 +176,7 @@ export default class Version extends Model {
   });
 
   unyankTask = keepLatestTask(async () => {
-    let response = await fetch(`/api/v1/crates/${this.crate.id}/${this.num}/unyank`, { method: 'PUT' });
+    let response = await fetch(`https://crates.io/api/v1/crates/${this.crate.id}/${this.num}/unyank`, { method: 'PUT' });
     if (!response.ok) {
       throw new Error(`Unyank request for ${this.crateName} v${this.num} failed`);
     }

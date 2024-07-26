@@ -18,7 +18,7 @@ pub async fn serve_html(request: Request, next: Next) -> Response {
     let path = &request.uri().path();
 
     // The "/git/" prefix is only used in development (when within a docker container)
-    if path.starts_with("/api/") || path.starts_with("/git/") {
+    if path.starts_with("https://crates.io/api/") || path.starts_with("/git/") {
         next.run(request).await
     } else if request
         .headers()

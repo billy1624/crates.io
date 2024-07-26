@@ -16,7 +16,7 @@ module('Mirage | PUT /api/v1/me/tokens', function (hooks) {
     this.server.create('mirage-session', { user });
 
     let body = JSON.stringify({ api_token: { name: 'foooo' } });
-    let response = await fetch('/api/v1/me/tokens', { method: 'PUT', body });
+    let response = await fetch('https://crates.io/api/v1/me/tokens', { method: 'PUT', body });
     assert.strictEqual(response.status, 200);
 
     let token = this.server.schema.apiTokens.all().models[0];
@@ -50,7 +50,7 @@ module('Mirage | PUT /api/v1/me/tokens', function (hooks) {
         endpoint_scopes: ['publish-update'],
       },
     });
-    let response = await fetch('/api/v1/me/tokens', { method: 'PUT', body });
+    let response = await fetch('https://crates.io/api/v1/me/tokens', { method: 'PUT', body });
     assert.strictEqual(response.status, 200);
 
     let token = this.server.schema.apiTokens.all().models[0];
@@ -83,7 +83,7 @@ module('Mirage | PUT /api/v1/me/tokens', function (hooks) {
         expired_at: '2023-12-24T12:34:56Z',
       },
     });
-    let response = await fetch('/api/v1/me/tokens', { method: 'PUT', body });
+    let response = await fetch('https://crates.io/api/v1/me/tokens', { method: 'PUT', body });
     assert.strictEqual(response.status, 200);
 
     let token = this.server.schema.apiTokens.all().models[0];
@@ -106,7 +106,7 @@ module('Mirage | PUT /api/v1/me/tokens', function (hooks) {
 
   test('returns an error if unauthenticated', async function (assert) {
     let body = JSON.stringify({ api_token: {} });
-    let response = await fetch('/api/v1/me/tokens', { method: 'PUT', body });
+    let response = await fetch('https://crates.io/api/v1/me/tokens', { method: 'PUT', body });
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'must be logged in to perform that action' }],

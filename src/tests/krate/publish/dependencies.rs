@@ -172,7 +172,7 @@ async fn new_krate_with_dependency() {
     token.publish_crate(crate_to_publish).await.good();
 
     let dependencies = anon
-        .get::<Deps>("/api/v1/crates/new_dep/1.0.0/dependencies")
+        .get::<Deps>("https://crates.io/api/v1/crates/new_dep/1.0.0/dependencies")
         .await
         .good()
         .dependencies;

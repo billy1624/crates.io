@@ -26,9 +26,9 @@ module('Acceptance | Login', function (hooks) {
       return { document: { write() {}, close() {} }, close() {} };
     };
 
-    this.server.get('/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
+    this.server.get('https://crates.io/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
 
-    this.server.get('/api/private/session/authorize', (schema, request) => {
+    this.server.get('https://crates.io/api/private/session/authorize', (schema, request) => {
       assert.deepEqual(request.queryParams, {
         code: '901dd10e07c7e9fa1cd5',
         state: 'fYcUY3FMdUUz00FC7vLT7A',
@@ -39,7 +39,7 @@ module('Acceptance | Login', function (hooks) {
       return { ok: true };
     });
 
-    this.server.get('/api/v1/me', () => ({
+    this.server.get('https://crates.io/api/v1/me', () => ({
       user: {
         id: 42,
         login: 'johnnydee',
@@ -78,10 +78,10 @@ module('Acceptance | Login', function (hooks) {
       return { document: { write() {}, close() {} }, close() {} };
     };
 
-    this.server.get('/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
+    this.server.get('https://crates.io/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
 
     let payload = { errors: [{ detail: 'Forbidden' }] };
-    this.server.get('/api/private/session/authorize', payload, 403);
+    this.server.get('https://crates.io/api/private/session/authorize', payload, 403);
 
     await visit('/');
     assert.strictEqual(currentURL(), '/');

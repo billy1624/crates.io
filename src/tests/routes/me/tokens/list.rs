@@ -8,19 +8,19 @@ use http::StatusCode;
 #[tokio::test(flavor = "multi_thread")]
 async fn list_logged_out() {
     let (_, anon) = TestApp::init().empty();
-    anon.get("/api/v1/me/tokens").await.assert_forbidden();
+    anon.get("https://crates.io/api/v1/me/tokens").await.assert_forbidden();
 }
 
 #[tokio::test(flavor = "multi_thread")]
 async fn list_with_api_token_is_forbidden() {
     let (_, _, _, token) = TestApp::init().with_token();
-    token.get("/api/v1/me/tokens").await.assert_forbidden();
+    token.get("https://crates.io/api/v1/me/tokens").await.assert_forbidden();
 }
 
 #[tokio::test(flavor = "multi_thread")]
 async fn list_empty() {
     let (_, _, user) = TestApp::init().with_user();
-    let response = user.get::<()>("/api/v1/me/tokens").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens").await;
     assert_eq!(response.status(), StatusCode::OK);
     let json = response.json();
     let response_tokens = json["api_tokens"].as_array().unwrap();
@@ -56,7 +56,7 @@ async fn list_tokens() {
         ]
     });
 
-    let response = user.get::<()>("/api/v1/me/tokens").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".api_tokens[].id" => insta::any_id_redaction(),
@@ -99,7 +99,7 @@ async fn list_recently_expired_tokens() {
         ]
     });
 
-    let response = user.get::<()>("/api/v1/me/tokens?expired_days=30").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens?expired_days=30").await;
     assert_eq!(response.status(), StatusCode::OK);
     let json = response.json();
     let response_tokens = json["api_tokens"].as_array().unwrap();
@@ -107,7 +107,7 @@ async fn list_recently_expired_tokens() {
     assert_response_tokens_contain_name(response_tokens, "bar");
     assert_response_tokens_contain_name(response_tokens, "recent");
 
-    let response = user.get::<()>("/api/v1/me/tokens?expired_days=60").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens?expired_days=60").await;
     assert_eq!(response.status(), StatusCode::OK);
     let json = response.json();
     let response_tokens = json["api_tokens"].as_array().unwrap();
@@ -129,7 +129,7 @@ async fn list_tokens_exclude_revoked() {
     });
 
     // List tokens expecting them all to be there.
-    let response = user.get::<()>("/api/v1/me/tokens").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens").await;
     assert_eq!(response.status(), StatusCode::OK);
     let json = response.json();
     let response_tokens = json["api_tokens"].as_array().unwrap();
@@ -137,12 +137,12 @@ async fn list_tokens_exclude_revoked() {
 
     // Revoke the first token.
     let response = user
-        .delete::<()>(&format!("/api/v1/me/tokens/{}", tokens[0].model.id))
+        .delete::<()>(&format!("https://crates.io/api/v1/me/tokens/{}", tokens[0].model.id))
         .await;
     assert_eq!(response.status(), StatusCode::OK);
 
     // Check that we now have one less token being listed.
-    let response = user.get::<()>("/api/v1/me/tokens").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me/tokens").await;
     assert_eq!(response.status(), StatusCode::OK);
     let json = response.json();
     let response_tokens = json["api_tokens"].as_array().unwrap();

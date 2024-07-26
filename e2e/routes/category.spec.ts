@@ -12,7 +12,7 @@ test.describe('Route | category', { tag: '@routes' }, () => {
 
   test('server error causes the error page to be shown', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/categories/:categoryId', {}, 500);
+      server.get('https://crates.io/api/v1/categories/:categoryId', {}, 500);
     });
 
     await page.goto('/categories/foo');

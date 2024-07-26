@@ -10,7 +10,7 @@ module('Mirage | PUT /api/v1/crates/:crateId/follow', function (hooks) {
   setupMirage(hooks);
 
   test('returns 403 if unauthenticated', async function (assert) {
-    let response = await fetch('/api/v1/crates/foo/follow', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/crates/foo/follow', { method: 'PUT' });
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'must be logged in to perform that action' }],
@@ -21,7 +21,7 @@ module('Mirage | PUT /api/v1/crates/:crateId/follow', function (hooks) {
     let user = this.server.create('user');
     this.authenticateAs(user);
 
-    let response = await fetch('/api/v1/crates/foo/follow', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/crates/foo/follow', { method: 'PUT' });
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -34,7 +34,7 @@ module('Mirage | PUT /api/v1/crates/:crateId/follow', function (hooks) {
 
     assert.deepEqual(user.followedCrateIds, []);
 
-    let response = await fetch('/api/v1/crates/rand/follow', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/crates/rand/follow', { method: 'PUT' });
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), { ok: true });
 

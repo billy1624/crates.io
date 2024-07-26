@@ -122,7 +122,7 @@ test.describe('Acceptance | /me/pending-invites', { tag: '@acceptance' }, () => 
     await expect(page).toHaveURL('/me/pending-invites');
 
     await page.evaluate(() => {
-      server.put('/api/v1/me/crate_owner_invitations/:crate_id', {}, 500);
+      server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', {}, 500);
     });
 
     await page.click('[data-test-invite="nanomsg"] [data-test-decline-button]');
@@ -176,7 +176,7 @@ test.describe('Acceptance | /me/pending-invites', { tag: '@acceptance' }, () => 
     await expect(page).toHaveURL('/me/pending-invites');
 
     page.evaluate(() => {
-      server.put('/api/v1/me/crate_owner_invitations/:crate_id', {}, 500);
+      server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', {}, 500);
     });
 
     await page.click('[data-test-invite="nanomsg"] [data-test-accept-button]');
@@ -192,7 +192,7 @@ test.describe('Acceptance | /me/pending-invites', { tag: '@acceptance' }, () => 
     await mirage.addHook(async server => {
       let errorMessage = await globalThis._errorMessage();
       let payload = { errors: [{ detail: errorMessage }] };
-      server.put('/api/v1/me/crate_owner_invitations/:crate_id', payload, 410);
+      server.put('https://crates.io/api/v1/me/crate_owner_invitations/:crate_id', payload, 410);
     });
 
     await page.goto('/me/pending-invites');

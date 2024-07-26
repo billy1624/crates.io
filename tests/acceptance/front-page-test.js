@@ -46,7 +46,7 @@ module('Acceptance | front page', function (hooks) {
   });
 
   test('error handling', async function (assert) {
-    this.server.get('/api/v1/summary', {}, 500);
+    this.server.get('https://crates.io/api/v1/summary', {}, 500);
 
     await visit('/');
     assert.dom('[data-test-lists]').doesNotExist();
@@ -54,7 +54,7 @@ module('Acceptance | front page', function (hooks) {
     assert.dom('[data-test-try-again-button]').isEnabled();
 
     let deferred = defer();
-    this.server.get('/api/v1/summary', async function (schema, request) {
+    this.server.get('https://crates.io/api/v1/summary', async function (schema, request) {
       await deferred.promise;
       return summary.call(this, schema, request);
     });

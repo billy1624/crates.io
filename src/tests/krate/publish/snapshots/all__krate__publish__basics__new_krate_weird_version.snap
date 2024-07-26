@@ -15,12 +15,12 @@ expression: response.into_json()
     "id": "foo_weird",
     "keywords": null,
     "links": {
-      "owner_team": "/api/v1/crates/foo_weird/owner_team",
-      "owner_user": "/api/v1/crates/foo_weird/owner_user",
-      "owners": "/api/v1/crates/foo_weird/owners",
-      "reverse_dependencies": "/api/v1/crates/foo_weird/reverse_dependencies",
-      "version_downloads": "/api/v1/crates/foo_weird/downloads",
-      "versions": "/api/v1/crates/foo_weird/versions"
+      "owner_team": "https://crates.io/api/v1/crates/foo_weird/owner_team",
+      "owner_user": "https://crates.io/api/v1/crates/foo_weird/owner_user",
+      "owners": "https://crates.io/api/v1/crates/foo_weird/owners",
+      "reverse_dependencies": "https://crates.io/api/v1/crates/foo_weird/reverse_dependencies",
+      "version_downloads": "https://crates.io/api/v1/crates/foo_weird/downloads",
+      "versions": "https://crates.io/api/v1/crates/foo_weird/versions"
     },
     "max_stable_version": null,
     "max_version": "0.0.0-pre",

@@ -17,7 +17,7 @@ async fn test_non_blocked_download_route() {
     });
 
     let status = anon
-        .get::<()>("/api/v1/crates/foo/1.0.0/download")
+        .get::<()>("https://crates.io/api/v1/crates/foo/1.0.0/download")
         .await
         .status();
     assert_eq!(status, StatusCode::FOUND);
@@ -30,7 +30,7 @@ async fn test_blocked_download_route() {
             config.blocked_routes.clear();
             config
                 .blocked_routes
-                .insert("/api/v1/crates/:crate_id/:version/download".into());
+                .insert("https://crates.io/api/v1/crates/:crate_id/:version/download".into());
         })
         .with_user();
 
@@ -41,7 +41,7 @@ async fn test_blocked_download_route() {
     });
 
     let status = anon
-        .get::<()>("/api/v1/crates/foo/1.0.0/download")
+        .get::<()>("https://crates.io/api/v1/crates/foo/1.0.0/download")
         .await
         .status();
     assert_eq!(status, StatusCode::SERVICE_UNAVAILABLE);

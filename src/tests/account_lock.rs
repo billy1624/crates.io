@@ -2,7 +2,7 @@ use crate::{util::RequestHelper, TestApp};
 use chrono::{Duration, NaiveDateTime, Utc};
 use http::StatusCode;
 
-const URL: &str = "/api/v1/me";
+const URL: &str = "https://crates.io/api/v1/me";
 const LOCK_REASON: &str = "test lock reason";
 
 fn lock_account(app: &TestApp, user_id: i32, until: Option<NaiveDateTime>) {

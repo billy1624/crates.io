@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/crates/:id/owner_team', function (hooks) {
   setupMirage(hooks);
 
   test('returns 404 for unknown crates', async function (assert) {
-    let response = await fetch('/api/v1/crates/foo/owner_team');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/owner_team');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -18,7 +18,7 @@ module('Mirage | GET /api/v1/crates/:id/owner_team', function (hooks) {
   test('empty case', async function (assert) {
     this.server.create('crate', { name: 'rand' });
 
-    let response = await fetch('/api/v1/crates/rand/owner_team');
+    let response = await fetch('https://crates.io/api/v1/crates/rand/owner_team');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       teams: [],
@@ -30,7 +30,7 @@ module('Mirage | GET /api/v1/crates/:id/owner_team', function (hooks) {
     let crate = this.server.create('crate', { name: 'rand' });
     this.server.create('crate-ownership', { crate, team });
 
-    let response = await fetch('/api/v1/crates/rand/owner_team');
+    let response = await fetch('https://crates.io/api/v1/crates/rand/owner_team');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       teams: [

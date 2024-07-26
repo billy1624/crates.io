@@ -13,9 +13,9 @@ test.describe('Bug #2329', { tag: '@bugs' }, () => {
       server.create('crate-ownership', { crate: bar, user, emailNotifications: false });
       server.create('version', { crate: bar });
 
-      server.get('/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
+      server.get('https://crates.io/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
 
-      server.get('/api/private/session/authorize', () => {
+      server.get('https://crates.io/api/private/session/authorize', () => {
         authenticateAs(user);
         return { ok: true };
       });

@@ -6,7 +6,7 @@ use insta::{assert_json_snapshot, assert_snapshot};
 
 impl crate::util::MockCookieUser {
     pub async fn show_me(&self) -> UserShowPrivateResponse {
-        let url = "/api/v1/me";
+        let url = "https://crates.io/api/v1/me";
         self.get(url).await.good()
     }
 }
@@ -21,11 +21,11 @@ pub struct UserShowPrivateResponse {
 async fn me() {
     let (app, anon, user) = TestApp::init().with_user();
 
-    let response = anon.get::<()>("/api/v1/me").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/me").await;
     assert_eq!(response.status(), StatusCode::FORBIDDEN);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"this action requires authentication"}]}"###);
 
-    let response = user.get::<()>("/api/v1/me").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json());
 
@@ -33,7 +33,7 @@ async fn me() {
         CrateBuilder::new("foo_my_packages", user.as_model().id).expect_build(conn);
     });
 
-    let response = user.get::<()>("/api/v1/me").await;
+    let response = user.get::<()>("https://crates.io/api/v1/me").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json());
 }

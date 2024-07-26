@@ -69,7 +69,7 @@ export default class SessionService extends Service {
   }
 
   /**
-   * This task will open a popup window, query the `/api/private/session/begin` API
+   * This task will open a popup window, query the `https://crates.io/api/private/session/begin` API
    * endpoint and then navigate the popup window to the received URL.
    *
    * Example URL:
@@ -107,7 +107,7 @@ export default class SessionService extends Service {
     // we can't call `window.open()` with this URL directly, because it might trigger
     // the popup window prevention mechanism of the browser, since the async opening
     // can not be associated with the original user click event
-    let { url } = await ajax(`/api/private/session/begin`);
+    let { url } = await ajax(`https://crates.io/api/private/session/begin`);
     win.location = url;
 
     let event = await race([this.windowEventWatcherTask.perform(), this.windowCloseWatcherTask.perform(win)]);
@@ -120,7 +120,7 @@ export default class SessionService extends Service {
 
     let { code, state } = event;
 
-    let response = await fetch(`/api/private/session/authorize?code=${code}&state=${state}`);
+    let response = await fetch(`https://crates.io/api/private/session/authorize?code=${code}&state=${state}`);
     if (!response.ok) {
       let json = await response.json();
 
@@ -171,7 +171,7 @@ export default class SessionService extends Service {
   });
 
   logoutTask = task(async () => {
-    await ajax(`/api/private/session`, { method: 'DELETE' });
+    await ajax(`https://crates.io/api/private/session`, { method: 'DELETE' });
 
     this.isLoggedIn = false;
 
@@ -185,7 +185,7 @@ export default class SessionService extends Service {
 
     let response;
     try {
-      response = await ajax('/api/v1/me');
+      response = await ajax('https://crates.io/api/v1/me');
     } catch {
       return {};
     }

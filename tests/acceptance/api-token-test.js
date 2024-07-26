@@ -117,7 +117,7 @@ module('Acceptance | api-tokens', function (hooks) {
   test('failed API tokens revocation shows an error', async function (assert) {
     prepare(this);
 
-    this.server.delete('/api/v1/me/tokens/:id', function () {
+    this.server.delete('https://crates.io/api/v1/me/tokens/:id', function () {
       return new Response(500, {}, {});
     });
 

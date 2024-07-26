@@ -13,7 +13,7 @@ async fn index_smoke_test() {
     // Add a new crate
 
     let body = PublishBuilder::new("serde", "1.0.0").body();
-    let response = token.put::<()>("/api/v1/crates/new", body).await;
+    let response = token.put::<()>("https://crates.io/api/v1/crates/new", body).await;
     assert_eq!(response.status(), StatusCode::OK);
 
     // Check that the git index is updated asynchronously
@@ -29,7 +29,7 @@ async fn index_smoke_test() {
 
     // Yank the crate
 
-    let response = token.delete::<()>("/api/v1/crates/serde/1.0.0/yank").await;
+    let response = token.delete::<()>("https://crates.io/api/v1/crates/serde/1.0.0/yank").await;
     assert_eq!(response.status(), StatusCode::OK);
 
     app.run_pending_background_jobs().await;

@@ -18,7 +18,7 @@ struct CrateOwnerInvitationsMeta {
 
 async fn get_invitations(user: &MockCookieUser, query: &str) -> CrateOwnerInvitationsResponse {
     user.get_with_query::<CrateOwnerInvitationsResponse>(
-        "/api/private/crate_owner_invitations",
+        "https://crates.io/api/private/crate_owner_invitations",
         query,
     )
     .await
@@ -291,7 +291,7 @@ async fn invitation_list_with_no_filter() {
     let (_, _, owner, _) = TestApp::init().with_token();
 
     let resp = owner
-        .get::<()>("/api/private/crate_owner_invitations")
+        .get::<()>("https://crates.io/api/private/crate_owner_invitations")
         .await;
     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
     assert_eq!(
@@ -312,7 +312,7 @@ async fn invitation_list_other_users() {
     // Retrieving our own invitations work.
     let resp = owner
         .get_with_query::<()>(
-            "/api/private/crate_owner_invitations",
+            "https://crates.io/api/private/crate_owner_invitations",
             &format!("invitee_id={}", owner.as_model().id),
         )
         .await;
@@ -321,7 +321,7 @@ async fn invitation_list_other_users() {
     // Retrieving other users' invitations doesn't work.
     let resp = owner
         .get_with_query::<()>(
-            "/api/private/crate_owner_invitations",
+            "https://crates.io/api/private/crate_owner_invitations",
             &format!("invitee_id={}", other_user.as_model().id),
         )
         .await;
@@ -339,13 +339,13 @@ async fn invitation_list_other_crates() {
 
     // Retrieving our own invitations work.
     let resp = owner
-        .get_with_query::<()>("/api/private/crate_owner_invitations", "crate_name=crate_1")
+        .get_with_query::<()>("https://crates.io/api/private/crate_owner_invitations", "crate_name=crate_1")
         .await;
     assert_eq!(resp.status(), StatusCode::OK);
 
     // Retrieving other users' invitations doesn't work.
     let resp = owner
-        .get_with_query::<()>("/api/private/crate_owner_invitations", "crate_name=crate_2")
+        .get_with_query::<()>("https://crates.io/api/private/crate_owner_invitations", "crate_name=crate_2")
         .await;
     assert_eq!(resp.status(), StatusCode::FORBIDDEN);
 }

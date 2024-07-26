@@ -52,7 +52,7 @@ module('Acceptance | Dashboard', function (hooks) {
 
     user.save();
 
-    this.server.get(`/api/v1/users/${user.id}/stats`, { total_downloads: 3892 });
+    this.server.get(`https://crates.io/api/v1/users/${user.id}/stats`, { total_downloads: 3892 });
 
     await visit('/dashboard');
     assert.strictEqual(currentURL(), '/dashboard');

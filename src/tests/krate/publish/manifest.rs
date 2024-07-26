@@ -27,7 +27,7 @@ async fn boolean_readme() {
         ".crate.updated_at" => "[datetime]",
     });
 
-    let response = token.get::<()>("/api/v1/crates/foo/1.0.0").await;
+    let response = token.get::<()>("https://crates.io/api/v1/crates/foo/1.0.0").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".version.id" => any_id_redaction(),
@@ -161,7 +161,7 @@ async fn test_lib_and_bin_crate() {
         ".crate.updated_at" => "[datetime]",
     });
 
-    let response = token.get::<()>("/api/v1/crates/foo/1.0.0").await;
+    let response = token.get::<()>("https://crates.io/api/v1/crates/foo/1.0.0").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".version.id" => any_id_redaction(),

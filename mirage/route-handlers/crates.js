@@ -52,9 +52,9 @@ export function list(schema, request) {
 }
 
 export function register(server) {
-  server.get('/api/v1/crates', list);
+  server.get('https://crates.io/api/v1/crates', list);
 
-  server.get('/api/v1/crates/:name', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -67,7 +67,7 @@ export function register(server) {
     };
   });
 
-  server.get('/api/v1/crates/:name/following', (schema, request) => {
+  server.get('https://crates.io/api/v1/crates/:name/following', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -84,7 +84,7 @@ export function register(server) {
     return { following };
   });
 
-  server.put('/api/v1/crates/:name/follow', (schema, request) => {
+  server.put('https://crates.io/api/v1/crates/:name/follow', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -102,7 +102,7 @@ export function register(server) {
     return { ok: true };
   });
 
-  server.delete('/api/v1/crates/:name/follow', (schema, request) => {
+  server.delete('https://crates.io/api/v1/crates/:name/follow', (schema, request) => {
     let { user } = getSession(schema);
     if (!user) {
       return new Response(403, {}, { errors: [{ detail: 'must be logged in to perform that action' }] });
@@ -120,7 +120,7 @@ export function register(server) {
     return { ok: true };
   });
 
-  server.get('/api/v1/crates/:name/versions', (schema, request) => {
+  server.get('https://crates.io/api/v1/crates/:name/versions', (schema, request) => {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -128,7 +128,7 @@ export function register(server) {
     return crate.versions.sort((a, b) => compareIsoDates(b.created_at, a.created_at));
   });
 
-  server.get('/api/v1/crates/:name/:version_num/authors', (schema, request) => {
+  server.get('https://crates.io/api/v1/crates/:name/:version_num/authors', (schema, request) => {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -140,7 +140,7 @@ export function register(server) {
     return { meta: { names: [] }, users: [] };
   });
 
-  server.get('/api/v1/crates/:name/:version_num/dependencies', (schema, request) => {
+  server.get('https://crates.io/api/v1/crates/:name/:version_num/dependencies', (schema, request) => {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -152,7 +152,7 @@ export function register(server) {
     return schema.dependencies.where({ versionId: version.id });
   });
 
-  server.get('/api/v1/crates/:name/:version_num/downloads', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name/:version_num/downloads', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -164,7 +164,7 @@ export function register(server) {
     return schema.versionDownloads.where({ versionId: version.id });
   });
 
-  server.get('/api/v1/crates/:name/owner_user', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name/owner_user', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -180,7 +180,7 @@ export function register(server) {
     };
   });
 
-  server.get('/api/v1/crates/:name/owner_team', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name/owner_team', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -196,7 +196,7 @@ export function register(server) {
     };
   });
 
-  server.get('/api/v1/crates/:name/reverse_dependencies', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name/reverse_dependencies', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -216,7 +216,7 @@ export function register(server) {
     };
   });
 
-  server.get('/api/v1/crates/:name/downloads', function (schema, request) {
+  server.get('https://crates.io/api/v1/crates/:name/downloads', function (schema, request) {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
     if (!crate) return notFound();
@@ -226,7 +226,7 @@ export function register(server) {
     return { ...this.serialize(versionDownloads), meta: { extra_downloads: crate._extra_downloads } };
   });
 
-  server.put('/api/v1/crates/:name/owners', (schema, request) => {
+  server.put('https://crates.io/api/v1/crates/:name/owners', (schema, request) => {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
 
@@ -245,7 +245,7 @@ export function register(server) {
     return { ok: true };
   });
 
-  server.delete('/api/v1/crates/:name/owners', (schema, request) => {
+  server.delete('https://crates.io/api/v1/crates/:name/owners', (schema, request) => {
     let { name } = request.params;
     let crate = schema.crates.findBy({ name });
 
@@ -264,7 +264,7 @@ export function register(server) {
     return { ok: true, msg: 'owners successfully removed' };
   });
 
-  server.delete('/api/v1/crates/:name/:version/yank', (schema, request) => {
+  server.delete('https://crates.io/api/v1/crates/:name/:version/yank', (schema, request) => {
     const { name, version: versionNum } = request.params;
     const crate = schema.crates.findBy({ name });
     if (!crate) {
@@ -279,7 +279,7 @@ export function register(server) {
     return {};
   });
 
-  server.put('/api/v1/crates/:name/:version/unyank', (schema, request) => {
+  server.put('https://crates.io/api/v1/crates/:name/:version/unyank', (schema, request) => {
     const { name, version: versionNum } = request.params;
     const crate = schema.crates.findBy({ name });
     if (!crate) {
@@ -294,7 +294,7 @@ export function register(server) {
     return {};
   });
 
-  server.get('/api/v1/crates/:name/:version/readme', (schema, request) => {
+  server.get('https://crates.io/api/v1/crates/:name/:version/readme', (schema, request) => {
     const { name, version: versionNum } = request.params;
     const crate = schema.crates.findBy({ name });
     if (!crate) {

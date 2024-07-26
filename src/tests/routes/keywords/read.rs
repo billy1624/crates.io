@@ -10,7 +10,7 @@ struct GoodKeyword {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn show() {
-    let url = "/api/v1/keywords/foo";
+    let url = "https://crates.io/api/v1/keywords/foo";
     let (app, anon) = TestApp::init().empty();
     anon.get(url).await.assert_not_found();
 
@@ -23,7 +23,7 @@ async fn show() {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn uppercase() {
-    let url = "/api/v1/keywords/UPPER";
+    let url = "https://crates.io/api/v1/keywords/UPPER";
     let (app, anon) = TestApp::init().empty();
     anon.get(url).await.assert_not_found();
 
@@ -40,7 +40,7 @@ async fn update_crate() {
     let user = user.as_model();
 
     async fn cnt(kw: &str, client: &impl RequestHelper) -> usize {
-        let json: GoodKeyword = client.get(&format!("/api/v1/keywords/{kw}")).await.good();
+        let json: GoodKeyword = client.get(&format!("https://crates.io/api/v1/keywords/{kw}")).await.good();
         json.keyword.crates_cnt as usize
     }
 

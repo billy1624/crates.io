@@ -16,7 +16,7 @@ module('Adapter | crate', function (hooks) {
 
     // if request coalescing works correctly, then this regular API endpoint
     // should not be hit in this case
-    this.server.get('/api/v1/crates/:crate_name', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
 
     let store = this.owner.lookup('service:store');
 

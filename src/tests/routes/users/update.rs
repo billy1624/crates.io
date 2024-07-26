@@ -18,7 +18,7 @@ pub trait MockEmailHelper: RequestHelper {
             "url": "https://arbitrary.com",
             "kind": null
         }});
-        let url = format!("/api/v1/users/{user_id}");
+        let url = format!("https://crates.io/api/v1/users/{user_id}");
         self.put(&url, body.to_string()).await
     }
 }

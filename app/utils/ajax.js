@@ -4,19 +4,24 @@ import fetch from 'fetch';
 
 export default async function ajax(input, init) {
   let method = init?.method ?? 'GET';
+  let _input = input;
+
+  if (!_input.startsWith('http')) {
+    _input = 'https://crates.io/' + _input.replace(/^(\/)/, '');
+  }
 
   let cause;
   try {
-    let response = await fetch(input, init);
+    let response = await fetch(_input, init);
     if (response.ok) {
       return await response.json();
     }
-    cause = new HttpError({ url: input, method, response });
+    cause = new HttpError({ url: _input, method, response });
   } catch (error) {
     cause = error;
   }
 
-  throw new AjaxError({ url: input, method, cause });
+  throw new AjaxError({ url: _input, method, cause });
 }
 
 export class HttpError extends Error {

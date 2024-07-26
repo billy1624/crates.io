@@ -87,7 +87,7 @@ test.describe('Acceptance | /crates/:crate_id/reverse_dependencies', { tag: '@ac
 
   test('shows a generic error if the server is broken', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/crates/:crate_id/reverse_dependencies', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_id/reverse_dependencies', {}, 500);
     });
 
     const foo = await page.evaluate(() => globalThis.foo);
@@ -102,7 +102,7 @@ test.describe('Acceptance | /crates/:crate_id/reverse_dependencies', { tag: '@ac
   test('shows a detailed error if available', async ({ page, mirage }) => {
     await mirage.addHook(server => {
       let payload = { errors: [{ detail: 'cannot request more than 100 items' }] };
-      server.get('/api/v1/crates/:crate_id/reverse_dependencies', payload, 400);
+      server.get('https://crates.io/api/v1/crates/:crate_id/reverse_dependencies', payload, 400);
     });
 
     const foo = await page.evaluate(() => globalThis.foo);

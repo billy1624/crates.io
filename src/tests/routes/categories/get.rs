@@ -8,7 +8,7 @@ use serde_json::Value;
 #[tokio::test(flavor = "multi_thread")]
 async fn show() {
     let (app, anon) = TestApp::init().empty();
-    let url = "/api/v1/categories/foo-bar";
+    let url = "https://crates.io/api/v1/categories/foo-bar";
 
     // Return not found if a category doesn't exist
     anon.get(url).await.assert_not_found();

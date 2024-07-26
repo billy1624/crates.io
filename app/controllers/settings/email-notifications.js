@@ -27,7 +27,7 @@ export default class EmailNotificationsSettingsController extends Controller {
   @action
   async saveEmailNotifications() {
     try {
-      await ajax(`/api/v1/me/email_notifications`, {
+      await ajax(`https://crates.io/api/v1/me/email_notifications`, {
         method: 'PUT',
         body: JSON.stringify(
           this.ownedCrates.map(c => ({

@@ -24,7 +24,7 @@ export default class extends Component {
   }
 
   followStateTask = dropTask(async () => {
-    let d = await ajax(`/api/v1/crates/${this.args.crate.name}/following`);
+    let d = await ajax(`https://crates.io/api/v1/crates/${this.args.crate.name}/following`);
     this.following = d.following;
   });
 

@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/ember';
 import config from './config/environment';
 
 export function init() {
-  let isProd = location.hostname === 'crates.io';
+  let isProd = location.hostname === 'crates.io' || true;
   let isStaging = location.hostname === 'staging.crates.io';
   let environment = isProd ? 'production' : isStaging ? 'staging' : 'unknown';
 

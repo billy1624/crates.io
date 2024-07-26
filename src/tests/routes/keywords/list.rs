@@ -15,7 +15,7 @@ struct KeywordMeta {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn index() {
-    let url = "/api/v1/keywords";
+    let url = "https://crates.io/api/v1/keywords";
     let (app, anon) = TestApp::init().empty();
     let json: KeywordList = anon.get(url).await.good();
     assert_eq!(json.keywords.len(), 0);

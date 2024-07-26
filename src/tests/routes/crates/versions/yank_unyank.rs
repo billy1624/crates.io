@@ -13,14 +13,14 @@ pub trait YankRequestHelper {
 
 impl<T: RequestHelper> YankRequestHelper for T {
     async fn yank(&self, krate_name: &str, version: &str) -> Response<OkBool> {
-        let url = format!("/api/v1/crates/{krate_name}/{version}/yank");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/{version}/yank");
         let response = self.delete(&url).await;
         self.app().run_pending_background_jobs().await;
         response
     }
 
     async fn unyank(&self, krate_name: &str, version: &str) -> Response<OkBool> {
-        let url = format!("/api/v1/crates/{krate_name}/{version}/unyank");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/{version}/unyank");
         let response = self.put(&url, &[] as &[u8]).await;
         self.app().run_pending_background_jobs().await;
         response

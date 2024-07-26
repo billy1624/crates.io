@@ -1,6 +1,6 @@
 //! This module should contain all tests that test a single webserver route.
 //!
-//! Each `/api/v1` (or `/api/private`) sub-API should have its own module, with
+//! Each `https://crates.io/api/v1` (or `https://crates.io/api/private`) sub-API should have its own module, with
 //! submodules divided by the specific endpoint (e.g. `list`, `create`, `read`,
 //! `update`, `delete`).
 //!

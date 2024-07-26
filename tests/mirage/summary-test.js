@@ -11,7 +11,7 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
   setupMirage(hooks);
 
   test('empty case', async function (assert) {
-    let response = await fetch('/api/v1/summary');
+    let response = await fetch('https://crates.io/api/v1/summary');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       just_updated: [],
@@ -31,7 +31,7 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
     let crates = this.server.createList('crate', 20);
     this.server.createList('version', crates.length, { crate: i => crates[i] });
 
-    let response = await fetch('/api/v1/summary');
+    let response = await fetch('https://crates.io/api/v1/summary');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -48,11 +48,11 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
       homepage: null,
       keywords: [],
       links: {
-        owner_team: '/api/v1/crates/crate-0/owner_team',
-        owner_user: '/api/v1/crates/crate-0/owner_user',
-        reverse_dependencies: '/api/v1/crates/crate-0/reverse_dependencies',
-        version_downloads: '/api/v1/crates/crate-0/downloads',
-        versions: '/api/v1/crates/crate-0/versions',
+        owner_team: 'https://crates.io/api/v1/crates/crate-0/owner_team',
+        owner_user: 'https://crates.io/api/v1/crates/crate-0/owner_user',
+        reverse_dependencies: 'https://crates.io/api/v1/crates/crate-0/reverse_dependencies',
+        version_downloads: 'https://crates.io/api/v1/crates/crate-0/downloads',
+        versions: 'https://crates.io/api/v1/crates/crate-0/versions',
       },
       max_version: '1.0.0',
       max_stable_version: '1.0.0',
@@ -75,11 +75,11 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
       homepage: null,
       keywords: [],
       links: {
-        owner_team: '/api/v1/crates/crate-4/owner_team',
-        owner_user: '/api/v1/crates/crate-4/owner_user',
-        reverse_dependencies: '/api/v1/crates/crate-4/reverse_dependencies',
-        version_downloads: '/api/v1/crates/crate-4/downloads',
-        versions: '/api/v1/crates/crate-4/versions',
+        owner_team: 'https://crates.io/api/v1/crates/crate-4/owner_team',
+        owner_user: 'https://crates.io/api/v1/crates/crate-4/owner_user',
+        reverse_dependencies: 'https://crates.io/api/v1/crates/crate-4/reverse_dependencies',
+        version_downloads: 'https://crates.io/api/v1/crates/crate-4/downloads',
+        versions: 'https://crates.io/api/v1/crates/crate-4/versions',
       },
       max_version: '1.0.4',
       max_stable_version: '1.0.4',
@@ -102,11 +102,11 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
       homepage: null,
       keywords: [],
       links: {
-        owner_team: '/api/v1/crates/crate-0/owner_team',
-        owner_user: '/api/v1/crates/crate-0/owner_user',
-        reverse_dependencies: '/api/v1/crates/crate-0/reverse_dependencies',
-        version_downloads: '/api/v1/crates/crate-0/downloads',
-        versions: '/api/v1/crates/crate-0/versions',
+        owner_team: 'https://crates.io/api/v1/crates/crate-0/owner_team',
+        owner_user: 'https://crates.io/api/v1/crates/crate-0/owner_user',
+        reverse_dependencies: 'https://crates.io/api/v1/crates/crate-0/reverse_dependencies',
+        version_downloads: 'https://crates.io/api/v1/crates/crate-0/downloads',
+        versions: 'https://crates.io/api/v1/crates/crate-0/versions',
       },
       max_version: '1.0.0',
       max_stable_version: '1.0.0',
@@ -129,11 +129,11 @@ module('Mirage | GET /api/v1/summary', function (hooks) {
       homepage: null,
       keywords: [],
       links: {
-        owner_team: '/api/v1/crates/crate-0/owner_team',
-        owner_user: '/api/v1/crates/crate-0/owner_user',
-        reverse_dependencies: '/api/v1/crates/crate-0/reverse_dependencies',
-        version_downloads: '/api/v1/crates/crate-0/downloads',
-        versions: '/api/v1/crates/crate-0/versions',
+        owner_team: 'https://crates.io/api/v1/crates/crate-0/owner_team',
+        owner_user: 'https://crates.io/api/v1/crates/crate-0/owner_user',
+        reverse_dependencies: 'https://crates.io/api/v1/crates/crate-0/reverse_dependencies',
+        version_downloads: 'https://crates.io/api/v1/crates/crate-0/downloads',
+        versions: 'https://crates.io/api/v1/crates/crate-0/versions',
       },
       max_version: '1.0.0',
       max_stable_version: '1.0.0',

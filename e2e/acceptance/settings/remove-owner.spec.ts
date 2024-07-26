@@ -40,7 +40,7 @@ test.describe('Acceptance | Settings | Remove Owner', { tag: '@acceptance' }, ()
     await mirage.addHook(server => {
       // we are intentionally returning a 200 response here, because is what
       // the real backend also returns due to legacy reasons
-      server.delete('/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
+      server.delete('https://crates.io/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
     });
 
     await page.goto('about:blank');
@@ -71,7 +71,7 @@ test.describe('Acceptance | Settings | Remove Owner', { tag: '@acceptance' }, ()
     await mirage.addHook(server => {
       // we are intentionally returning a 200 response here, because is what
       // the real backend also returns due to legacy reasons
-      server.delete('/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
+      server.delete('https://crates.io/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
     });
 
     await page.goto('about:blank');

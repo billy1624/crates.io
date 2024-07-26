@@ -112,7 +112,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
       let crate = server.create('crate', { name: 'rust' });
       server.create('version', { crate, num: '1.0.0' });
 
-      server.get('/api/v1/crates', {}, 500);
+      server.get('https://crates.io/api/v1/crates', {}, 500);
     });
 
     await page.goto('/');
@@ -124,7 +124,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
 
     await page.evaluate(() => {
       const deferred = (globalThis.deferred = require('rsvp').defer());
-      server.get('/api/v1/crates', () => deferred.promise);
+      server.get('https://crates.io/api/v1/crates', () => deferred.promise);
     });
 
     await page.click('[data-test-try-again-button]');
@@ -136,7 +136,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await page.evaluate(async () => {
       // Restore the routes
       globalThis._routes.call(server);
-      const data = await globalThis.fetch('/api/v1/crates').then(r => r.json());
+      const data = await globalThis.fetch('https://crates.io/api/v1/crates').then(r => r.json());
       globalThis.deferred.resolve(data);
     });
     await expect(page.locator('[data-test-error-message]')).toHaveCount(0);
@@ -157,7 +157,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await expect(page.locator('[data-test-try-again-button]')).toHaveCount(0);
 
     await page.evaluate(() => {
-      server.get('/api/v1/crates', {}, 500);
+      server.get('https://crates.io/api/v1/crates', {}, 500);
     });
 
     await page.fill('[data-test-search-input]', 'ru');
@@ -168,7 +168,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
 
     await page.evaluate(() => {
       const deferred = (globalThis.deferred = require('rsvp').defer());
-      server.get('/api/v1/crates', () => deferred.promise);
+      server.get('https://crates.io/api/v1/crates', () => deferred.promise);
     });
 
     await page.click('[data-test-try-again-button]');
@@ -180,7 +180,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await page.evaluate(async () => {
       // Restore the routes
       globalThis._routes.call(server);
-      const data = await globalThis.fetch('/api/v1/crates').then(r => r.json());
+      const data = await globalThis.fetch('https://crates.io/api/v1/crates').then(r => r.json());
       globalThis.deferred.resolve(data);
     });
     await expect(page.locator('[data-test-crate-row]')).toHaveCount(1);
@@ -189,12 +189,12 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
   test('passes query parameters to the backend', async ({ page, mirage }) => {
     await mirage.config({ trackRequests: true });
     await mirage.addHook(server => {
-      server.get('/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
+      server.get('https://crates.io/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
     });
 
     await page.goto('/search?q=rust&page=3&per_page=15&sort=new&all_keywords=fire ball');
     const queryParams = await page.evaluate(
-      () => server.pretender.handledRequests.find(req => req.url.startsWith('/api/v1/crates')).queryParams,
+      () => server.pretender.handledRequests.find(req => req.url.startsWith('https://crates.io/api/v1/crates')).queryParams,
     );
     expect(queryParams).toEqual({
       all_keywords: 'fire ball',
@@ -208,12 +208,12 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
   test('supports `keyword:bla` filters', async ({ page, mirage }) => {
     await mirage.config({ trackRequests: true });
     await mirage.addHook(server => {
-      server.get('/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
+      server.get('https://crates.io/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
     });
 
     await page.goto('/search?q=rust keyword:fire keyword:ball&page=3&per_page=15&sort=new');
     const queryParams = await page.evaluate(
-      () => server.pretender.handledRequests.find(req => req.url.startsWith('/api/v1/crates')).queryParams,
+      () => server.pretender.handledRequests.find(req => req.url.startsWith('https://crates.io/api/v1/crates')).queryParams,
     );
     expect(queryParams).toEqual({
       all_keywords: 'fire ball',
@@ -227,12 +227,12 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
   test('`all_keywords` query parameter takes precedence over `keyword` filters', async ({ page, mirage }) => {
     await mirage.config({ trackRequests: true });
     await mirage.addHook(server => {
-      server.get('/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
+      server.get('https://crates.io/api/v1/crates', () => ({ crates: [], meta: { total: 0 } }));
     });
 
     await page.goto('/search?q=rust keywords:foo&page=3&per_page=15&sort=new&all_keywords=fire ball');
     const queryParams = await page.evaluate(
-      () => server.pretender.handledRequests.find(req => req.url.startsWith('/api/v1/crates')).queryParams,
+      () => server.pretender.handledRequests.find(req => req.url.startsWith('https://crates.io/api/v1/crates')).queryParams,
     );
     expect(queryParams).toEqual({
       all_keywords: 'fire ball',

@@ -67,7 +67,7 @@ module('Acceptance | /crates/:crate_id/reverse_dependencies', function (hooks) {
   test('shows a generic error if the server is broken', async function (assert) {
     let { foo } = prepare(this);
 
-    this.server.get('/api/v1/crates/:crate_id/reverse_dependencies', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_id/reverse_dependencies', {}, 500);
 
     await visit(`/crates/${foo.name}/reverse_dependencies`);
     assert.strictEqual(currentURL(), '/');
@@ -80,7 +80,7 @@ module('Acceptance | /crates/:crate_id/reverse_dependencies', function (hooks) {
     let { foo } = prepare(this);
 
     let payload = { errors: [{ detail: 'cannot request more than 100 items' }] };
-    this.server.get('/api/v1/crates/:crate_id/reverse_dependencies', payload, 400);
+    this.server.get('https://crates.io/api/v1/crates/:crate_id/reverse_dependencies', payload, 400);
 
     await visit(`/crates/${foo.name}/reverse_dependencies`);
     assert.strictEqual(currentURL(), '/');

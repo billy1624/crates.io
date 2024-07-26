@@ -5,7 +5,7 @@ export default class DependencyAdapter extends ApplicationAdapter {
     let { crate, reverse, ...data } = query;
 
     return reverse
-      ? this.ajax(`/${this.urlPrefix()}/crates/${crate.id}/reverse_dependencies`, 'GET', { data })
+      ? this.ajax(`${this.urlPrefix()}/crates/${crate.id}/reverse_dependencies`, 'GET', { data })
       : super.query(...arguments);
   }
 }

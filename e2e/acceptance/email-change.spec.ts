@@ -119,7 +119,7 @@ test.describe('Acceptance | Email Change', { tag: '@acceptance' }, () => {
       authenticateAs(user);
       globalThis.user = user;
 
-      server.put('/api/v1/users/:user_id', {}, 500);
+      server.put('https://crates.io/api/v1/users/:user_id', {}, 500);
     });
 
     await page.goto('/settings/profile');
@@ -171,7 +171,7 @@ test.describe('Acceptance | Email Change', { tag: '@acceptance' }, () => {
 
         authenticateAs(user);
 
-        server.put('/api/v1/users/:user_id/resend', {}, 500);
+        server.put('https://crates.io/api/v1/users/:user_id/resend', {}, 500);
       });
 
       await page.goto('/settings/profile');

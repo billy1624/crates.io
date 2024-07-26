@@ -7,7 +7,7 @@ use googletest::prelude::*;
 use http::StatusCode;
 use insta::assert_json_snapshot;
 
-static URL: &str = "/api/github/secret-scanning/verify";
+static URL: &str = "https://crates.io/api/github/secret-scanning/verify";
 
 // Test request and signature from https://docs.github.com/en/developers/overview/secret-scanning-partner-program#create-a-secret-alert-service
 static GITHUB_ALERT: &[u8] =

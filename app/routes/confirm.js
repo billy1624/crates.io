@@ -11,7 +11,7 @@ export default class ConfirmRoute extends Route {
 
   async model(params) {
     try {
-      await ajax(`/api/v1/confirm/${params.email_token}`, { method: 'PUT', body: '{}' });
+      await ajax(`https://crates.io/api/v1/confirm/${params.email_token}`, { method: 'PUT', body: '{}' });
 
       // wait for the `GET /api/v1/me` call to complete before
       // trying to update the Ember Data store

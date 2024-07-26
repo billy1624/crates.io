@@ -23,8 +23,8 @@ The server does the following things:
 The API URLs that the server responds to (aka "routes") are defined in
 _src/router.rs_.
 
-All of the `api_router` routes are mounted under the `/api/v1` path (see the
-lines that look like `router.get("/api/v1/*path", R(api_router.clone()));`).
+All of the `api_router` routes are mounted under the `https://crates.io/api/v1` path (see the
+lines that look like `router.get("https://crates.io/api/v1/*path", R(api_router.clone()));`).
 
 Each API route definition looks like this:
 
@@ -33,7 +33,7 @@ api_router.get("/crates", C(krate::index));
 ```
 
 This line defines a route that responds to a GET request made to
-`/api/v1/crates` with the results of calling the `krate::index` function. `C`
+`https://crates.io/api/v1/crates` with the results of calling the `krate::index` function. `C`
 is a struct that holds a function and implements the [`conduit::Handler`][]
 trait so that the results of the function are the response if the function
 succeeds, and that the server returns an error response if the function doesn't

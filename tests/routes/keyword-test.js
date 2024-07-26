@@ -15,7 +15,7 @@ module('Route | keyword', function (hooks) {
   });
 
   test('server error causes the error page to be shown', async function (assert) {
-    this.server.get('/api/v1/crates', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates', {}, 500);
 
     await visit('/keywords/foo');
     assert.strictEqual(currentURL(), '/keywords/foo');

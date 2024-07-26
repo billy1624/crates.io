@@ -92,7 +92,7 @@ test.describe('Route | crate.range', { tag: '@routes' }, () => {
 
   test('shows an error page if crate fails to load', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/crates/:crate_name', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
     });
 
     await page.goto('/crates/foo/range/^3');
@@ -124,7 +124,7 @@ test.describe('Route | crate.range', { tag: '@routes' }, () => {
       let crate = server.create('crate', { name: 'foo' });
       server.create('version', { crate, num: '3.2.1' });
 
-      server.get('/api/v1/crates/:crate_name/versions', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name/versions', {}, 500);
     });
 
     await ember.addHook(async owner => {

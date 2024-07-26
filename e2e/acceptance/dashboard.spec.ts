@@ -44,7 +44,7 @@ test.describe('Acceptance | Dashboard', { tag: '@acceptance' }, () => {
 
       user.save();
 
-      server.get(`/api/v1/users/${user.id}/stats`, { total_downloads: 3892 });
+      server.get(`https://crates.io/api/v1/users/${user.id}/stats`, { total_downloads: 3892 });
     });
 
     await page.goto('/dashboard');

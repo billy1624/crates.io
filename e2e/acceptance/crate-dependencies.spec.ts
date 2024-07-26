@@ -43,7 +43,7 @@ test.describe('Acceptance | crate dependencies page', { tag: '@acceptance' }, ()
 
   test('shows an error page if crate fails to load', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/crates/:crate_name', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
     });
 
     await page.goto('/crates/foo/1.0.0/dependencies');
@@ -72,7 +72,7 @@ test.describe('Acceptance | crate dependencies page', { tag: '@acceptance' }, ()
     await mirage.addHook(server => {
       let crate = server.create('crate', { name: 'foo' });
       server.create('version', { crate, num: '2.0.0' });
-      server.get('/api/v1/crates/:crate_name/versions', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name/versions', {}, 500);
     });
 
     await ember.addHook(async owner => {
@@ -97,7 +97,7 @@ test.describe('Acceptance | crate dependencies page', { tag: '@acceptance' }, ()
       let crate = server.create('crate', { name: 'foo' });
       server.create('version', { crate, num: '1.0.0' });
 
-      server.get('/api/v1/crates/:crate_name/:version_num/dependencies', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name/:version_num/dependencies', {}, 500);
     });
 
     await page.goto('/crates/foo/1.0.0/dependencies');
@@ -121,7 +121,7 @@ test.describe('Acceptance | crate dependencies page', { tag: '@acceptance' }, ()
       server.create('version', { crate: bar, num: '2.3.4' });
       server.create('dependency', { crate: bar, version, req: '^2.0.0', kind: 'normal' });
 
-      server.get('/api/v1/crates', {}, 500);
+      server.get('https://crates.io/api/v1/crates', {}, 500);
     });
 
     await page.goto('/crates/nanomsg/dependencies');

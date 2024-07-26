@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
   setupMirage(hooks);
 
   test('returns 404 for unknown crates', async function (assert) {
-    let response = await fetch('/api/v1/crates/foo');
+    let response = await fetch('https://crates.io/api/v1/crates/foo');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -19,7 +19,7 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
     let crate = this.server.create('crate', { name: 'rand' });
     this.server.create('version', { crate, num: '1.0.0-beta.1' });
 
-    let response = await fetch('/api/v1/crates/rand');
+    let response = await fetch('https://crates.io/api/v1/crates/rand');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       categories: [],
@@ -34,11 +34,11 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
         id: 'rand',
         keywords: [],
         links: {
-          owner_team: '/api/v1/crates/rand/owner_team',
-          owner_user: '/api/v1/crates/rand/owner_user',
-          reverse_dependencies: '/api/v1/crates/rand/reverse_dependencies',
-          version_downloads: '/api/v1/crates/rand/downloads',
-          versions: '/api/v1/crates/rand/versions',
+          owner_team: 'https://crates.io/api/v1/crates/rand/owner_team',
+          owner_user: 'https://crates.io/api/v1/crates/rand/owner_user',
+          reverse_dependencies: 'https://crates.io/api/v1/crates/rand/reverse_dependencies',
+          version_downloads: 'https://crates.io/api/v1/crates/rand/downloads',
+          versions: 'https://crates.io/api/v1/crates/rand/versions',
         },
         max_version: '1.0.0-beta.1',
         max_stable_version: null,
@@ -55,16 +55,16 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
           crate: 'rand',
           crate_size: 0,
           created_at: '2010-06-16T21:30:45Z',
-          dl_path: '/api/v1/crates/rand/1.0.0-beta.1/download',
+          dl_path: 'https://crates.io/api/v1/crates/rand/1.0.0-beta.1/download',
           downloads: 0,
           license: 'MIT/Apache-2.0',
           links: {
-            dependencies: '/api/v1/crates/rand/1.0.0-beta.1/dependencies',
-            version_downloads: '/api/v1/crates/rand/1.0.0-beta.1/downloads',
+            dependencies: 'https://crates.io/api/v1/crates/rand/1.0.0-beta.1/dependencies',
+            version_downloads: 'https://crates.io/api/v1/crates/rand/1.0.0-beta.1/downloads',
           },
           num: '1.0.0-beta.1',
           published_by: null,
-          readme_path: '/api/v1/crates/rand/1.0.0-beta.1/readme',
+          readme_path: 'https://crates.io/api/v1/crates/rand/1.0.0-beta.1/readme',
           rust_version: null,
           updated_at: '2017-02-24T12:34:56Z',
           yanked: false,
@@ -79,7 +79,7 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
     this.server.create('version', { crate, num: '1.1.0' });
     this.server.create('version', { crate, num: '1.2.0' });
 
-    let response = await fetch('/api/v1/crates/rand');
+    let response = await fetch('https://crates.io/api/v1/crates/rand');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -90,16 +90,16 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
         crate: 'rand',
         crate_size: 325_926,
         created_at: '2010-06-16T21:30:45Z',
-        dl_path: '/api/v1/crates/rand/1.2.0/download',
+        dl_path: 'https://crates.io/api/v1/crates/rand/1.2.0/download',
         downloads: 7404,
         license: 'Apache-2.0',
         links: {
-          dependencies: '/api/v1/crates/rand/1.2.0/dependencies',
-          version_downloads: '/api/v1/crates/rand/1.2.0/downloads',
+          dependencies: 'https://crates.io/api/v1/crates/rand/1.2.0/dependencies',
+          version_downloads: 'https://crates.io/api/v1/crates/rand/1.2.0/downloads',
         },
         num: '1.2.0',
         published_by: null,
-        readme_path: '/api/v1/crates/rand/1.2.0/readme',
+        readme_path: 'https://crates.io/api/v1/crates/rand/1.2.0/readme',
         rust_version: null,
         updated_at: '2017-02-24T12:34:56Z',
         yanked: false,
@@ -109,16 +109,16 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
         crate: 'rand',
         crate_size: 162_963,
         created_at: '2010-06-16T21:30:45Z',
-        dl_path: '/api/v1/crates/rand/1.1.0/download',
+        dl_path: 'https://crates.io/api/v1/crates/rand/1.1.0/download',
         downloads: 3702,
         license: 'MIT',
         links: {
-          dependencies: '/api/v1/crates/rand/1.1.0/dependencies',
-          version_downloads: '/api/v1/crates/rand/1.1.0/downloads',
+          dependencies: 'https://crates.io/api/v1/crates/rand/1.1.0/dependencies',
+          version_downloads: 'https://crates.io/api/v1/crates/rand/1.1.0/downloads',
         },
         num: '1.1.0',
         published_by: null,
-        readme_path: '/api/v1/crates/rand/1.1.0/readme',
+        readme_path: 'https://crates.io/api/v1/crates/rand/1.1.0/readme',
         rust_version: null,
         updated_at: '2017-02-24T12:34:56Z',
         yanked: false,
@@ -128,16 +128,16 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
         crate: 'rand',
         crate_size: 0,
         created_at: '2010-06-16T21:30:45Z',
-        dl_path: '/api/v1/crates/rand/1.0.0/download',
+        dl_path: 'https://crates.io/api/v1/crates/rand/1.0.0/download',
         downloads: 0,
         license: 'MIT/Apache-2.0',
         links: {
-          dependencies: '/api/v1/crates/rand/1.0.0/dependencies',
-          version_downloads: '/api/v1/crates/rand/1.0.0/downloads',
+          dependencies: 'https://crates.io/api/v1/crates/rand/1.0.0/dependencies',
+          version_downloads: 'https://crates.io/api/v1/crates/rand/1.0.0/downloads',
         },
         num: '1.0.0',
         published_by: null,
-        readme_path: '/api/v1/crates/rand/1.0.0/readme',
+        readme_path: 'https://crates.io/api/v1/crates/rand/1.0.0/readme',
         rust_version: null,
         updated_at: '2017-02-24T12:34:56Z',
         yanked: false,
@@ -151,7 +151,7 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
     let crate = this.server.create('crate', { name: 'rand', categoryIds: ['no-std'] });
     this.server.create('version', { crate });
 
-    let response = await fetch('/api/v1/crates/rand');
+    let response = await fetch('https://crates.io/api/v1/crates/rand');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -174,7 +174,7 @@ module('Mirage | GET /api/v1/crates/:id', function (hooks) {
     let crate = this.server.create('crate', { name: 'rand', keywordIds: ['no-std'] });
     this.server.create('version', { crate });
 
-    let response = await fetch('/api/v1/crates/rand');
+    let response = await fetch('https://crates.io/api/v1/crates/rand');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

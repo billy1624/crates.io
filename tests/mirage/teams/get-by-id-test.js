@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/teams/:id', function (hooks) {
   setupMirage(hooks);
 
   test('returns 404 for unknown teams', async function (assert) {
-    let response = await fetch('/api/v1/teams/foo');
+    let response = await fetch('https://crates.io/api/v1/teams/foo');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -18,7 +18,7 @@ module('Mirage | GET /api/v1/teams/:id', function (hooks) {
   test('returns a team object for known teams', async function (assert) {
     let team = this.server.create('team', { name: 'maintainers' });
 
-    let response = await fetch(`/api/v1/teams/${team.login}`);
+    let response = await fetch(`https://crates.io/api/v1/teams/${team.login}`);
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       team: {

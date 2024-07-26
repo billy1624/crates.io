@@ -31,24 +31,24 @@ async fn wait_until_healthy(pool: &Pool) {
 async fn http_error_with_unhealthy_database() {
     let (app, anon) = TestApp::init().with_chaos_proxy().empty();
 
-    let response = anon.get::<()>("/api/v1/summary").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/summary").await;
     assert_eq!(response.status(), StatusCode::OK);
 
     app.primary_db_chaosproxy().break_networking().unwrap();
 
-    let response = anon.get::<()>("/api/v1/summary").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/summary").await;
     assert_eq!(response.status(), StatusCode::SERVICE_UNAVAILABLE);
 
     app.primary_db_chaosproxy().restore_networking().unwrap();
     wait_until_healthy(&app.as_inner().primary_database).await;
 
-    let response = anon.get::<()>("/api/v1/summary").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/summary").await;
     assert_eq!(response.status(), StatusCode::OK);
 }
 
 #[tokio::test(flavor = "multi_thread")]
 async fn fallback_to_replica_returns_user_info() {
-    const URL: &str = "/api/v1/users/foo";
+    const URL: &str = "https://crates.io/api/v1/users/foo";
 
     let (app, _, owner) = TestApp::init()
         .with_replica()
@@ -68,7 +68,7 @@ async fn fallback_to_replica_returns_user_info() {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn restored_replica_returns_user_info() {
-    const URL: &str = "/api/v1/users/foo";
+    const URL: &str = "https://crates.io/api/v1/users/foo";
 
     let (app, _, owner) = TestApp::init()
         .with_replica()
@@ -101,7 +101,7 @@ async fn restored_replica_returns_user_info() {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn restored_primary_returns_user_info() {
-    const URL: &str = "/api/v1/users/foo";
+    const URL: &str = "https://crates.io/api/v1/users/foo";
 
     let (app, _, owner) = TestApp::init()
         .with_replica()

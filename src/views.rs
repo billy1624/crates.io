@@ -245,7 +245,7 @@ impl EncodableCrate {
         } = krate;
         let versions_link = match versions {
             Some(..) => None,
-            None => Some(format!("/api/v1/crates/{name}/versions")),
+            None => Some(format!("https://crates.io/api/v1/crates/{name}/versions")),
         };
         let keyword_ids = keywords.map(|kws| kws.iter().map(|kw| kw.keyword.clone()).collect());
         let category_ids = categories.map(|cats| cats.iter().map(|cat| cat.slug.clone()).collect());
@@ -298,12 +298,12 @@ impl EncodableCrate {
             description,
             repository,
             links: EncodableCrateLinks {
-                version_downloads: format!("/api/v1/crates/{name}/downloads"),
+                version_downloads: format!("https://crates.io/api/v1/crates/{name}/downloads"),
                 versions: versions_link,
-                owners: Some(format!("/api/v1/crates/{name}/owners")),
-                owner_team: Some(format!("/api/v1/crates/{name}/owner_team")),
-                owner_user: Some(format!("/api/v1/crates/{name}/owner_user")),
-                reverse_dependencies: format!("/api/v1/crates/{name}/reverse_dependencies"),
+                owners: Some(format!("https://crates.io/api/v1/crates/{name}/owners")),
+                owner_team: Some(format!("https://crates.io/api/v1/crates/{name}/owner_team")),
+                owner_user: Some(format!("https://crates.io/api/v1/crates/{name}/owner_user")),
+                reverse_dependencies: format!("https://crates.io/api/v1/crates/{name}/reverse_dependencies"),
             },
         }
     }
@@ -597,14 +597,14 @@ impl EncodableVersion {
         } = version;
 
         let links = EncodableVersionLinks {
-            dependencies: format!("/api/v1/crates/{crate_name}/{num}/dependencies"),
-            version_downloads: format!("/api/v1/crates/{crate_name}/{num}/downloads"),
-            authors: format!("/api/v1/crates/{crate_name}/{num}/authors"),
+            dependencies: format!("https://crates.io/api/v1/crates/{crate_name}/{num}/dependencies"),
+            version_downloads: format!("https://crates.io/api/v1/crates/{crate_name}/{num}/downloads"),
+            authors: format!("https://crates.io/api/v1/crates/{crate_name}/{num}/authors"),
         };
 
         Self {
-            dl_path: format!("/api/v1/crates/{crate_name}/{num}/download"),
-            readme_path: format!("/api/v1/crates/{crate_name}/{num}/readme"),
+            dl_path: format!("https://crates.io/api/v1/crates/{crate_name}/{num}/download"),
+            readme_path: format!("https://crates.io/api/v1/crates/{crate_name}/{num}/readme"),
             num,
             id,
             krate: crate_name.to_string(),

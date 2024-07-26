@@ -29,7 +29,7 @@ test.describe('Acceptance | /accept-invite/:token', { tag: '@acceptance' }, () =
     await page.exposeBinding('_errorMessage', () => errorMessage);
     await mirage.addHook(server => {
       server.put(
-        '/api/v1/me/crate_owner_invitations/accept/:token',
+        'https://crates.io/api/v1/me/crate_owner_invitations/accept/:token',
         async () => {
           let errorMessage = await globalThis._errorMessage();
           let payload = { errors: [{ detail: errorMessage }] };

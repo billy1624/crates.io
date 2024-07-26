@@ -5,7 +5,7 @@ use crate::util::encode_session_header;
 use http::{header, Method, StatusCode};
 use insta::assert_snapshot;
 
-static URL: &str = "/api/v1/me/updates";
+static URL: &str = "https://crates.io/api/v1/me/updates";
 
 #[tokio::test(flavor = "multi_thread")]
 async fn anonymous_user_unauthorized() {

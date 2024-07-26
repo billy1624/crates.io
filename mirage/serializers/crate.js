@@ -28,11 +28,11 @@ export default BaseSerializer.extend({
 
   links(crate) {
     return {
-      owner_user: `/api/v1/crates/${crate.name}/owner_user`,
-      owner_team: `/api/v1/crates/${crate.name}/owner_team`,
-      reverse_dependencies: `/api/v1/crates/${crate.name}/reverse_dependencies`,
-      version_downloads: `/api/v1/crates/${crate.name}/downloads`,
-      versions: `/api/v1/crates/${crate.name}/versions`,
+      owner_user: `https://crates.io/api/v1/crates/${crate.name}/owner_user`,
+      owner_team: `https://crates.io/api/v1/crates/${crate.name}/owner_team`,
+      reverse_dependencies: `https://crates.io/api/v1/crates/${crate.name}/reverse_dependencies`,
+      version_downloads: `https://crates.io/api/v1/crates/${crate.name}/downloads`,
+      versions: `https://crates.io/api/v1/crates/${crate.name}/versions`,
     };
   },
 
@@ -51,6 +51,8 @@ export default BaseSerializer.extend({
   },
 
   _adjust(hash) {
+    hash.links.versions = 'https://crates.io' + hash.links.versions;
+
     let versions = this.schema.versions.where({ crateId: hash.id });
     assert(`crate \`${hash.name}\` has no associated versions`, versions.length !== 0);
     versions = versions.filter(it => !it.yanked);

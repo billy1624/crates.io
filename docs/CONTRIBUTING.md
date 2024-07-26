@@ -67,7 +67,7 @@ visit [whatsdeployed.io](https://whatsdeployed.io/s/FEM/rust-lang/crates.io).
 There you will find the commits involved in the current release.
 
 If you are only interested on the commit hash, you can also hit the site
-metadata endpoint available on `/api/v1/site_metadata`.
+metadata endpoint available on `https://crates.io/api/v1/site_metadata`.
 
 ## Setting up a development environment
 

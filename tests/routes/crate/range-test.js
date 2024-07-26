@@ -88,7 +88,7 @@ module('Route | crate.range', function (hooks) {
   });
 
   test('shows an error page if crate fails to load', async function (assert) {
-    this.server.get('/api/v1/crates/:crate_name', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
 
     await visit('/crates/foo/range/^3');
     assert.strictEqual(currentURL(), '/crates/foo/range/%5E3');
@@ -117,7 +117,7 @@ module('Route | crate.range', function (hooks) {
     let crate = this.server.create('crate', { name: 'foo' });
     this.server.create('version', { crate, num: '3.2.1' });
 
-    this.server.get('/api/v1/crates/:crate_name/versions', {}, 500);
+    this.server.get('https://crates.io/api/v1/crates/:crate_name/versions', {}, 500);
 
     // Load `crate` and then explicitly unload the side-loaded `versions`.
     let store = this.owner.lookup('service:store');

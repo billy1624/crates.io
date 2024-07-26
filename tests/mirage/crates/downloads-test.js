@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/crates/:id/downloads', function (hooks) {
   setupMirage(hooks);
 
   test('returns 404 for unknown crates', async function (assert) {
-    let response = await fetch('/api/v1/crates/foo/downloads');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/downloads');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -18,7 +18,7 @@ module('Mirage | GET /api/v1/crates/:id/downloads', function (hooks) {
   test('empty case', async function (assert) {
     this.server.create('crate', { name: 'rand' });
 
-    let response = await fetch('/api/v1/crates/rand/downloads');
+    let response = await fetch('https://crates.io/api/v1/crates/rand/downloads');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       version_downloads: [],
@@ -35,7 +35,7 @@ module('Mirage | GET /api/v1/crates/:id/downloads', function (hooks) {
     this.server.create('version-download', { version: versions[1], date: '2020-01-14' });
     this.server.create('version-download', { version: versions[1], date: '2020-01-15' });
 
-    let response = await fetch('/api/v1/crates/rand/downloads');
+    let response = await fetch('https://crates.io/api/v1/crates/rand/downloads');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       version_downloads: [

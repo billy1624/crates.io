@@ -45,7 +45,7 @@ test.describe('Acceptance | front page', { tag: '@acceptance' }, () => {
     await mirage.addHook(server => {
       // Snapshot the routes so we can restore it later
       globalThis._routes = server._config.routes;
-      server.get('/api/v1/summary', {}, 500);
+      server.get('https://crates.io/api/v1/summary', {}, 500);
     });
 
     await page.goto('/');
@@ -55,7 +55,7 @@ test.describe('Acceptance | front page', { tag: '@acceptance' }, () => {
 
     await page.evaluate(() => {
       globalThis.deferred = require('rsvp').defer();
-      server.get('/api/v1/summary', () => globalThis.deferred.promise);
+      server.get('https://crates.io/api/v1/summary', () => globalThis.deferred.promise);
     });
 
     const button = page.locator('[data-test-try-again-button]');
@@ -68,7 +68,7 @@ test.describe('Acceptance | front page', { tag: '@acceptance' }, () => {
     await page.evaluate(async () => {
       // Restore the routes
       globalThis._routes.call(server);
-      const data = await globalThis.fetch('/api/v1/summary').then(r => r.json());
+      const data = await globalThis.fetch('https://crates.io/api/v1/summary').then(r => r.json());
       return globalThis.deferred.resolve(data);
     });
     await expect(page.locator('[data-test-lists]')).toBeVisible();

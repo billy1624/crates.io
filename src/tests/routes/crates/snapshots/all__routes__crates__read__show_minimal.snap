@@ -16,12 +16,12 @@ expression: response.json()
     "id": "foo_show_minimal",
     "keywords": null,
     "links": {
-      "owner_team": "/api/v1/crates/foo_show_minimal/owner_team",
-      "owner_user": "/api/v1/crates/foo_show_minimal/owner_user",
-      "owners": "/api/v1/crates/foo_show_minimal/owners",
-      "reverse_dependencies": "/api/v1/crates/foo_show_minimal/reverse_dependencies",
-      "version_downloads": "/api/v1/crates/foo_show_minimal/downloads",
-      "versions": "/api/v1/crates/foo_show_minimal/versions"
+      "owner_team": "https://crates.io/api/v1/crates/foo_show_minimal/owner_team",
+      "owner_user": "https://crates.io/api/v1/crates/foo_show_minimal/owner_user",
+      "owners": "https://crates.io/api/v1/crates/foo_show_minimal/owners",
+      "reverse_dependencies": "https://crates.io/api/v1/crates/foo_show_minimal/reverse_dependencies",
+      "version_downloads": "https://crates.io/api/v1/crates/foo_show_minimal/downloads",
+      "versions": "https://crates.io/api/v1/crates/foo_show_minimal/versions"
     },
     "max_stable_version": null,
     "max_version": "0.0.0",

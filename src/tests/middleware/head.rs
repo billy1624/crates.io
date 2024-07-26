@@ -5,7 +5,7 @@ use http::{Method, StatusCode};
 async fn head_method_works() {
     let (_, anon) = TestApp::init().empty();
 
-    let req = anon.request_builder(Method::HEAD, "/api/v1/summary");
+    let req = anon.request_builder(Method::HEAD, "https://crates.io/api/v1/summary");
     let res = anon.run::<()>(req).await;
     assert_eq!(res.status(), StatusCode::OK);
     assert_eq!(res.text(), "");

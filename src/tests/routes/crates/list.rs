@@ -1019,7 +1019,7 @@ async fn test_pages_work_even_with_seek_based_pagination() {
 async fn invalid_seek_parameter() {
     let (_app, anon, _cookie) = TestApp::init().with_user();
 
-    let response = anon.get::<()>("/api/v1/crates?seek=broken").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates?seek=broken").await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_json_snapshot!(response.json());
 }
@@ -1036,7 +1036,7 @@ async fn pagination_parameters_only_accept_integers() {
     });
 
     let response = anon
-        .get_with_query::<()>("/api/v1/crates", "page=1&per_page=100%22%EF%BC%8Cexception")
+        .get_with_query::<()>("https://crates.io/api/v1/crates", "page=1&per_page=100%22%EF%BC%8Cexception")
         .await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_eq!(
@@ -1045,7 +1045,7 @@ async fn pagination_parameters_only_accept_integers() {
     );
 
     let response = anon
-        .get_with_query::<()>("/api/v1/crates", "page=100%22%EF%BC%8Cexception&per_page=1")
+        .get_with_query::<()>("https://crates.io/api/v1/crates", "page=100%22%EF%BC%8Cexception&per_page=1")
         .await;
     assert_eq!(response.status(), StatusCode::BAD_REQUEST);
     assert_eq!(

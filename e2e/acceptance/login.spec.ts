@@ -12,15 +12,15 @@ test.describe('Acceptance | Login', { tag: '@acceptance' }, () => {
 
     await mirage.config({ trackRequests: true });
     await mirage.addHook(server => {
-      server.get('/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
+      server.get('https://crates.io/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
 
-      server.get('/api/private/session/authorize', () => {
+      server.get('https://crates.io/api/private/session/authorize', () => {
         let user = server.create('user');
         server.create('mirage-session', { user });
         return { ok: true };
       });
 
-      server.get('/api/v1/me', () => ({
+      server.get('https://crates.io/api/v1/me', () => ({
         user: {
           id: 42,
           login: 'johnnydee',
@@ -54,7 +54,7 @@ test.describe('Acceptance | Login', { tag: '@acceptance' }, () => {
 
     const queryParams = await page.evaluate(
       () =>
-        server.pretender.handledRequests.find(req => req.url.startsWith('/api/private/session/authorize')).queryParams,
+        server.pretender.handledRequests.find(req => req.url.startsWith('https://crates.io/api/private/session/authorize')).queryParams,
     );
     expect(queryParams).toEqual(message);
 
@@ -71,10 +71,10 @@ test.describe('Acceptance | Login', { tag: '@acceptance' }, () => {
     });
 
     await mirage.addHook(server => {
-      server.get('/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
+      server.get('https://crates.io/api/private/session/begin', { url: 'url-to-github-including-state-secret' });
 
       let payload = { errors: [{ detail: 'Forbidden' }] };
-      server.get('/api/private/session/authorize', payload, 403);
+      server.get('https://crates.io/api/private/session/authorize', payload, 403);
     });
 
     await page.goto('/');

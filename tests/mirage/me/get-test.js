@@ -13,7 +13,7 @@ module('Mirage | GET /api/v1/me', function (hooks) {
     let user = this.server.create('user');
     this.server.create('mirage-session', { user });
 
-    let response = await fetch('/api/v1/me');
+    let response = await fetch('https://crates.io/api/v1/me');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       user: {
@@ -40,7 +40,7 @@ module('Mirage | GET /api/v1/me', function (hooks) {
     this.server.create('crate-ownership', { crate: crate1, user });
     this.server.create('crate-ownership', { crate: crate3, user });
 
-    let response = await fetch('/api/v1/me');
+    let response = await fetch('https://crates.io/api/v1/me');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -53,7 +53,7 @@ module('Mirage | GET /api/v1/me', function (hooks) {
   test('returns an error if unauthenticated', async function (assert) {
     this.server.create('user');
 
-    let response = await fetch('/api/v1/me');
+    let response = await fetch('https://crates.io/api/v1/me');
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'must be logged in to perform that action' }],

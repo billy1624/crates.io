@@ -1,6 +1,7 @@
 import RESTAdapter from '@ember-data/adapter/rest';
 
 export default class ApplicationAdapter extends RESTAdapter {
+  host = 'https://crates.io';
   namespace = 'api/v1';
 
   handleResponse(status, headers, payload, requestData) {

@@ -41,7 +41,7 @@ module('Acceptance | Settings | Remove Owner', function (hooks) {
 
     // we are intentionally returning a 200 response here, because is what
     // the real backend also returns due to legacy reasons
-    this.server.delete('/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
+    this.server.delete('https://crates.io/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
 
     await visit(`/crates/${crate.name}/settings`);
     await click(`[data-test-owner-user="${user2.login}"] [data-test-remove-owner-button]`);
@@ -67,7 +67,7 @@ module('Acceptance | Settings | Remove Owner', function (hooks) {
 
     // we are intentionally returning a 200 response here, because is what
     // the real backend also returns due to legacy reasons
-    this.server.delete('/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
+    this.server.delete('https://crates.io/api/v1/crates/nanomsg/owners', { errors: [{ detail: 'nope' }] });
 
     await visit(`/crates/${crate.name}/settings`);
     await click(`[data-test-owner-team="${team1.login}"] [data-test-remove-owner-button]`);

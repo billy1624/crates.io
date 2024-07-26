@@ -13,7 +13,7 @@ module('Mirage | PUT /api/v1/confirm/:token', function (hooks) {
     let user = this.server.create('user', { emailVerificationToken: 'foo' });
     assert.false(user.emailVerified);
 
-    let response = await fetch('/api/v1/confirm/foo', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/confirm/foo', { method: 'PUT' });
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), { ok: true });
 
@@ -27,7 +27,7 @@ module('Mirage | PUT /api/v1/confirm/:token', function (hooks) {
 
     this.server.create('mirage-session', { user });
 
-    let response = await fetch('/api/v1/confirm/foo', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/confirm/foo', { method: 'PUT' });
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), { ok: true });
 
@@ -36,7 +36,7 @@ module('Mirage | PUT /api/v1/confirm/:token', function (hooks) {
   });
 
   test('returns an error for unknown tokens', async function (assert) {
-    let response = await fetch('/api/v1/confirm/unknown', { method: 'PUT' });
+    let response = await fetch('https://crates.io/api/v1/confirm/unknown', { method: 'PUT' });
     assert.strictEqual(response.status, 400);
     assert.deepEqual(await response.json(), {
       errors: [{ detail: 'Email belonging to token not found.' }],

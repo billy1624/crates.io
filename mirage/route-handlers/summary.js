@@ -37,5 +37,5 @@ export function summary(schema) {
 }
 
 export function register(server) {
-  server.get('/api/v1/summary', summary);
+  server.get('https://crates.io/api/v1/summary', summary);
 }

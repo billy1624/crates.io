@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
   setupMirage(hooks);
 
   test('returns 404 for unknown crates', async function (assert) {
-    let response = await fetch('/api/v1/crates/foo/reverse_dependencies');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/reverse_dependencies');
     assert.strictEqual(response.status, 404);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'Not Found' }] });
   });
@@ -18,7 +18,7 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
   test('empty case', async function (assert) {
     this.server.create('crate', { name: 'rand' });
 
-    let response = await fetch('/api/v1/crates/rand/reverse_dependencies');
+    let response = await fetch('https://crates.io/api/v1/crates/rand/reverse_dependencies');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       dependencies: [],
@@ -46,7 +46,7 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
       }),
     });
 
-    let response = await fetch('/api/v1/crates/foo/reverse_dependencies');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/reverse_dependencies');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       dependencies: [
@@ -79,16 +79,16 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
           crate: 'bar',
           crate_size: 0,
           created_at: '2010-06-16T21:30:45Z',
-          dl_path: '/api/v1/crates/bar/1.0.0/download',
+          dl_path: 'https://crates.io/api/v1/crates/bar/1.0.0/download',
           downloads: 0,
           license: 'MIT/Apache-2.0',
           links: {
-            dependencies: '/api/v1/crates/bar/1.0.0/dependencies',
-            version_downloads: '/api/v1/crates/bar/1.0.0/downloads',
+            dependencies: 'https://crates.io/api/v1/crates/bar/1.0.0/dependencies',
+            version_downloads: 'https://crates.io/api/v1/crates/bar/1.0.0/downloads',
           },
           num: '1.0.0',
           published_by: null,
-          readme_path: '/api/v1/crates/bar/1.0.0/readme',
+          readme_path: 'https://crates.io/api/v1/crates/bar/1.0.0/readme',
           rust_version: null,
           updated_at: '2017-02-24T12:34:56Z',
           yanked: false,
@@ -98,16 +98,16 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
           crate: 'baz',
           crate_size: 162_963,
           created_at: '2010-06-16T21:30:45Z',
-          dl_path: '/api/v1/crates/baz/1.0.1/download',
+          dl_path: 'https://crates.io/api/v1/crates/baz/1.0.1/download',
           downloads: 3702,
           license: 'MIT',
           links: {
-            dependencies: '/api/v1/crates/baz/1.0.1/dependencies',
-            version_downloads: '/api/v1/crates/baz/1.0.1/downloads',
+            dependencies: 'https://crates.io/api/v1/crates/baz/1.0.1/dependencies',
+            version_downloads: 'https://crates.io/api/v1/crates/baz/1.0.1/downloads',
           },
           num: '1.0.1',
           published_by: null,
-          readme_path: '/api/v1/crates/baz/1.0.1/readme',
+          readme_path: 'https://crates.io/api/v1/crates/baz/1.0.1/readme',
           rust_version: null,
           updated_at: '2017-02-24T12:34:56Z',
           yanked: false,
@@ -130,7 +130,7 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
         }),
     });
 
-    let response = await fetch('/api/v1/crates/foo/reverse_dependencies');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/reverse_dependencies');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();
@@ -153,7 +153,7 @@ module('Mirage | GET /api/v1/crates/:id/reverse_dependencies', function (hooks) 
       versionId: i => versions[i].id,
     });
 
-    let response = await fetch('/api/v1/crates/foo/reverse_dependencies?page=2&per_page=5');
+    let response = await fetch('https://crates.io/api/v1/crates/foo/reverse_dependencies?page=2&per_page=5');
     assert.strictEqual(response.status, 200);
 
     let responsePayload = await response.json();

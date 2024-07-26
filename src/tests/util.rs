@@ -168,43 +168,43 @@ pub trait RequestHelper {
 
     /// Search for crates matching a query string
     async fn search(&self, query: &str) -> CrateList {
-        self.get_with_query("/api/v1/crates", query).await.good()
+        self.get_with_query("https://crates.io/api/v1/crates", query).await.good()
     }
 
     /// Publish the crate and run background jobs to completion
     ///
     /// Background jobs will publish to the git index and sync to the HTTP index.
     async fn publish_crate(&self, body: impl Into<Bytes>) -> Response<GoodCrate> {
-        let response = self.put("/api/v1/crates/new", body).await;
+        let response = self.put("https://crates.io/api/v1/crates/new", body).await;
         self.app().run_pending_background_jobs().await;
         response
     }
 
     /// Request the JSON used for a crate's page
     async fn show_crate(&self, krate_name: &str) -> CrateResponse {
-        let url = format!("/api/v1/crates/{krate_name}");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}");
         self.get(&url).await.good()
     }
 
     /// Request the JSON used to list a crate's owners
     async fn show_crate_owners(&self, krate_name: &str) -> OwnersResponse {
-        let url = format!("/api/v1/crates/{krate_name}/owners");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/owners");
         self.get(&url).await.good()
     }
 
     /// Request the JSON used for a crate version's page
     async fn show_version(&self, krate_name: &str, version: &str) -> VersionResponse {
-        let url = format!("/api/v1/crates/{krate_name}/{version}");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/{version}");
         self.get(&url).await.good()
     }
 
     async fn show_category(&self, category_name: &str) -> CategoryResponse {
-        let url = format!("/api/v1/categories/{category_name}");
+        let url = format!("https://crates.io/api/v1/categories/{category_name}");
         self.get(&url).await.good()
     }
 
     async fn show_category_list(&self) -> CategoryListResponse {
-        let url = "/api/v1/categories";
+        let url = "https://crates.io/api/v1/categories";
         self.get(url).await.good()
     }
 }
@@ -333,7 +333,7 @@ impl MockTokenUser {
 
     /// Add to the specified crate the specified owners.
     pub async fn add_named_owners(&self, krate_name: &str, owners: &[&str]) -> Response<OkBool> {
-        let url = format!("/api/v1/crates/{krate_name}/owners");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/owners");
         let body = json!({ "owners": owners }).to_string();
         self.put(&url, body).await
     }
@@ -345,7 +345,7 @@ impl MockTokenUser {
 
     /// Remove from the specified crate the specified owners.
     pub async fn remove_named_owners(&self, krate_name: &str, owners: &[&str]) -> Response<OkBool> {
-        let url = format!("/api/v1/crates/{krate_name}/owners");
+        let url = format!("https://crates.io/api/v1/crates/{krate_name}/owners");
         let body = json!({ "owners": owners }).to_string();
         self.delete_with_body(&url, body).await
     }

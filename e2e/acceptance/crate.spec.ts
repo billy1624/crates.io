@@ -94,7 +94,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
 
   test('other crate loading error shows an error message', async ({ page, mirage }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/crates/:crate_name', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name', {}, 500);
     });
 
     await page.goto('/crates/nanomsg');
@@ -127,7 +127,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
       server.create('version', { crate, num: '0.6.0' });
       server.create('version', { crate, num: '0.6.1' });
 
-      server.get('/api/v1/crates/:crate_name/versions', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_name/versions', {}, 500);
     });
 
     await page.goto('/');

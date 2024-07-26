@@ -37,7 +37,7 @@ async fn show() {
         krate
     });
 
-    let response = anon.get::<()>("/api/v1/crates/foo_show").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/foo_show").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".crate.created_at" => "[datetime]",
@@ -68,7 +68,7 @@ async fn show_minimal() {
     });
 
     let response = anon
-        .get::<()>("/api/v1/crates/foo_show_minimal?include=")
+        .get::<()>("https://crates.io/api/v1/crates/foo_show_minimal?include=")
         .await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
@@ -81,7 +81,7 @@ async fn show_minimal() {
 async fn test_missing() {
     let (_, anon) = TestApp::init().empty();
 
-    let response = anon.get::<()>("/api/v1/crates/missing").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/missing").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     assert_snapshot!(response.text(), @r###"{"errors":[{"detail":"crate `missing` does not exist"}]}"###);
 }
@@ -139,7 +139,7 @@ async fn test_new_name() {
     let (app, anon, user) = TestApp::init().with_user();
     app.db(|conn| CrateBuilder::new("new", user.as_model().id).expect_build(conn));
 
-    let response = anon.get::<()>("/api/v1/crates/new?include=").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/new?include=").await;
     assert_eq!(response.status(), StatusCode::OK);
     assert_json_snapshot!(response.json(), {
         ".crate.created_at" => "[datetime]",

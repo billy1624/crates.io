@@ -231,7 +231,7 @@ test.describe('/settings/tokens/new', { tag: '@routes' }, () => {
     await page.exposeBinding('resp500', () => new Response(500));
     await mirage.addHook(server => {
       globalThis.deferred = require('rsvp').defer();
-      server.put('/api/v1/me/tokens', () => globalThis.deferred.promise);
+      server.put('https://crates.io/api/v1/me/tokens', () => globalThis.deferred.promise);
     });
 
     await page.goto('/settings/tokens/new');

@@ -34,7 +34,7 @@ module('Model | User', function (hooks) {
 
       this.authenticateAs(user);
 
-      this.server.put('/api/v1/users/:user_id', {}, 500);
+      this.server.put('https://crates.io/api/v1/users/:user_id', {}, 500);
 
       let { currentUser } = await this.owner.lookup('service:session').loadUserTask.perform();
 
@@ -67,7 +67,7 @@ module('Model | User', function (hooks) {
       let user = this.server.create('user', { emailVerificationToken: 'secret123' });
       this.authenticateAs(user);
 
-      this.server.put('/api/v1/users/:user_id/resend', {}, 500);
+      this.server.put('https://crates.io/api/v1/users/:user_id/resend', {}, 500);
 
       let { currentUser } = await this.owner.lookup('service:session').loadUserTask.perform();
 

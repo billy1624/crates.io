@@ -23,7 +23,7 @@ export default class IndexController extends Controller {
   }
 
   dataTask = dropTask(async () => {
-    let data = await ajax('/api/v1/summary');
+    let data = await ajax('https://crates.io/api/v1/summary');
 
     addCrates(this.store, data.new_crates);
     addCrates(this.store, data.most_downloaded);

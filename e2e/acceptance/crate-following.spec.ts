@@ -28,7 +28,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
     await mirage.addHook(server => {
       globalThis.defer = require('rsvp').defer;
       globalThis.followingDeferred = globalThis.defer();
-      server.get('/api/v1/crates/:crate_id/following', globalThis.followingDeferred.promise);
+      server.get('https://crates.io/api/v1/crates/:crate_id/following', globalThis.followingDeferred.promise);
     });
 
     await page.goto('/crates/nanomsg');
@@ -46,7 +46,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
 
     await page.evaluate(() => {
       globalThis.followDeferred = globalThis.defer();
-      server.put('/api/v1/crates/:crate_id/follow', globalThis.followDeferred.promise);
+      server.put('https://crates.io/api/v1/crates/:crate_id/follow', globalThis.followDeferred.promise);
     });
     await followButton.click();
     await expect(followButton).toHaveText('Loading…');
@@ -60,7 +60,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
 
     await page.evaluate(() => {
       globalThis.unfollowDeferred = globalThis.defer();
-      server.delete('/api/v1/crates/:crate_id/follow', globalThis.unfollowDeferred.promise);
+      server.delete('https://crates.io/api/v1/crates/:crate_id/follow', globalThis.unfollowDeferred.promise);
     });
     await followButton.click();
     await expect(followButton).toHaveText('Loading…');
@@ -75,7 +75,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
 
   test('error handling when loading following state fails', async ({ mirage, page }) => {
     await mirage.addHook(server => {
-      server.get('/api/v1/crates/:crate_id/following', {}, 500);
+      server.get('https://crates.io/api/v1/crates/:crate_id/following', {}, 500);
     });
 
     await page.goto('/crates/nanomsg');
@@ -89,7 +89,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
 
   test('error handling when follow fails', async ({ mirage, page }) => {
     await mirage.addHook(server => {
-      server.put('/api/v1/crates/:crate_id/follow', {}, 500);
+      server.put('https://crates.io/api/v1/crates/:crate_id/follow', {}, 500);
     });
 
     await page.goto('/crates/nanomsg');
@@ -104,7 +104,7 @@ test.describe('Acceptance | Crate following', { tag: '@acceptance' }, () => {
       globalThis.following = true;
     });
     await mirage.addHook(server => {
-      server.del('/api/v1/crates/:crate_id/follow', {}, 500);
+      server.del('https://crates.io/api/v1/crates/:crate_id/follow', {}, 500);
     });
 
     await page.goto('/crates/nanomsg');

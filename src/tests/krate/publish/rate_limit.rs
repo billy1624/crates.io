@@ -38,7 +38,7 @@ async fn publish_new_crate_ratelimit_hit() {
 
     assert_eq!(app.stored_files().await.len(), 0);
 
-    let response = anon.get::<()>("/api/v1/crates/rate_limited").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/rate_limited").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
 }
 
@@ -150,7 +150,7 @@ async fn publish_new_crate_override_loosens_ratelimit() {
     rss/updates.xml
     "###);
 
-    let response = anon.get::<()>("/api/v1/crates/rate_limited3").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/rate_limited3").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
 }
 
@@ -207,7 +207,7 @@ async fn publish_new_crate_expired_override_ignored() {
     rss/updates.xml
     "###);
 
-    let response = anon.get::<()>("/api/v1/crates/rate_limited2").await;
+    let response = anon.get::<()>("https://crates.io/api/v1/crates/rate_limited2").await;
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
 }
 

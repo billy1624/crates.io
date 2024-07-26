@@ -14,7 +14,7 @@ module('Mirage | PUT /api/v1/users/:id', function (hooks) {
     this.server.create('mirage-session', { user });
 
     let body = JSON.stringify({ user: { email: 'new@email.com' } });
-    let response = await fetch(`/api/v1/users/${user.id}`, { method: 'PUT', body });
+    let response = await fetch(`https://crates.io/api/v1/users/${user.id}`, { method: 'PUT', body });
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), { ok: true });
 
@@ -28,7 +28,7 @@ module('Mirage | PUT /api/v1/users/:id', function (hooks) {
     let user = this.server.create('user', { email: 'old@email.com' });
 
     let body = JSON.stringify({ user: { email: 'new@email.com' } });
-    let response = await fetch(`/api/v1/users/${user.id}`, { method: 'PUT', body });
+    let response = await fetch(`https://crates.io/api/v1/users/${user.id}`, { method: 'PUT', body });
     assert.strictEqual(response.status, 403);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'must be logged in to perform that action' }] });
 
@@ -41,7 +41,7 @@ module('Mirage | PUT /api/v1/users/:id', function (hooks) {
     this.server.create('mirage-session', { user });
 
     let body = JSON.stringify({ user: { email: 'new@email.com' } });
-    let response = await fetch(`/api/v1/users/wrong-id`, { method: 'PUT', body });
+    let response = await fetch(`https://crates.io/api/v1/users/wrong-id`, { method: 'PUT', body });
     assert.strictEqual(response.status, 400);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'current user does not match requested user' }] });
 
@@ -54,7 +54,7 @@ module('Mirage | PUT /api/v1/users/:id', function (hooks) {
     this.server.create('mirage-session', { user });
 
     let body = JSON.stringify({});
-    let response = await fetch(`/api/v1/users/${user.id}`, { method: 'PUT', body });
+    let response = await fetch(`https://crates.io/api/v1/users/${user.id}`, { method: 'PUT', body });
     assert.strictEqual(response.status, 400);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'invalid json request' }] });
 
@@ -67,7 +67,7 @@ module('Mirage | PUT /api/v1/users/:id', function (hooks) {
     this.server.create('mirage-session', { user });
 
     let body = JSON.stringify({ user: { email: '' } });
-    let response = await fetch(`/api/v1/users/${user.id}`, { method: 'PUT', body });
+    let response = await fetch(`https://crates.io/api/v1/users/${user.id}`, { method: 'PUT', body });
     assert.strictEqual(response.status, 400);
     assert.deepEqual(await response.json(), { errors: [{ detail: 'empty email rejected' }] });
 

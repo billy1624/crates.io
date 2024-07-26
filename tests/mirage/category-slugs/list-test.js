@@ -10,7 +10,7 @@ module('Mirage | GET /api/v1/category_slugs', function (hooks) {
   setupMirage(hooks);
 
   test('empty case', async function (assert) {
-    let response = await fetch('/api/v1/category_slugs');
+    let response = await fetch('https://crates.io/api/v1/category_slugs');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       category_slugs: [],
@@ -24,7 +24,7 @@ module('Mirage | GET /api/v1/category_slugs', function (hooks) {
     });
     this.server.createList('category', 2);
 
-    let response = await fetch('/api/v1/category_slugs');
+    let response = await fetch('https://crates.io/api/v1/category_slugs');
     assert.strictEqual(response.status, 200);
     assert.deepEqual(await response.json(), {
       category_slugs: [
@@ -50,7 +50,7 @@ module('Mirage | GET /api/v1/category_slugs', function (hooks) {
   test('has no pagination', async function (assert) {
     this.server.createList('category', 25);
 
-    let response = await fetch('/api/v1/category_slugs');
+    let response = await fetch('https://crates.io/api/v1/category_slugs');
     assert.strictEqual(response.status, 200);
     assert.strictEqual((await response.json()).category_slugs.length, 25);
   });
