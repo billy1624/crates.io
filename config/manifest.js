@@ -2,7 +2,7 @@
 
 module.exports = function (/* environment, appConfig */) {
   return {
-    name: 'crates.io: Rust Package Registry',
+    name: 'rustacean.info',
     short_name: 'crates.io',
     description: 'crates.io is the default crate host for Rust.',
     start_url: '/',

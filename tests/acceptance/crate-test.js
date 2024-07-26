@@ -21,7 +21,7 @@ module('Acceptance | crate page', function (hooks) {
     await click('[data-test-just-updated] [data-test-crate-link="0"]');
 
     assert.strictEqual(currentURL(), '/crates/nanomsg/0.6.1');
-    assert.strictEqual(getPageTitle(), 'nanomsg - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'nanomsg - rustacean.info');
 
     assert.dom('[data-test-heading] [data-test-crate-name]').hasText('nanomsg');
     assert.dom('[data-test-heading] [data-test-crate-version]').hasText('v0.6.1');
@@ -36,7 +36,7 @@ module('Acceptance | crate page', function (hooks) {
 
     assert.strictEqual(currentURL(), '/crates/nanomsg');
     assert.strictEqual(currentRouteName(), 'crate.index');
-    assert.strictEqual(getPageTitle(), 'nanomsg - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'nanomsg - rustacean.info');
 
     assert.dom('[data-test-heading] [data-test-crate-name]').hasText('nanomsg');
     assert.dom('[data-test-heading] [data-test-crate-version]').hasText('v0.6.1');
@@ -55,7 +55,7 @@ module('Acceptance | crate page', function (hooks) {
 
     assert.strictEqual(currentURL(), '/crates/nanomsg/');
     assert.strictEqual(currentRouteName(), 'crate.index');
-    assert.strictEqual(getPageTitle(), 'nanomsg - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'nanomsg - rustacean.info');
 
     assert.dom('[data-test-heading] [data-test-crate-name]').hasText('nanomsg');
     assert.dom('[data-test-heading] [data-test-crate-version]').hasText('v0.6.1');
@@ -71,7 +71,7 @@ module('Acceptance | crate page', function (hooks) {
 
     assert.strictEqual(currentURL(), '/crates/nanomsg/0.6.0');
     assert.strictEqual(currentRouteName(), 'crate.version');
-    assert.strictEqual(getPageTitle(), 'nanomsg - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'nanomsg - rustacean.info');
 
     assert.dom('[data-test-heading] [data-test-crate-name]').hasText('nanomsg');
     assert.dom('[data-test-heading] [data-test-crate-version]').hasText('v0.6.0');

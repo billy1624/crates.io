@@ -10,7 +10,7 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('crates');
   this.route('crate', { path: '/crates/:crate_id' }, function () {
-    this.route('versions');
+    this.route('versions', { path: 'comments' });
     this.route('dependencies');
     this.route('version', { path: '/:version_num' });
     this.route('version-dependencies', { path: '/:version_num/dependencies' });

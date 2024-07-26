@@ -23,7 +23,7 @@ module('Acceptance | front page', function (hooks) {
     await visit('/');
 
     assert.strictEqual(currentURL(), '/');
-    assert.strictEqual(getPageTitle(), 'crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'rustacean.info');
 
     assert.dom('[data-test-install-cargo-link]').exists();
     assert.dom('[data-test-all-crates-link]').exists();

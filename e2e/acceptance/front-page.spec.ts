@@ -10,7 +10,7 @@ test.describe('Acceptance | front page', { tag: '@acceptance' }, () => {
     await page.goto('/');
 
     await expect(page).toHaveURL('/');
-    await expect(page).toHaveTitle('crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('rustacean.info');
 
     await expect(page.locator('[data-test-install-cargo-link]')).toBeVisible();
     await expect(page.locator('[data-test-all-crates-link]')).toBeVisible();

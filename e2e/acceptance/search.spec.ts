@@ -11,7 +11,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await page.locator('[data-test-search-form]').getByRole('button', { name: 'Submit' }).click();
 
     await expect(page).toHaveURL('/search?q=rust');
-    await expect(page).toHaveTitle("Search Results for 'rust' - crates.io: Rust Package Registry");
+    await expect(page).toHaveTitle("Search Results for 'rust' - rustacean.info");
 
     await expect(page.locator('[data-test-header]')).toHaveText("Search Results for 'rust'");
     await expect(page.locator('[data-test-search-nav]')).toHaveText('Displaying 1-7 of 7 total results');
@@ -39,7 +39,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await page.goto('/search?q=rust');
 
     await expect(page).toHaveURL('/search?q=rust');
-    await expect(page).toHaveTitle("Search Results for 'rust' - crates.io: Rust Package Registry");
+    await expect(page).toHaveTitle("Search Results for 'rust' - rustacean.info");
 
     await expect(page.locator('[data-test-search-input]')).toHaveValue('rust');
     await expect(page.locator('[data-test-header]')).toHaveText("Search Results for 'rust'");
@@ -251,7 +251,7 @@ test.describe('Acceptance | search', { tag: '@acceptance' }, () => {
     await page.goto('/search');
 
     await expect(page).toHaveURL('/search');
-    await expect(page).toHaveTitle('Search Results - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('Search Results - rustacean.info');
 
     await expect(page.locator('[data-test-header]')).toHaveText('Search Results');
     await expect(page.locator('[data-test-search-nav]')).toHaveText('Displaying 1-10 of 23 total results');

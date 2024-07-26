@@ -13,7 +13,7 @@ test.describe('Acceptance | crates page', { tag: '@acceptance' }, () => {
     await page.click('[data-test-all-crates-link]');
 
     await expect(page).toHaveURL('/crates');
-    await expect(page).toHaveTitle('Crates - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('Crates - rustacean.info');
 
     await percy.snapshot();
     await a11y.audit();
@@ -28,7 +28,7 @@ test.describe('Acceptance | crates page', { tag: '@acceptance' }, () => {
     await page.click('[data-test-all-crates-link]');
 
     await expect(page).toHaveURL('/crates');
-    await expect(page).toHaveTitle('Crates - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('Crates - rustacean.info');
   });
 
   test('listing crates', async ({ page, mirage }) => {

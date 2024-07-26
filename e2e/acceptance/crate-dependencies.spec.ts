@@ -8,7 +8,7 @@ test.describe('Acceptance | crate dependencies page', { tag: '@acceptance' }, ()
 
     await page.goto('/crates/nanomsg/dependencies');
     await expect(page).toHaveURL('/crates/nanomsg/0.6.1/dependencies');
-    expect(await page.title()).toBe('nanomsg - crates.io: Rust Package Registry');
+    expect(await page.title()).toBe('nanomsg - rustacean.info');
 
     await expect(page.locator('[data-test-dependencies] li')).toHaveCount(2);
     await expect(page.locator('[data-test-build-dependencies] li')).toHaveCount(1);

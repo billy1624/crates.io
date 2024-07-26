@@ -11,7 +11,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
     await page.click('[data-test-just-updated] [data-test-crate-link="0"]');
 
     await expect(page).toHaveURL('/crates/nanomsg/0.6.1');
-    await expect(page).toHaveTitle('nanomsg - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('nanomsg - rustacean.info');
 
     await expect(page.locator('[data-test-heading] [data-test-crate-name]')).toHaveText('nanomsg');
     await expect(page.locator('[data-test-heading] [data-test-crate-version]')).toHaveText('v0.6.1');
@@ -27,7 +27,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
     await page.goto('/crates/nanomsg');
 
     await expect(page).toHaveURL('/crates/nanomsg');
-    await expect(page).toHaveTitle('nanomsg - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('nanomsg - rustacean.info');
     // TODO: Add the following as a method to EmberPage fixture
     const currentRouteName = await ember.evaluate(owner => owner.lookup('router:main').currentRouteName);
     expect(currentRouteName).toBe('crate.index');
@@ -50,7 +50,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
     await page.goto('/crates/nanomsg/');
 
     await expect(page).toHaveURL('/crates/nanomsg/');
-    await expect(page).toHaveTitle('nanomsg - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('nanomsg - rustacean.info');
     // TODO: Add the following as a method to EmberPage fixture
     const currentRouteName = await ember.evaluate(owner => owner.lookup('router:main').currentRouteName);
     expect(currentRouteName).toBe('crate.index');
@@ -70,7 +70,7 @@ test.describe('Acceptance | crate page', { tag: '@acceptance' }, () => {
     await page.goto('/crates/nanomsg/0.6.0');
 
     await expect(page).toHaveURL('/crates/nanomsg/0.6.0');
-    await expect(page).toHaveTitle('nanomsg - crates.io: Rust Package Registry');
+    await expect(page).toHaveTitle('nanomsg - rustacean.info');
     // TODO: Add the following as a method to EmberPage fixture
     const currentRouteName = await ember.evaluate(owner => owner.lookup('router:main').currentRouteName);
     expect(currentRouteName).toBe('crate.version');

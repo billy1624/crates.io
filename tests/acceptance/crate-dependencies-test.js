@@ -18,7 +18,7 @@ module('Acceptance | crate dependencies page', function (hooks) {
 
     await visit('/crates/nanomsg/dependencies');
     assert.strictEqual(currentURL(), '/crates/nanomsg/0.6.1/dependencies');
-    assert.strictEqual(getPageTitle(), 'nanomsg - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'nanomsg - rustacean.info');
 
     assert.dom('[data-test-dependencies] li').exists({ count: 2 });
     assert.dom('[data-test-build-dependencies] li').exists({ count: 1 });

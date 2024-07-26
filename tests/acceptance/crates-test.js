@@ -22,7 +22,7 @@ module('Acceptance | crates page', function (hooks) {
     await click('[data-test-all-crates-link]');
 
     assert.strictEqual(currentURL(), '/crates');
-    assert.strictEqual(getPageTitle(), 'Crates - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'Crates - rustacean.info');
 
     await percySnapshot(assert);
     await a11yAudit(axeConfig);
@@ -35,7 +35,7 @@ module('Acceptance | crates page', function (hooks) {
     await click('[data-test-all-crates-link]');
 
     assert.strictEqual(currentURL(), '/crates');
-    assert.strictEqual(getPageTitle(), 'Crates - crates.io: Rust Package Registry');
+    assert.strictEqual(getPageTitle(), 'Crates - rustacean.info');
   });
 
   test('listing crates', async function (assert) {
