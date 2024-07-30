@@ -33,3 +33,4 @@ src/schema.rs.orig
 /blob-report/
 /playwright/.cache/
 
+.DS_Store
