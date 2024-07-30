@@ -1,0 +1,28 @@
+.results-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2xs);
+
+    @media only screen and (max-width: 550px) {
+        display: block;
+    }
+}
+
+.page-description {
+    composes: small from '../shared/typography.module.css';
+
+    @media only screen and (max-width: 550px) {
+        display: block;
+        margin-bottom: var(--space-s);
+    }
+}
+.list {
+    list-style: none;
+    margin: 0 0 var(--space-s);
+    padding: 0;
+
+    > * + * {
+        margin-top: var(--space-2xs);
+    }
+}

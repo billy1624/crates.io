@@ -6,12 +6,12 @@
     width: 100%;
     height: var(--space-2xl);
     padding: 0 var(--space-s);
-    background-color: light-dark(white, #141413);
+    background-color: var(--header-bg-color);
     color: light-dark(#525252, #f9f7ec);
     text-decoration: none;
     border-radius: var(--space-3xs);
     box-shadow: var(--shadow);
-    transition: background-color var(--transition-slow);
+    transition: all var(--transition-slow);
 
     &:focus-visible {
         outline: none;
@@ -19,9 +19,8 @@
     }
 
     &:hover, &:focus-visible {
-        color: light-dark(#525252, #f9f7ec);
-        background-color: light-dark(hsl(58deg 72% 97%), hsl(204, 3%, 11%));
-        transition: background-color var(--transition-instant);
+        color: var(--yellow500);
+        transition: all var(--transition-instant);
     }
 
     &:active {

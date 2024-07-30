@@ -1,0 +1,16 @@
+<CrateHeader @crate={{this.model}} />
+
+<ul local-class="list">
+  {{#if this.model.articles}}
+    {{#each this.model.articles as |article|}}
+      <li>
+        <ArticleList::Row @link={{article.link}} @title={{article.title}} local-class="row" data-test-version={{article.title}} />
+      </li>
+    {{/each}}
+    <br>
+    Contribute and post more related articles on <a href={{this.model.link_edit_articles}} target="_blank">GitHub</a>!
+  {{else}}
+    Contribute and post the first related article on <a href={{this.model.link_create_articles}} target="_blank">GitHub</a>!
+  {{/if}}
+  Read contributing guide <a href={{this.model.link_contribute_articles}} target="_blank">here</a>.
+</ul>

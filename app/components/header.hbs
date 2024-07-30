@@ -1,4 +1,5 @@
-<header local-class="header {{if @hero "hero"}}">
+{{!-- <header local-class="header {{if @hero "hero"}}"> --}}
+<header local-class="header {{false}}">
   <div local-class="header-inner">
     <LinkTo @route="index" local-class="index-link">
       <img src="/assets/cargo.png" role="none" alt="" local-class="logo">
@@ -6,11 +7,12 @@
     </LinkTo>
 
     <div local-class="search-form">
-      <h1 local-class="hero-title">
+      {{!-- <h1 local-class="hero-title">
         The Rust community&rsquo;s crate registry
-      </h1>
+      </h1> --}}
 
-      <SearchForm @size={{if @hero "big"}} />
+      {{!-- <SearchForm @size={{if @hero "big"}} /> --}}
+      <SearchForm @size={{false}} />
     </div>
 
     <nav local-class='nav'>

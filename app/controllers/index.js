@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { reads } from 'macro-decorators';
 
-import ajax from '../utils/ajax';
+import { ajax_fail } from '../utils/ajax';
 
 export default class IndexController extends Controller {
   @service store;
@@ -23,15 +23,28 @@ export default class IndexController extends Controller {
   }
 
   dataTask = dropTask(async () => {
-    let data = await ajax('https://crates.io/api/v1/summary');
+    let data = await ajax_fail(
+      'https://raw.githubusercontent.com/billy1624/crates.io/rustacean.info/public/related-articles.json',
+    );
 
-    addCrates(this.store, data.new_crates);
-    addCrates(this.store, data.most_downloaded);
-    addCrates(this.store, data.just_updated);
-    addCrates(this.store, data.most_recently_downloaded);
+    shuffle(data);
 
-    return data;
+    return data.slice(0, 100);
   });
+}
+
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
 }
 
 function addCrates(store, crates) {

@@ -24,6 +24,25 @@ export default async function ajax(input, init) {
   throw new AjaxError({ url: _input, method, cause });
 }
 
+export async function ajax_fail(input, init) {
+  let _input = input;
+
+  if (!_input.startsWith('http')) {
+    _input = 'https://crates.io/' + _input.replace(/^(\/)/, '');
+  }
+
+  try {
+    let response = await fetch(_input, init);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch {
+    return [];
+  }
+
+  return [];
+}
+
 export class HttpError extends Error {
   constructor({ url, method, response }) {
     let message = `${method} ${url} failed with: ${response.status} ${response.statusText}`;
