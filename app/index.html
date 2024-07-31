@@ -18,12 +18,12 @@
 
     {{content-for 'head-footer'}}
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/assets/cargo.png" type="image/png">
-    <link rel="search" href="/opensearch.xml" type="application/opensearchdescription+xml" title="Cargo">
+    <link rel="icon" href="/assets/ferris.png" type="image/png">
+    <link rel="search" href="/opensearch.xml" type="application/opensearchdescription+xml" title="rustacean.info">
 
     <meta name="google" content="notranslate" />
 
-    <meta property="og:image" content="https://crates.io/assets/og-image.png">
+    <meta property="og:image" content="{{rootURL}}assets/ferris.png">
     <meta name="twitter:card" content="summary_large_image">
   </head>
   <body>
@@ -34,7 +34,7 @@
     {{content-for 'body'}}
 
     <!-- if you change the following inline script make sure to change the CSP settings of nginx! -->
-    <script>window.onerror=function(){document.body.innerHTML='<p style="width: 70%;background: var(--main-bg);padding: 10px;">Sorry, it looks like we were not able to load the page. Please make sure your network connection works and you are using an up-to-date browser. If the issue persists, please visit our <a href="https://github.com/rust-lang/crates.io/issues/new/choose">issue tracker</a> to report the problem.</p>'}</script>
+    <script>window.onerror=function(){document.body.innerHTML=''}</script>
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/crates-io.js"></script>
 

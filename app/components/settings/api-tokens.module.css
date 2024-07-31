@@ -22,7 +22,7 @@
     padding: 0;
     list-style: none;
     border-radius: var(--space-3xs);
-    background-color: light-dark(white, #141413);
+    background-color: var(--header-bg-color);
     box-shadow: 0 1px 3px light-dark(hsla(51, 90%, 42%, .35), #232321);
 
     > * {
@@ -147,7 +147,7 @@
     padding: var(--space-xl-2xl);
     border: 2px light-dark(black, white) dashed;
     border-radius: var(--space-3xs);
-    background-color: light-dark(white, #141413);
+    background-color: var(--header-bg-color);
     box-shadow: 0 2px 3px light-dark(hsla(51, 50%, 45%, .35), #232321);
 }
 

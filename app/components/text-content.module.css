@@ -1,6 +1,6 @@
 .boxed {
     padding: var(--space-m);
-    background-color: light-dark(white, #141413);
+    background-color: var(--header-bg-color);
     margin-bottom: var(--space-s);
     border-radius: 5px;
 }

@@ -7,7 +7,7 @@
     position: relative;
     font-size: 18px;
     padding: var(--space-s) var(--space-m);
-    background-color: light-dark(white, #141413);
+    background-color: var(--header-bg-color);
     border-radius: var(--space-3xs);
     box-shadow: var(--shadow);
     transition: all var(--transition-slow);

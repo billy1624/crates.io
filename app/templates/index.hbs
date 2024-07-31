@@ -1,6 +1,11 @@
 <div local-class='lists' data-test-lists>
   <section data-test-new-crates >
-    <h2>Your daily dose of Rust</h2>
+    <div local-class="logo-div">
+      <img src="/assets/ferris.png" role="none" alt="" local-class="logo">
+    </div>
+    <h1 local-class="hero-title">
+      Your daily dose of Rust
+    </h1>
     <ol local-class="list" aria-busy="{{this.dataTask.isRunning}}">
       {{#if this.dataTask.isRunning}}
         {{#each (placeholders 10)}}

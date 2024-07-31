@@ -1,3 +1,20 @@
+.logo-div {
+    text-align: center;
+}
+
+.logo {
+    max-width: 100%;
+    width: 280px;
+}
+
+.hero-title {
+    margin: 0 0 var(--space-l);
+    font-size: var(--space-m-l);
+    text-align: center;
+    color: white;
+    text-shadow: 1px 3px 2px var(--green900);
+}
+
 .hero-buttons {
     display: flex;
     flex-wrap: wrap;

@@ -9,7 +9,7 @@
         color: var(--main-color) !important;
 
         &:hover {
-            background: #5e5e5e;
+            background: var(--main-bg);
             color: white !important;
         }
     }
