@@ -14,14 +14,14 @@ export default class CrateRoute extends Route {
     try {
       return (async () => {
         const data = await ajax_fail(
-          `https://raw.githubusercontent.com/billy1624/crates.io/rustacean.info/public/related-articles/${crateName}.json`,
+          `https://raw.githubusercontent.com/SeaQL/rustacean.info/main/related-articles/${crateName}.json`,
         );
         const res = await this.store.findRecord('crate', crateName);
         Object.assign(res, {
           articles: data,
-          link_contribute_articles: `https://github.com/billy1624/crates.io/blob/rustacean.info/public/related-articles/_CONTRIBUTING.md`,
-          link_create_articles: `https://github.com/billy1624/crates.io/tree/rustacean.info/public/related-articles`,
-          link_edit_articles: `https://github.com/billy1624/crates.io/edit/rustacean.info/public/related-articles/${crateName}.json`,
+          link_contribute_articles: `https://github.com/SeaQL/rustacean.info/blob/main/CONTRIBUTING.md`,
+          link_create_articles: `https://github.com/SeaQL/rustacean.info/new/main/related-articles`,
+          link_edit_articles: `https://github.com/SeaQL/rustacean.info/edit/main/related-articles/${crateName}.json`,
         });
         return res;
       })();

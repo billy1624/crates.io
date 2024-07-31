@@ -23,9 +23,7 @@ export default class IndexController extends Controller {
   }
 
   dataTask = dropTask(async () => {
-    let data = await ajax_fail(
-      'https://raw.githubusercontent.com/billy1624/crates.io/rustacean.info/public/related-articles.json',
-    );
+    let data = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/main/related-articles.json');
 
     shuffle(data);
 

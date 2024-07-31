@@ -6,5 +6,13 @@ find -not -path "./.git/*" -not -name ".git" -not -name ".gitignore" -delete
 cd ~/Projects/rustacean.info
 find -not -path "./.git/*" -not -name ".git" -not -name ".gitignore" -delete
 
-cp -a ~/Projects/crates.io/dist/* ~/Projects/billy1624.github.io/
-cp -a ~/Projects/crates.io/dist/* ~/Projects/rustacean.info/
+cp -r ~/Projects/crates.io/dist/* ~/Projects/billy1624.github.io/
+cp -r ~/Projects/crates.io/dist/* ~/Projects/rustacean.info/
+
+cd ~/Projects/billy1624.github.io
+git add --all
+git commit --amend
+
+cd ~/Projects/rustacean.info
+git add --all
+git commit --amend
