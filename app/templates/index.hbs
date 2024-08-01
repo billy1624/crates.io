@@ -8,7 +8,7 @@
     </h1>
     <ol local-class="list" aria-busy="{{this.dataTask.isRunning}}">
       {{#if this.dataTask.isRunning}}
-        {{#each (placeholders 10)}}
+        {{#each (placeholders 100)}}
           <li>
             <FrontPageList::Item::Placeholder @withSubtitle={{true}} />
           </li>
