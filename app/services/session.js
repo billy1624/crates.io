@@ -183,6 +183,8 @@ export default class SessionService extends Service {
   loadUserTask = dropTask(async () => {
     if (!this.isLoggedIn) return {};
 
+    return {};
+
     let response;
     try {
       response = await ajax('https://crates.io/api/v1/me');

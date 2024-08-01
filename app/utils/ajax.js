@@ -36,7 +36,8 @@ export async function ajax_fail(input, init) {
     if (response.ok) {
       return await response.json();
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return [];
   }
 

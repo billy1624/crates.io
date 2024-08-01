@@ -85,6 +85,7 @@ fn write_crates_to_json(crates: &[Crate]) -> Result<(), Box<dyn Error>> {
     let json_file = fs::OpenOptions::new()
         .create(true)
         .write(true)
+        .truncate(true)
         .open("crates.json")?;
     serde_json::to_writer_pretty(json_file, crates)?;
     Ok(())
@@ -216,6 +217,7 @@ async fn curl_twir_links() -> Result<(), Box<dyn Error>> {
         let mut html_file = fs::OpenOptions::new()
             .create(true)
             .write(true)
+            .truncate(true)
             .open(file_name)?;
 
         html_file.write_all(format!("<!-- {date} -->\n").as_bytes())?;
@@ -352,6 +354,7 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
             let json_file = fs::OpenOptions::new()
                 .create(true)
                 .write(true)
+                .truncate(true)
                 .open(format!(
                     "../../rustacean.info/related-articles/{}.json",
                     crate_row.name
@@ -377,8 +380,16 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
     let json_file = fs::OpenOptions::new()
         .create(true)
         .write(true)
-        .open("../../rustacean.info/related-articles.json")?;
+        .truncate(true)
+        .open("../../rustacean.info/related-articles/_links.json")?;
     serde_json::to_writer_pretty(json_file, &all_links)?;
+
+    let json_file_minify = fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open("../../rustacean.info/related-articles/_links.min.json")?;
+    serde_json::to_writer(json_file_minify, &all_links)?;
 
     dbg!(&num_crates);
     dbg!(&num_crates_with_links);
