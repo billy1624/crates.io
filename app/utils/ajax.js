@@ -43,6 +43,11 @@ export async function ajax_fail(input, init) {
   return [];
 }
 
+export function htmlDecode(input) {
+  var doc = new DOMParser().parseFromString(input, 'text/html');
+  return doc.documentElement.textContent;
+}
+
 export class HttpError extends Error {
   constructor({ url, method, response }) {
     let message = `${method} ${url} failed with: ${response.status} ${response.statusText}`;

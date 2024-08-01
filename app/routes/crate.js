@@ -1,7 +1,7 @@
 import { NotFoundError } from '@ember-data/adapter/error';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { ajax_fail } from '../utils/ajax';
+import { ajax_fail, htmlDecode } from '../utils/ajax';
 
 export default class CrateRoute extends Route {
   @service headData;
@@ -18,7 +18,10 @@ export default class CrateRoute extends Route {
         );
         const res = await this.store.findRecord('crate', crateName);
         Object.assign(res, {
-          articles: data,
+          articles: data.map(row => {
+            row.title = htmlDecode(row.title);
+            return row;
+          }),
           link_contribute_articles: `https://github.com/SeaQL/rustacean.info/blob/main/CONTRIBUTING.md`,
           link_create_articles: `https://github.com/SeaQL/rustacean.info/new/main/related-articles`,
           link_edit_articles: `https://github.com/SeaQL/rustacean.info/edit/main/related-articles/${crateName}.json`,

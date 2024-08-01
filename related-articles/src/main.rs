@@ -330,6 +330,7 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
 fn output_related_articles() -> Result<(), Box<dyn Error>> {
     let file = fs::File::open("crates.json")?;
     let mut crates: Vec<Crate> = serde_json::from_reader(file)?;
+    let mut num_crates_with_links = 0;
     let num_crates = crates.len();
 
     for (i, crate_row) in crates.iter_mut().enumerate() {
@@ -352,10 +353,11 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
                 .create(true)
                 .write(true)
                 .open(format!(
-                    "../public/related-articles/{}.json",
+                    "../../rustacean.info/related-articles/{}.json",
                     crate_row.name
                 ))?;
             serde_json::to_writer_pretty(json_file, &crate_row.links)?;
+            num_crates_with_links += 1;
         }
     }
 
@@ -366,11 +368,21 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
 
         all_links.extend(crate_row.links);
     }
+    all_links = all_links
+        .into_iter()
+        .sorted_by_key(|link| link.link.clone())
+        .dedup_by(|a, b| a.link == b.link)
+        .collect();
+
     let json_file = fs::OpenOptions::new()
         .create(true)
         .write(true)
-        .open("../public/related-articles.json")?;
+        .open("../../rustacean.info/related-articles.json")?;
     serde_json::to_writer_pretty(json_file, &all_links)?;
+
+    dbg!(&num_crates);
+    dbg!(&num_crates_with_links);
+    dbg!(&all_links.len());
 
     Ok(())
 }

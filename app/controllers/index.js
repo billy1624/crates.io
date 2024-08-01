@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { reads } from 'macro-decorators';
 
-import { ajax_fail } from '../utils/ajax';
+import { ajax_fail, htmlDecode } from '../utils/ajax';
 
 export default class IndexController extends Controller {
   @service store;
@@ -27,7 +27,10 @@ export default class IndexController extends Controller {
 
     shuffle(data);
 
-    return data.slice(0, 100);
+    return data.slice(0, 100).map(row => {
+      row.title = htmlDecode(row.title);
+      return row;
+    });
   });
 }
 
