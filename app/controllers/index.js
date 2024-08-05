@@ -31,6 +31,7 @@ export default class IndexController extends Controller {
 
     return data.slice(0, 100).map(row => {
       row.title = htmlDecode(row.title);
+      row.crate_link = `/crates/${row.crate_name}`;
       return row;
     });
   });

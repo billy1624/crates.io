@@ -17,17 +17,30 @@ struct Crate {
     #[serde(default)]
     crates_io: String,
     #[serde(default)]
+    docs_rs: String,
+    #[serde(default)]
     links: Vec<Link>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct Link {
+    #[serde(default)]
+    date: String,
+    title: String,
+    link: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+struct LinkCrate {
+    crate_name: String,
+    date: String,
     title: String,
     link: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 struct HtmlPage {
+    date: String,
     title: String,
     link: String,
     content_links: Vec<String>,
@@ -43,12 +56,15 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
     while let Some(line) = iter.next() {
         let mut row: Crate = line?;
         row.crates_io = format!("https://crates.io/crates/{}", row.name);
+        row.docs_rs = format!("https://docs.rs/{}", row.name);
         row.repository = row.repository.trim_start_matches("https://").into();
         row.repository = row.repository.trim_start_matches("http://").into();
         row.crates_io = row.crates_io.trim_start_matches("https://").into();
         row.crates_io = row.crates_io.trim_start_matches("http://").into();
         row.homepage = row.homepage.trim_start_matches("https://").into();
         row.homepage = row.homepage.trim_start_matches("http://").into();
+        row.docs_rs = row.docs_rs.trim_start_matches("https://").into();
+        row.docs_rs = row.docs_rs.trim_start_matches("http://").into();
         row.repository = row.repository.trim().into();
         row.crates_io = row.crates_io.trim().into();
         row.homepage = row.homepage.trim().into();
@@ -63,6 +79,8 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
             "facebook.com",
             "crates.io/",
             "crates.io",
+            "example.com/",
+            "example.com",
         ];
         for filter in filters {
             if row.repository == filter {
@@ -70,6 +88,9 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
             }
             if row.crates_io == filter {
                 row.crates_io = "".into();
+            }
+            if row.docs_rs == filter {
+                row.docs_rs = "".into();
             }
             if row.homepage == filter {
                 row.homepage = "".into();
@@ -141,6 +162,7 @@ async fn curl_twir_links() -> Result<(), Box<dyn Error>> {
                     "google.com",
                     "youtu.be",
                     "youtube.com",
+                    "example.com",
                 ];
                 for filter in filters {
                     if link.contains(filter) {
@@ -271,6 +293,18 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
 
             let s = contents
                 .match_indices("<!-- ")
+                .nth(0)
+                .map(|(idx, _)| idx)
+                .unwrap();
+            let e = contents
+                .match_indices(" -->")
+                .nth(0)
+                .map(|(idx, _)| idx)
+                .unwrap();
+            let date = contents[(s + 5)..e].to_string();
+
+            let s = contents
+                .match_indices("<!-- ")
                 .nth(1)
                 .map(|(idx, _)| idx)
                 .unwrap();
@@ -286,9 +320,15 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
                 .spans(&contents)
                 .map(|span| span.as_str().to_string())
                 .filter(|link| link.starts_with("http"))
+                .map(|link| {
+                    link.trim_start_matches("https://")
+                        .trim_start_matches("http://")
+                        .to_string()
+                })
                 .collect();
 
             HtmlPage {
+                date,
                 title,
                 link,
                 content_links,
@@ -308,13 +348,16 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
             for html_page in html_pages.iter() {
                 for content_link in html_page.content_links.iter() {
                     if (!crate_row.crates_io.is_empty()
-                        && content_link.ends_with(&crate_row.crates_io))
+                        && content_link.starts_with(&crate_row.crates_io))
+                        || (!crate_row.docs_rs.is_empty()
+                            && content_link.starts_with(&crate_row.docs_rs))
                         || (!crate_row.repository.is_empty()
-                            && content_link.ends_with(&crate_row.repository))
+                            && content_link.starts_with(&crate_row.repository))
                         || (!crate_row.homepage.is_empty()
-                            && content_link.ends_with(&crate_row.homepage))
+                            && content_link.starts_with(&crate_row.homepage))
                     {
                         let link_row = Link {
+                            date: html_page.date.to_string(),
                             title: html_page.title.to_string(),
                             link: html_page.link.to_string(),
                         };
@@ -346,35 +389,58 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
         }
     }
 
+    let mut all_links = Vec::new();
+
     for (i, crate_row) in crates.iter().enumerate() {
         let n = i + 1;
         println!("Stage.2 [{n} / {num_crates}] {}", crate_row.name);
+        let file_name = format!(
+            "../../rustacean.info/related-articles/{}.json",
+            crate_row.name
+        );
 
-        if !crate_row.links.is_empty() {
+        let mut links: Vec<Link> = if let Ok(file) = fs::File::open(&file_name) {
+            serde_json::from_reader(file)?
+        } else {
+            Vec::new()
+        };
+
+        links.extend(crate_row.links.clone());
+        links = links
+            .into_iter()
+            .sorted_by_key(|link| link.link.clone())
+            .dedup_by(|a, b| a.link == b.link)
+            .sorted_by_key(|link| link.date.clone())
+            .rev()
+            .collect();
+
+        if !links.is_empty() {
             let json_file = fs::OpenOptions::new()
                 .create(true)
                 .write(true)
                 .truncate(true)
-                .open(format!(
-                    "../../rustacean.info/related-articles/{}.json",
-                    crate_row.name
-                ))?;
-            serde_json::to_writer_pretty(json_file, &crate_row.links)?;
+                .open(file_name)?;
+
+            serde_json::to_writer_pretty(json_file, &links)?;
             num_crates_with_links += 1;
+        } else {
+            let _ = fs::remove_file(file_name);
         }
+
+        all_links.extend(links.into_iter().map(|link| LinkCrate {
+            crate_name: crate_row.name.to_string(),
+            date: link.date,
+            title: link.title,
+            link: link.link,
+        }));
     }
 
-    let mut all_links = Vec::new();
-    for (i, crate_row) in crates.into_iter().enumerate() {
-        let n = i + 1;
-        println!("Stage.3 [{n} / {num_crates}] {}", crate_row.name);
-
-        all_links.extend(crate_row.links);
-    }
     all_links = all_links
         .into_iter()
         .sorted_by_key(|link| link.link.clone())
         .dedup_by(|a, b| a.link == b.link)
+        .sorted_by_key(|link| link.date.clone())
+        .rev()
         .collect();
 
     let json_file = fs::OpenOptions::new()
@@ -403,7 +469,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // get_crates()?;
     // curl_twir_links()?;
     // consolidate_crates_json()?;
-    // output_related_articles()?;
+    output_related_articles()?;
 
     Ok(())
 }

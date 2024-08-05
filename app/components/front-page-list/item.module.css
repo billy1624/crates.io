@@ -1,3 +1,7 @@
+.link a {
+    color: light-dark(#525252, #f9f7ec);
+}
+
 .link {
     --shadow: 0 2px 3px light-dark(hsla(51, 50%, 44%, .35), #232321);
 

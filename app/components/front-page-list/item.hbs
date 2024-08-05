@@ -1,5 +1,10 @@
-<a href={{@link}} local-class="link" target="_blank" ...attributes>
+<div local-class="link" ...attributes>
   <div local-class="left">
-    <div local-class="title">{{@title}}</div>
+    <a href={{@link}} target="_blank">
+      <div local-class="title">{{@title}}</div>
+    </a>
+    <a href={{@crate_link}} target="_blank">
+      <div local-class="subtitle">{{@crate_name}}</div>
+    </a>
   </div>
-</a>
+</div>

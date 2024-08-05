@@ -6,7 +6,7 @@
   {{#if this.model.articles}}
     {{#each this.model.articles as |article|}}
       <li>
-        <ArticleList::Row @link={{article.link}} @title={{article.title}} local-class="row" data-test-version={{article.title}} />
+        <ArticleList::Row @link={{article.link}} @title={{article.title}} @date={{article.date}} local-class="row" data-test-version={{article.title}} />
       </li>
     {{/each}}
     <br>

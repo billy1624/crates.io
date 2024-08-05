@@ -5,7 +5,8 @@
     --shadow: 0 1px 3px light-dark(hsla(51, 90%, 42%, .35), #232321);
 
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     position: relative;
     font-size: 18px;
     padding: var(--space-s) var(--space-m);
@@ -60,7 +61,7 @@
 
     @media only screen and (max-width: 550px) {
         grid-template-columns: auto;
-        margin: 0 var(--space-s);
+        /* margin: 0 var(--space-s); */
     }
 }
 
@@ -132,7 +133,7 @@
 
 .metadata {
     flex-grow: 1;
-    margin-left: var(--space-m);
+    margin-top: var(--space-3xs);
     color: light-dark(var(--grey600), #d1cfc7);
     text-transform: uppercase;
     letter-spacing: .7px;
@@ -176,7 +177,7 @@
 .avatar {
     height: 1.5em;
     width: auto;
-    margin-left: var(--space-4xs);
+    /* margin-left: var(--space-4xs); */
     margin-bottom: -.4em;
     border-radius: 50%;
     box-shadow: 0 1px 1px 0 var(--grey600);
@@ -185,7 +186,7 @@
 
 .metadata-row {
     > * + * {
-        margin-left: var(--space-s);
+        /* margin-left: var(--space-s); */
     }
 
     @media only screen and (max-width: 750px) {
@@ -194,7 +195,7 @@
         align-items: flex-start;
 
         > * + * {
-            margin-left: 0;
+            /* margin-left: 0; */
             margin-top: var(--space-xs);
         }
     }
@@ -226,7 +227,7 @@
 
 .yank-button {
     position: relative;
-    margin-left: var(--space-xs);
+    /* margin-left: var(--space-xs); */
 
     @media only screen and (max-width: 550px) {
         display: none;

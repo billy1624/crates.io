@@ -6,5 +6,14 @@
     <div local-class="version">
       {{@title}}
     </div>
+    <div local-class="metadata">
+      <div local-class="metadata-row">
+        {{#if @date}}
+          <span local-class="msrv">
+            {{@date}}
+          </span>
+        {{/if}}
+      </div>
+    </div>
   </div>
 </a>
