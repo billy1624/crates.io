@@ -11,8 +11,10 @@ cp -r ~/Projects/crates.io/dist/* ~/Projects/rustacean.info/
 
 cd ~/Projects/billy1624.github.io
 git add --all
-git commit --amend --no-edit
+# git commit --amend --no-edit
+git commit -m "publish"
 
 cd ~/Projects/rustacean.info
 git add --all
-git commit --amend --no-edit
+# git commit --amend --no-edit
+git commit -m "publish"
