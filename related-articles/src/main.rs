@@ -46,6 +46,103 @@ struct HtmlPage {
     content_links: Vec<String>,
 }
 
+fn gen_sitemap() -> Result<(), Box<dyn Error>> {
+    use sitemap_rs::sitemap::Sitemap;
+    use sitemap_rs::sitemap_index::SitemapIndex;
+    use sitemap_rs::url::{ChangeFrequency, Url};
+    use sitemap_rs::url_set::UrlSet;
+
+    let file = fs::File::open("crates.csv")?;
+    let rdr = csv::Reader::from_reader(file);
+    let mut iter = rdr.into_deserialize();
+
+    let mut crates = Vec::new();
+
+    while let Some(line) = iter.next() {
+        let row: Crate = line?;
+        crates.push(row);
+    }
+
+    // dbg!(&crates);
+
+    let mut page_num = 1;
+    let mut sitemap_crates = Vec::new();
+    let mut sitemap_articles = Vec::new();
+    for rows in &crates.into_iter().chunks(10_000) {
+        dbg!(&page_num);
+
+        sitemap_crates.push(Sitemap::new(
+            format!("https://rustacean.info/sitemap-crates-{page_num:03}.xml"),
+            None,
+        ));
+        sitemap_articles.push(Sitemap::new(
+            format!("https://rustacean.info/sitemap-articles-{page_num:03}.xml"),
+            None,
+        ));
+
+        let mut sitemap_crates_urls = Vec::new();
+        let mut sitemap_articles_urls = Vec::new();
+
+        for row in rows {
+            let name = row.name;
+            sitemap_crates_urls.push(
+                Url::builder(format!("https://rustacean.info/crates/{}", name))
+                    .change_frequency(ChangeFrequency::Daily)
+                    .priority(0.8)
+                    .build()?,
+            );
+            sitemap_articles_urls.push(
+                Url::builder(format!("https://rustacean.info/crates/{}/articles", name))
+                    .change_frequency(ChangeFrequency::Daily)
+                    .priority(0.8)
+                    .build()?,
+            );
+        }
+
+        // dbg!(&sitemap_crates_urls);
+        // dbg!(&sitemap_articles_urls);
+
+        let sitemap_crates_urls = UrlSet::new(sitemap_crates_urls)?;
+        let mut sitemap_crates_urls_file = fs::OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(format!("../public/sitemap-crates-{page_num:03}.xml"))?;
+        sitemap_crates_urls.write(&mut sitemap_crates_urls_file).unwrap();
+
+        let sitemap_articles_urls = UrlSet::new(sitemap_articles_urls)?;
+        let mut sitemap_articles_urls_file = fs::OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(format!("../public/sitemap-articles-{page_num:03}.xml"))?;
+        sitemap_articles_urls.write(&mut sitemap_articles_urls_file).unwrap();
+
+        page_num += 1;
+    }
+
+    // dbg!(&sitemap_crates);
+    // dbg!(&sitemap_articles);
+
+    let sitemap_crates = SitemapIndex::new(sitemap_crates)?;
+    let mut sitemap_crates_file = fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open("../public/sitemap-crates-000.xml")?;
+    sitemap_crates.write(&mut sitemap_crates_file).unwrap();
+
+    let sitemap_articles = SitemapIndex::new(sitemap_articles)?;
+    let mut sitemap_articles_file = fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open("../public/sitemap-articles-000.xml")?;
+    sitemap_articles.write(&mut sitemap_articles_file).unwrap();
+
+    Ok(())
+}
+
 fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
     let file = fs::File::open("crates.csv")?;
     let rdr = csv::Reader::from_reader(file);
@@ -466,10 +563,11 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    // gen_sitemap()?;
     // get_crates()?;
     // curl_twir_links()?;
     // consolidate_crates_json()?;
-    output_related_articles()?;
+    // output_related_articles()?;
 
     Ok(())
 }

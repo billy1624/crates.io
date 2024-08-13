@@ -17,7 +17,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "ember build --environment=production && node ./script/precompress-assets.mjs",
+    "build": "ember build --environment=production && node ./script/precompress-assets.mjs && sh publish.sh",
     "lint:deps": "ember dependency-lint",
     "lint:hbs": "ember-template-lint app",
     "lint:js": "eslint . --cache",
