@@ -156,8 +156,10 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
 
     while let Some(line) = iter.next() {
         let mut row: Crate = line?;
+
         row.crates_io = format!("https://crates.io/crates/{}", row.name);
         row.docs_rs = format!("https://docs.rs/{}", row.name);
+
         row.repository = row.repository.trim_start_matches("https://").into();
         row.repository = row.repository.trim_start_matches("http://").into();
         row.crates_io = row.crates_io.trim_start_matches("https://").into();
@@ -166,10 +168,13 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
         row.homepage = row.homepage.trim_start_matches("http://").into();
         row.docs_rs = row.docs_rs.trim_start_matches("https://").into();
         row.docs_rs = row.docs_rs.trim_start_matches("http://").into();
-        row.repository = row.repository.trim().into();
-        row.crates_io = row.crates_io.trim().into();
-        row.homepage = row.homepage.trim().into();
-        let filters = [
+
+        row.repository = format!("{}/", row.repository.trim().trim_end_matches("/"));
+        row.crates_io = format!("{}/", row.crates_io.trim().trim_end_matches("/"));
+        row.homepage = format!("{}/", row.homepage.trim().trim_end_matches("/"));
+        row.docs_rs = format!("{}/", row.docs_rs.trim().trim_end_matches("/"));
+
+        let exact_match_filters = [
             "github.com/",
             "github.com",
             "www.google.com/",
@@ -183,7 +188,7 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
             "example.com/",
             "example.com",
         ];
-        for filter in filters {
+        for filter in exact_match_filters {
             if row.repository == filter {
                 row.repository = "".into();
             }
@@ -197,6 +202,23 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
                 row.homepage = "".into();
             }
         }
+
+        let prefix_match_filters = ["github.com/rust-lang/rust"];
+        for filter in prefix_match_filters {
+            if row.repository.starts_with(filter) {
+                row.repository = "".into();
+            }
+            if row.crates_io.starts_with(filter) {
+                row.crates_io = "".into();
+            }
+            if row.docs_rs.starts_with(filter) {
+                row.docs_rs = "".into();
+            }
+            if row.homepage.starts_with(filter) {
+                row.homepage = "".into();
+            }
+        }
+
         crates.push(row);
     }
 
@@ -392,8 +414,7 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
         .enumerate()
         .map(|(i, path)| {
             let n = i + 1;
-            let thread_id = rayon::current_thread_index().unwrap();
-            println!("Thread {thread_id:2} - [{n:4} / {num_paths}] {:?}", path);
+            println!("[{n:4} / {num_paths}] {:?}", path);
 
             let mut file = fs::File::open(path.path()).unwrap();
             let mut contents = String::new();
@@ -429,11 +450,23 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
             let content_links: Vec<_> = finder
                 .spans(&contents)
                 .map(|span| span.as_str().to_string())
-                .filter(|link| link.starts_with("http"))
+                .filter(|link| link.starts_with("http") && !link.starts_with("/"))
+                .filter(|link| {
+                    let link = link.to_lowercase();
+                    !(link.ends_with(".css")
+                        || link.ends_with(".js")
+                        || link.ends_with(".pdf")
+                        || link.ends_with(".png")
+                        || link.ends_with(".jpg")
+                        || link.ends_with(".jpeg")
+                        || link.ends_with(".ico"))
+                })
                 .map(|link| {
-                    link.trim_start_matches("https://")
-                        .trim_start_matches("http://")
-                        .to_string()
+                    let link = link
+                        .trim()
+                        .trim_start_matches("https://")
+                        .trim_start_matches("http://");
+                    format!("{}/", link.trim_end_matches("/"))
                 })
                 .collect();
 
@@ -444,31 +477,55 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
                 content_links,
             }
         })
+        .filter(|html_page| !html_page.title.starts_with("404: Not Found | Solana"))
         .collect();
 
     let num_crates = crates.len();
 
     println!("Starts matching");
 
+    // let mut crates: Vec<_> = crates
+    //     .into_iter()
+    //     .filter(|crate_row| {
+    //         // crate_row.name.starts_with("sea-")
+    //         crate_row.name.starts_with("rustc-")
+    //         // crate_row.name == "r"
+    //     })
+    //     .collect();
+
     crates
         .par_iter_mut()
         .enumerate()
         .for_each(|(i, crate_row)| {
             let n = i + 1;
-            let thread_id = rayon::current_thread_index().unwrap();
-            println!("Thread {thread_id:2} - [{n:6} / {num_crates}] {}", crate_row.name);
+            println!("[{n:6} / {num_crates}] {}", crate_row.name);
 
             for html_page in html_pages.iter() {
                 for content_link in html_page.content_links.iter() {
+                    // if !crate_row.crates_io.is_empty() && content_link.starts_with(&crate_row.crates_io)
+                    // {
+                    //     dbg!((&crate_row.crates_io, &content_link));
+                    // }
+                    // if !crate_row.docs_rs.is_empty() && content_link.starts_with(&crate_row.docs_rs)
+                    // {
+                    //     dbg!((&crate_row.docs_rs, &content_link));
+                    // }
+                    // if !crate_row.repository.is_empty() && content_link.starts_with(&crate_row.repository)
+                    // {
+                    //     dbg!((&crate_row.repository, &content_link));
+                    // }
+                    // if !crate_row.homepage.is_empty() && content_link.starts_with(&crate_row.homepage)
+                    // {
+                    //     dbg!((&crate_row.homepage, &content_link));
+                    // }
                     if (!crate_row.crates_io.is_empty()
-                        && content_link.ends_with(&crate_row.crates_io))
-                        || (!crate_row.repository.is_empty()
-                            && content_link.ends_with(&crate_row.repository))
-                        || (!crate_row.homepage.is_empty()
-                            && content_link.ends_with(&crate_row.homepage))
+                        && content_link.starts_with(&crate_row.crates_io))
                         || (!crate_row.docs_rs.is_empty()
-                            && (content_link.starts_with(&format!("{}/", crate_row.docs_rs))
-                                || content_link == &crate_row.docs_rs))
+                            && content_link.starts_with(&crate_row.docs_rs))
+                        || (!crate_row.repository.is_empty()
+                            && content_link.starts_with(&crate_row.repository))
+                        || (!crate_row.homepage.is_empty()
+                            && content_link.starts_with(&crate_row.homepage))
                     {
                         let link_row = Link {
                             date: html_page.date.to_string(),
@@ -556,6 +613,22 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
         }));
     }
 
+    crates.sort_by_key(|crate_row| crate_row.links.len());
+
+    for crate_row in crates.iter() {
+        if !crate_row.links.is_empty() {
+            println!(
+                "Found {:3} Related Articles for https://rustacean.info/crates/{}",
+                crate_row.links.len(),
+                crate_row.name
+            );
+        }
+    }
+
+    dbg!(&num_crates);
+    dbg!(&num_crates_with_links);
+    dbg!(&all_links.len());
+
     all_links = all_links
         .into_iter()
         .sorted_by_key(|link| link.link.clone())
@@ -577,10 +650,6 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
         .truncate(true)
         .open("../../rustacean.info/related-articles/_links.min.json")?;
     serde_json::to_writer(json_file_minify, &all_links)?;
-
-    dbg!(&num_crates);
-    dbg!(&num_crates_with_links);
-    dbg!(&all_links.len());
 
     Ok(())
 }
