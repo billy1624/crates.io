@@ -108,7 +108,9 @@ fn gen_sitemap() -> Result<(), Box<dyn Error>> {
             .write(true)
             .truncate(true)
             .open(format!("../public/sitemap-crates-{page_num:03}.xml"))?;
-        sitemap_crates_urls.write(&mut sitemap_crates_urls_file).unwrap();
+        sitemap_crates_urls
+            .write(&mut sitemap_crates_urls_file)
+            .unwrap();
 
         let sitemap_articles_urls = UrlSet::new(sitemap_articles_urls)?;
         let mut sitemap_articles_urls_file = fs::OpenOptions::new()
@@ -116,7 +118,9 @@ fn gen_sitemap() -> Result<(), Box<dyn Error>> {
             .write(true)
             .truncate(true)
             .open(format!("../public/sitemap-articles-{page_num:03}.xml"))?;
-        sitemap_articles_urls.write(&mut sitemap_articles_urls_file).unwrap();
+        sitemap_articles_urls
+            .write(&mut sitemap_articles_urls_file)
+            .unwrap();
 
         page_num += 1;
     }
@@ -316,17 +320,25 @@ async fn curl_twir_links() -> Result<(), Box<dyn Error>> {
 
         let response = client
             .get(&link)
-            .timeout(time::Duration::from_secs(30))
+            .timeout(time::Duration::from_secs(10))
             .send()
             .await;
         let html = match response {
-            Ok(res) => match res.text().await {
-                Ok(text) => text,
-                Err(err) => {
-                    dbg!(&err);
+            Ok(res) => {
+                let status = res.status();
+                println!("\t-> Status: {:?}", status);
+                if status.as_u16() == 404 {
+                    println!("\t-> 404 Not Found");
                     continue;
                 }
-            },
+                match res.text().await {
+                    Ok(text) => text,
+                    Err(err) => {
+                        dbg!(&err);
+                        continue;
+                    }
+                }
+            }
             Err(err) => {
                 dbg!(&err);
                 continue;
@@ -380,7 +392,8 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
         .enumerate()
         .map(|(i, path)| {
             let n = i + 1;
-            println!("[{n} / {num_paths}] {:?}", path);
+            let thread_id = rayon::current_thread_index().unwrap();
+            println!("Thread {thread_id:2} - [{n:4} / {num_paths}] {:?}", path);
 
             let mut file = fs::File::open(path.path()).unwrap();
             let mut contents = String::new();
@@ -435,23 +448,27 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
 
     let num_crates = crates.len();
 
+    println!("Starts matching");
+
     crates
         .par_iter_mut()
         .enumerate()
         .for_each(|(i, crate_row)| {
             let n = i + 1;
-            println!("[{n} / {num_crates}] {}", crate_row.name);
+            let thread_id = rayon::current_thread_index().unwrap();
+            println!("Thread {thread_id:2} - [{n:6} / {num_crates}] {}", crate_row.name);
 
             for html_page in html_pages.iter() {
                 for content_link in html_page.content_links.iter() {
                     if (!crate_row.crates_io.is_empty()
-                        && content_link.starts_with(&crate_row.crates_io))
-                        || (!crate_row.docs_rs.is_empty()
-                            && content_link.starts_with(&crate_row.docs_rs))
+                        && content_link.ends_with(&crate_row.crates_io))
                         || (!crate_row.repository.is_empty()
-                            && content_link.starts_with(&crate_row.repository))
+                            && content_link.ends_with(&crate_row.repository))
                         || (!crate_row.homepage.is_empty()
-                            && content_link.starts_with(&crate_row.homepage))
+                            && content_link.ends_with(&crate_row.homepage))
+                        || (!crate_row.docs_rs.is_empty()
+                            && (content_link.starts_with(&format!("{}/", crate_row.docs_rs))
+                                || content_link == &crate_row.docs_rs))
                     {
                         let link_row = Link {
                             date: html_page.date.to_string(),
@@ -465,7 +482,14 @@ fn consolidate_crates_json() -> Result<(), Box<dyn Error>> {
             }
         });
 
+    println!("Finished matching");
+
+    println!("Starts writing");
+
     write_crates_to_json(&crates)?;
+
+    println!("Finished writing");
+
     Ok(())
 }
 
@@ -565,9 +589,9 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
 async fn main() -> Result<(), Box<dyn Error>> {
     // gen_sitemap()?;
     // get_crates()?;
-    // curl_twir_links()?;
-    // consolidate_crates_json()?;
-    // output_related_articles()?;
+    // curl_twir_links().await?;
+    consolidate_crates_json()?;
+    output_related_articles()?;
 
     Ok(())
 }
