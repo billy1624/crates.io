@@ -176,17 +176,13 @@ fn get_crates() -> Result<Vec<Crate>, Box<dyn Error>> {
 
         let exact_match_filters = [
             "github.com/",
-            "github.com",
             "www.google.com/",
-            "www.google.com",
             "google.com/",
-            "google.com",
             "facebook.com/",
-            "facebook.com",
             "crates.io/",
-            "crates.io",
             "example.com/",
-            "example.com",
+            "www.rust-lang.org/",
+            "rust-lang.org/",
         ];
         for filter in exact_match_filters {
             if row.repository == filter {
