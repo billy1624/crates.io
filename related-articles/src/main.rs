@@ -72,11 +72,11 @@ fn gen_sitemap() -> Result<(), Box<dyn Error>> {
         dbg!(&page_num);
 
         sitemap_crates.push(Sitemap::new(
-            format!("https://rustacean.info/sitemap-crates-{page_num:03}.xml"),
+            format!("https://rustacean.info/sitemap-crates-{page_num:03}.xml.gz"),
             None,
         ));
         sitemap_articles.push(Sitemap::new(
-            format!("https://rustacean.info/sitemap-articles-{page_num:03}.xml"),
+            format!("https://rustacean.info/sitemap-articles-{page_num:03}.xml.gz"),
             None,
         ));
 
