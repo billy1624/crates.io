@@ -61,6 +61,10 @@ Router.map(function () {
   // this.route('data-access');
   // this.route('confirm', { path: '/confirm/:email_token' });
   // this.route('accept-invite', { path: '/accept-invite/:token' });
+  this.route('blog');
+  this.route('blog-post', { path: '/blog/:slug' }, function () {
+    this.route('blog');
+  });
 
   this.route('catch-all', { path: '*path' });
 });

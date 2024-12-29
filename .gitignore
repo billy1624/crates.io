@@ -34,3 +34,8 @@ src/schema.rs.orig
 /playwright/.cache/
 
 .DS_Store
+
+/public/sitemap-articles-*
+/public/sitemap-crates-*
+/public/sitemap-pages.xml
+/public/sitemap.xml

@@ -99,6 +99,23 @@
     } */
 }
 
+.list-blog {
+    list-style: none;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-s);
+
+    @media only screen and (max-width: 750px) {
+        grid-template-columns: 1fr;
+    }
+
+    /* > * + * {
+        margin-top: var(--space-2xs);
+    } */
+}
+
 .error-message {
     line-height: 1.5;
 }

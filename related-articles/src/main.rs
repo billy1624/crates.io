@@ -650,12 +650,19 @@ fn output_related_articles() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // gen_sitemap()?;
-    // get_crates()?;
+    // 1. Download `crates.csv` at `https://static.crates.io/db-dump.tar.gz`
+
+    // 2. Process
     // curl_twir_links().await?;
     // consolidate_crates_json()?;
+
+    // 3. Output to `rustacean.info`'s `pages` branch
+    // gen_sitemap()?;
+
+    // 4. Output to `rustacean.info`'s `main` branch
     // output_related_articles()?;
 
     Ok(())

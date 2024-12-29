@@ -26,14 +26,18 @@ export default class IndexController extends Controller {
     let data = await ajax_fail(
       'https://raw.githubusercontent.com/SeaQL/rustacean.info/main/related-articles/_links.min.json',
     );
+    let issues = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/issues.json');
 
     shuffle(data);
 
-    return data.slice(0, 100).map(row => {
-      row.title = htmlDecode(row.title);
-      row.crate_link = `/crates/${row.crate_name}`;
-      return row;
-    });
+    return {
+      data: data.slice(0, 100).map(row => {
+        row.title = htmlDecode(row.title);
+        row.crate_link = `/crates/${row.crate_name}`;
+        return row;
+      }),
+      issues,
+    };
   });
 }
 

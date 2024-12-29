@@ -44,6 +44,26 @@ export async function ajax_fail(input, init) {
   return [];
 }
 
+export async function ajax_get(input, init) {
+  let _input = input;
+
+  if (!_input.startsWith('http')) {
+    _input = 'https://crates.io/' + _input.replace(/^(\/)/, '');
+  }
+
+  try {
+    let response = await fetch(_input, init);
+    if (response.ok) {
+      return await response.text();
+    }
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
+
+  return '';
+}
+
 export function htmlDecode(input) {
   var doc = new DOMParser().parseFromString(input, 'text/html');
   return doc.documentElement.textContent;

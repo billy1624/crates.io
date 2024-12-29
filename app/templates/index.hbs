@@ -6,6 +6,25 @@
     <h1 local-class="hero-title">
       Your daily dose of Rust
     </h1>
+    <ol local-class="list-blog" aria-busy="{{this.dataTask.isRunning}}">
+      {{#if this.dataTask.isRunning}}
+      {{else}}
+        {{#each-in this.model.issues as |blog_slug blog|}}
+          <li>
+            <FrontPageList::Blog
+              @link={{link "blog-post" blog_slug}}
+              @title={{blog.title}}
+              @description={{blog.description}}
+              @author_link={{blog.author_link}}
+              @author_name={{blog.author_name}}
+              @author_thumbnail={{blog.author_thumbnail}}
+              @updated_at={{blog.updated_at}}
+              @additional_class="description-clipped"
+            />
+          </li>
+        {{/each-in}}
+      {{/if}}
+    </ol>
     <ol local-class="list" aria-busy="{{this.dataTask.isRunning}}">
       {{#if this.dataTask.isRunning}}
         {{#each (placeholders 100)}}
@@ -14,7 +33,7 @@
           </li>
         {{/each}}
       {{else}}
-        {{#each this.model as |article index|}}
+        {{#each this.model.data as |article index|}}
           <li>
             <FrontPageList::Item
               @link={{article.link}}

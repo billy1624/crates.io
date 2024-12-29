@@ -1,0 +1,26 @@
+{{page-title @this.model.title}}
+
+<PageHeader>
+    <h1 local-class="heading">
+        {{@this.model.title}}
+    </h1>
+    <div local-class="footer">
+        <a local-class="author" href={{@this.model.author_link}} target="_blank">
+        <img
+            src={{@this.model.author_thumbnail}}
+            title={{@this.model.author_name}}
+            alt={{@this.model.author_name}}
+            local-class="avatar"
+            decoding="async"
+            height="28"
+            width="28"
+        />
+        <span>{{@this.model.author_name}}</span>
+        </a>
+        <span local-class="updated-at">&nbsp;&nbsp;·&nbsp;&nbsp;{{date-format  @this.model.updated_at 'MMMM d, y' addSuffix=true}}</span>
+    </div>
+</PageHeader>
+
+<div local-class="content" ...attributes>
+    <RenderedHtml @html={{@this.model.content}} local-class="readme" />
+</div>

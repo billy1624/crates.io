@@ -1,0 +1,26 @@
+{{page-title 'Blog Posts'}}
+
+<PageHeader @title="Blog Posts"/>
+
+<div local-class='lists'>
+  <section>
+    <ol local-class="list" aria-busy="{{this.dataTask.isRunning}}">
+      {{#if this.dataTask.isRunning}}
+      {{else}}
+        {{#each-in this.model.issues as |blog_slug blog|}}
+          <li>
+            <FrontPageList::Blog
+              @link={{link "blog-post" blog_slug}}
+              @title={{blog.title}}
+              @description={{blog.description}}
+              @author_link={{blog.author_link}}
+              @author_name={{blog.author_name}}
+              @author_thumbnail={{blog.author_thumbnail}}
+              @updated_at={{blog.updated_at}}
+            />
+          </li>
+        {{/each-in}}
+      {{/if}}
+    </ol>
+  </section>
+</div>
