@@ -23,10 +23,21 @@ export default class BlogController extends Controller {
   }
 
   dataTask = dropTask(async () => {
-    let issues = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/issues.json');
+    let issues = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/posts.json');
 
     // console.log('issues', issues);
 
-    return { issues };
+    const links = [
+      {
+        title: 'Home',
+        href: '/',
+      },
+      {
+        title: 'Blog',
+        href: '/blog',
+      },
+    ];
+
+    return { issues, links };
   });
 }

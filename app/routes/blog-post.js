@@ -13,7 +13,7 @@ export default class BlogPostRoute extends Route {
 
     // console.log('_slug_', slug);
 
-    const data = await ajax_fail(`https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/issues.json`);
+    const data = await ajax_fail(`https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/posts.json`);
     let post = data[slug] ?? {};
 
     let content = '';
@@ -27,6 +27,21 @@ export default class BlogPostRoute extends Route {
     // console.log('_content_', content);
 
     post.content = content;
+    post.slug = slug;
+    post.links = [
+      {
+        title: 'Home',
+        href: '/',
+      },
+      {
+        title: 'Blog',
+        href: '/blog',
+      },
+      {
+        title: post.title,
+        href: '/blog/' + slug,
+      },
+    ];
 
     return post;
   }

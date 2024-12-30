@@ -1,0 +1,10 @@
+<div local-class="breadcrumb">
+    {{#each @links as |link i|}}
+        {{#if i}}
+            <span local-class="sep">/</span>
+        {{/if}}
+        <span>
+            <a local-class="link" href={{link.href}}>{{link.title}}</a>
+        </span>
+    {{/each}}
+</div>

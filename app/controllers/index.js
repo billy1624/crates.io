@@ -26,7 +26,7 @@ export default class IndexController extends Controller {
     let data = await ajax_fail(
       'https://raw.githubusercontent.com/SeaQL/rustacean.info/main/related-articles/_links.min.json',
     );
-    let issues = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/issues.json');
+    let issues = await ajax_fail('https://raw.githubusercontent.com/SeaQL/rustacean.info/refs/heads/main/posts.json');
 
     shuffle(data);
 
